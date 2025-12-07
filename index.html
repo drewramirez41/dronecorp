@@ -110,10 +110,18 @@
       opacity: 1;
     }
 
+    /* Mobile nav toggle */
+    .menu-toggle {
+      display: none;
+      cursor: pointer;
+      font-size: 22px;
+      user-select: none;
+    }
+
     /* HERO */
     .hero-wrapper {
       position: relative;
-      height: 80vh;
+      height: 100vh;
       min-height: 480px;
       display: flex;
       align-items: center;
@@ -143,8 +151,7 @@
         0 0 14px rgba(127,202,255,0.5);
     }
 
-    .subtitle,
-    .tagline {
+    .subtitle {
       font-size: 18px;
       opacity: 0.9;
       margin: 4px 0;
@@ -156,113 +163,25 @@
       letter-spacing: 2px;
       opacity: 0.85;
       color: #7fcaff;
-    }
-
-    .contact-line {
-      margin-top: 18px;
-      font-size: 14px;
-      opacity: 0.9;
-    }
-
-    /* Typewriter caret */
-    .caret {
-      display: inline-block;
-      width: 10px;
-      margin-left: 3px;
-      background: #7fcaff;
-      animation: blink 0.7s steps(1,end) infinite;
-    }
-
-    @keyframes blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
-    }
-
-    /* HOME PAGE CONTENT */
-    .page-content {
-      position: relative;
-      z-index: 5;
-      padding: 32px 0 80px 0;
-    }
-
-    .section {
-      max-width: 1100px;
-      margin: 0 auto 32px auto;
-      padding: 24px 24px 28px 24px;
-      border-radius: 18px;
-      background: rgba(5,10,18,0.94);
-      box-shadow: 0 0 40px rgba(0,0,0,0.7);
-      border: 1px solid rgba(123,189,255,0.12);
-    }
-
-    .section-header {
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      font-size: 12px;
-      color: #7fcaff;
-      margin-bottom: 6px;
-      opacity: 0.9;
-    }
-
-    .section-title {
-      font-size: 22px;
-      margin: 0 0 12px 0;
-    }
-
-    .section p {
-      font-size: 14px;
-      line-height: 1.5;
-      color: #d7e0ff;
-      margin: 6px 0;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-      margin-top: 16px;
-    }
-
-    .card {
-      padding: 14px 14px 16px 14px;
-      border-radius: 12px;
-      background: radial-gradient(circle at top left,
-        rgba(127,202,255,0.08),
-        rgba(8,14,30,0.96)
-      );
-      border: 1px solid rgba(127,202,255,0.18);
-      font-size: 13px;
-    }
-
-    .card-title {
-      font-size: 14px;
-      font-weight: bold;
-      margin-bottom: 6px;
-      color: #ffffff;
-    }
-
-    .card-link {
-      display: inline-block;
-      margin-top: 8px;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #9fd7ff;
+      margin: 6px 0 0 0;
+      min-height: 1.2em; /* keeps layout stable while typing */
     }
 
     .footer {
-      margin-top: 10px;
-      font-size: 11px;
+      position: absolute;
+      bottom: 18px;
+      left: 0;
+      width: 100%;
       text-align: center;
+      font-size: 11px;
       color: #7282a5;
       opacity: 0.8;
+      z-index: 5;
+      pointer-events: none;
     }
 
-    /* MOBILE */
+    /* RESPONSIVE */
     @media (max-width: 900px) {
-      .grid-3 {
-        grid-template-columns: 1fr;
-      }
       .nav {
         padding: 0 18px;
       }
@@ -274,7 +193,7 @@
 
     @media (max-width: 700px) {
       .hero-wrapper {
-        height: 70vh;
+        height: 90vh;
         min-height: 380px;
       }
 
@@ -301,9 +220,27 @@
         letter-spacing: 4px;
       }
 
+      /* turn on burger menu */
+      .menu-toggle {
+        display: block;
+      }
+
       .nav-right {
-        gap: 10px;
-        font-size: 11px;
+        position: absolute;
+        top: 56px;
+        right: 0;
+        background: rgba(5,10,18,0.97);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 18px 12px;
+        border-bottom-left-radius: 12px;
+        border-left: 1px solid rgba(123,189,255,0.25);
+        border-bottom: 1px solid rgba(123,189,255,0.25);
+        display: none; /* hidden until toggled */
+      }
+
+      .nav-right.show {
+        display: flex;
       }
     }
   </style>
@@ -320,7 +257,8 @@
   <!-- NAV -->
   <header class="nav">
     <div class="nav-left">DRONECORP</div>
-    <nav class="nav-right">
+    <div class="menu-toggle" id="menuToggle">☰</div>
+    <nav class="nav-right" id="navLinks">
       <a href="index.html">Home</a>
       <a href="platforms.html">Platforms</a>
       <a href="focus.html">Focus Areas</a>
@@ -335,70 +273,18 @@
   <div class="hero-wrapper">
     <div class="center-box">
       <h1 class="glow-blue">DRONECORP</h1>
-      <p id="subtitle" class="subtitle"></p>
+      <p class="subtitle">American-made unmanned aerial systems.</p>
       <p id="tagline" class="tagline"></p>
-      <p class="contact-line">
-        Secure inquiries: <a href="mailto:admin@dronecorp.us">admin@dronecorp.us</a>
-      </p>
-      <span id="caret" class="caret"></span>
+    </div>
+
+    <div class="footer">
+      © <span id="year"></span> DroneCorp. Conceptual material for discussion; not all
+      capabilities shown are available or fielded.
     </div>
   </div>
 
-  <!-- HOME CONTENT -->
-  <main class="page-content">
-    <section class="section">
-      <div class="section-header">Overview</div>
-      <h2 class="section-title">Applied unmanned systems R&amp;D</h2>
-      <p>
-        DroneCorp is an early-stage effort focused on U.S.-made unmanned concepts for
-        intelligence, surveillance, reconnaissance, and perimeter security. Work is oriented
-        around disciplined prototyping, integration with existing C2 ecosystems, and future
-        autonomy frameworks.
-      </p>
-    </section>
-
-    <section class="section">
-      <div class="section-header">Core tracks</div>
-      <h2 class="section-title">Where work is happening first</h2>
-
-      <div class="grid-3">
-        <div class="card">
-          <div class="card-title">Multi-domain platforms</div>
-          <p>
-            Concept airframes for tactical ISR, distributed swarm constructs, and
-            interior micro-UAS tailored for GPS-denied structures.
-          </p>
-          <a class="card-link" href="platforms.html">View platforms →</a>
-        </div>
-
-        <div class="card">
-          <div class="card-title">Autonomy &amp; payloads</div>
-          <p>
-            Onboard perception, navigation assists, edge processing, and open payload
-            bays designed to host EO/IR and mapping sensors.
-          </p>
-          <a class="card-link" href="focus.html">Focus areas →</a>
-        </div>
-
-        <div class="card">
-          <div class="card-title">People &amp; partners</div>
-          <p>
-            Looking for one hands-on founding engineer and a small circle of partners
-            interested in disciplined experimentation.
-          </p>
-          <a class="card-link" href="careers.html">Careers &amp; partnering →</a>
-        </div>
-      </div>
-
-      <div class="footer">
-        © <span id="year"></span> DroneCorp. Conceptual material for discussion; not all
-        capabilities shown are available or fielded.
-      </div>
-    </section>
-  </main>
-
   <script>
-    // VIDEO ROTATION
+    /* VIDEO ROTATION */
     const video = document.getElementById("video-bg");
     const sequences = [
       "assets/drone_desert.mp4",
@@ -423,18 +309,14 @@
 
     playVideo(0);
 
-    // YEAR
+    /* YEAR IN FOOTER */
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // TYPEWRITER / MATRIX-LITE TEXT
-    const subtitleEl = document.getElementById("subtitle");
+    /* FAST TYPE-OUT TAGLINE */
     const taglineEl = document.getElementById("tagline");
-    const caretEl = document.getElementById("caret");
-
-    const subtitleText = "American-made unmanned aerial systems.";
     const taglineText = "EMERGING CONCEPTS IN AUTONOMOUS ISR AND TACTICAL ROBOTICS.";
 
-    function typeText(el, text, speed, callback) {
+    function typeTextFast(el, text, speed) {
       el.textContent = "";
       let i = 0;
       const interval = setInterval(() => {
@@ -442,19 +324,29 @@
         i++;
         if (i >= text.length) {
           clearInterval(interval);
-          if (callback) callback();
         }
       }, speed);
     }
 
-    // fast-ish typing, subtle “terminal” feel
-    typeText(subtitleEl, subtitleText, 25, () => {
-      typeText(taglineEl, taglineText, 18, () => {
-        // after done, move caret to end of tagline
-        caretEl.style.position = "relative";
-        caretEl.style.top = "-2px";
+    // quick, almost-instant terminal feel
+    typeTextFast(taglineEl, taglineText, 10);
+
+    /* MOBILE NAV TOGGLE */
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    if (menuToggle && navLinks) {
+      menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("show");
       });
-    });
+
+      // close menu when a link is tapped on mobile
+      navLinks.querySelectorAll("a").forEach(a => {
+        a.addEventListener("click", () => {
+          navLinks.classList.remove("show");
+        });
+      });
+    }
   </script>
 </body>
 </html>
