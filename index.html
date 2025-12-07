@@ -6,101 +6,171 @@
 <title>DroneCorp</title>
 
 <style>
-    body, html {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        overflow: hidden;
-        background: #05080c;
-        font-family: Arial, sans-serif;
-        color: white;
-    }
+/* ============================================================
+   GLOBAL RESET + BODY STYLE
+   ============================================================ */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: #05080c;
+    font-family: Arial, sans-serif;
+    color: white;
+}
 
-    /* Background video */
-    #video-bg {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: -1;
-        filter: brightness(45%);
-    }
+/* ============================================================
+   BACKGROUND VIDEO
+   ============================================================ */
+#video-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    filter: brightness(45%);
+    background: black;
+}
 
-    /* HUD grid overlay */
-    .hud-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        background-image:
-            linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-        background-size: 60px 60px;
-        z-index: 0;
-    }
+/* ============================================================
+   HUD GRID OVERLAY
+   ============================================================ */
+.hud-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 55px 55px;
+}
 
-    .center-box {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        z-index: 2;
-    }
+/* ============================================================
+   CENTER BRANDING (LOGO + TEXT)
+   ============================================================ */
+.center-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 10;
+}
 
+.center-box h1 {
+    font-size: 54px;
+    font-weight: bold;
+    letter-spacing: 12px;
+    text-shadow: 0 0 8px rgba(255,255,255,0.4);
+}
+
+.center-box p {
+    font-size: 18px;
+    opacity: 0.9;
+    margin-top: 10px;
+}
+
+.center-box a {
+    color: #7fcaff;
+    text-decoration: none;
+}
+
+/* ============================================================
+   SEQUENCE INDICATORS (VERTICAL DOTS)
+   ============================================================ */
+.sequence-indicator {
+    position: fixed;
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    z-index: 20;
+}
+
+.dot {
+    width: 16px;
+    height: 16px;
+    border: 2px solid white;
+    border-radius: 50%;
+    opacity: 0.45;
+    transition: 0.25s;
+}
+
+.dot.active {
+    background: white;
+    opacity: 1;
+}
+
+/* ============================================================
+   FULLSCREEN DARKENER (SO TEXT IS ALWAYS READABLE)
+   ============================================================ */
+.darkener {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        rgba(0,0,0,0.3),
+        rgba(0,0,0,0.45)
+    );
+    z-index: -1;
+}
+
+/* ============================================================
+   MOBILE FIXES
+   ============================================================ */
+@media (max-width: 768px) {
     .center-box h1 {
-        font-size: 48px;
-        letter-spacing: 10px;
-        margin-bottom: 10px;
+        font-size: 32px;
+        letter-spacing: 6px;
     }
-
     .center-box p {
-        font-size: 18px;
-        opacity: 0.9;
+        font-size: 16px;
     }
-
-    .sequence-indicator {
-        position: fixed;
-        right: 25px;
-        top: 50%;
-        transform: translateY(-50%);
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        z-index: 2;
-    }
-
     .dot {
-        width: 14px;
-        height: 14px;
-        border: 2px solid white;
-        border-radius: 50%;
-        opacity: 0.5;
-        transition: 0.3s;
+        width: 12px;
+        height: 12px;
     }
-
-    .dot.active {
-        background: white;
-        opacity: 1;
-    }
+}
 </style>
-</head>
 
+</head>
 <body>
 
+<!-- ============================================================
+     BACKGROUND VIDEO ELEMENT
+     ============================================================ -->
 <video id="video-bg" autoplay muted playsinline></video>
+
+<!-- Dark Overlay -->
+<div class="darkener"></div>
+
+<!-- HUD Grid -->
 <div class="hud-overlay"></div>
 
+<!-- ============================================================
+     CENTER BRANDING
+     ============================================================ -->
 <div class="center-box">
     <h1>DRONECORP</h1>
-    <p>American-made unmanned aerial systems.<br>Advanced autonomy. Multi-domain capability.</p>
-    <p>Contact: <a href="mailto:admin@dronecorp.us" style="color:#7fcaff;">admin@dronecorp.us</a></p>
+    <p>American-made unmanned aerial systems.</p>
+    <p>Advanced autonomy • Multi-domain ISR • Tactical Robotics</p>
+    <p>Contact: <a href="mailto:admin@dronecorp.us">admin@dronecorp.us</a></p>
 </div>
 
+<!-- ============================================================
+     SEQUENCE DOTS
+     ============================================================ -->
 <div class="sequence-indicator">
     <div class="dot" id="dot0"></div>
     <div class="dot" id="dot1"></div>
@@ -108,9 +178,13 @@
     <div class="dot" id="dot3"></div>
 </div>
 
+<!-- ============================================================
+     JAVASCRIPT: VIDEO ROTATION LOGIC
+     ============================================================ -->
 <script>
 const video = document.getElementById("video-bg");
 
+/* FOUR VIDEO FILES EXACTLY AS STORED IN /assets */
 const sequences = [
     "assets/drone_desert.mp4",
     "assets/naval_carrier.mp4",
@@ -120,20 +194,25 @@ const sequences = [
 
 let current = 0;
 
+/* PLAY VIDEO FUNCTION */
 function playVideo(index) {
     video.src = sequences[index];
+    video.load();
     video.play();
 
-    document.querySelectorAll(".dot").forEach((dot, i) => {
-        dot.classList.toggle("active", i === index);
+    /* Update glowing sequence dots */
+    document.querySelectorAll(".dot").forEach((d, i) => {
+        d.classList.toggle("active", i === index);
     });
 }
 
+/* WHEN A VIDEO ENDS → MOVE TO NEXT ONE */
 video.addEventListener("ended", () => {
     current = (current + 1) % sequences.length;
     playVideo(current);
 });
 
+/* START PLAYBACK */
 playVideo(0);
 </script>
 
