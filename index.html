@@ -326,20 +326,105 @@
     }
 
     @media (max-width: 900px) {
-      .grid-3 {
-        grid-template-columns: 1fr;
-      }
-      .grid-2 {
-        grid-template-columns: 1fr;
-      }
-      .nav {
-        padding: 0 18px;
-      }
-      .nav-right {
-        gap: 12px;
-        font-size: 12px;
-      }
-    }
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .nav {
+    padding: 0 16px;
+  }
+
+  .nav-right {
+    gap: 10px;
+    font-size: 11px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .hero-wrapper {
+    height: 90vh;
+  }
+
+  .center-box {
+    max-width: 90%;
+  }
+
+  .center-box h1 {
+    font-size: 34px;
+    letter-spacing: 6px;
+  }
+
+  .center-box p.subtitle {
+    font-size: 16px;
+  }
+
+  .center-box p.tagline {
+    font-size: 12px;
+  }
+}
+
+/* Extra tweaks for small phones */
+@media (max-width: 600px) {
+  .nav {
+    height: auto;
+    padding-top: 10px;
+    padding-bottom: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .nav-left {
+    font-size: 14px;
+    letter-spacing: 4px;
+  }
+
+  .nav-right {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .hero-wrapper {
+    height: 85vh;
+  }
+
+  .center-box {
+    top: 52%;
+    transform: translate(-50%, -52%);
+    padding: 0 8px;
+  }
+
+  .center-box h1 {
+    font-size: 28px;
+    letter-spacing: 4px;
+  }
+
+  .center-box p.subtitle {
+    font-size: 14px;
+  }
+
+  .center-box p.tagline {
+    font-size: 11px;
+  }
+
+  .sequence-indicator {
+    right: 12px;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+  }
+
+  .section {
+    margin: 0 10px 30px 10px;
+    padding: 22px 16px 24px 16px;
+  }
+}
+
   </style>
 </head>
 
