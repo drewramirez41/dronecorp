@@ -325,17 +325,43 @@
       opacity: 0.8;
     }
 
-    @media (max-width: 900px) {
-  .grid-3 {
-    grid-template-columns: 1fr;
-  }
-  .grid-2 {
-    grid-template-columns: 1fr;
+    /* Extra tweaks for small phones */
+@media (max-width: 700px) {
+  /* Hide the vertical sequence dots – cleaner on mobile */
+  .sequence-indicator {
+    display: none;
   }
 
-  .nav {
-    padding: 0 16px;
+  /* Slightly smaller hero text so it fits nicely */
+  .center-box h1 {
+    font-size: 32px;
+    letter-spacing: 6px;
   }
+
+  .center-box p.subtitle {
+    font-size: 15px;
+  }
+
+  .center-box p.tagline {
+    font-size: 12px;
+  }
+
+  /* Tighten up the nav bar */
+  .nav {
+    height: 56px;
+    padding: 0 14px;
+  }
+
+  .nav-left {
+    font-size: 14px;
+    letter-spacing: 4px;
+  }
+
+  .nav-right {
+    gap: 10px;
+    font-size: 11px;
+  }
+}
 
   .nav-right {
     gap: 10px;
