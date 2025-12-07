@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DroneCorp.</title>
+  <title>DroneCorp</title>
 
   <style>
     /* ============================================================
@@ -14,10 +14,20 @@
       padding: 0;
       height: 100%;
       width: 100%;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
       background: #05080c; /* dark background behind video */
       font-family: Arial, sans-serif;
       color: white;
+    }
+
+    a {
+      color: #7fcaff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
     }
 
     /* ============================================================
@@ -45,10 +55,10 @@
       width: 100%;
       height: 100%;
       background: linear-gradient(
-        rgba(0,0,0,0.3),
-        rgba(0,0,0,0.45)
+        rgba(0,0,0,0.30),
+        rgba(0,0,0,0.55)
       );
-      z-index: 1;               /* OVER VIDEO */
+      z-index: 1;
       pointer-events: none;
     }
 
@@ -59,7 +69,7 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 1;               /* SAME LAYER AS DARKENER */
+      z-index: 1;
       background-image:
         linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
@@ -67,34 +77,95 @@
     }
 
     /* ============================================================
-       CENTER BRANDING (LOGO + TEXT)
+       TOP NAV
        ============================================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      box-sizing: border-box;
+      z-index: 15;
+      background: linear-gradient(to bottom,
+        rgba(5,8,12,0.95),
+        rgba(5,8,12,0.65),
+        transparent
+      );
+      backdrop-filter: blur(6px);
+    }
+
+    .nav-left {
+      font-weight: bold;
+      letter-spacing: 6px;
+      font-size: 16px;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 20px;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+
+    .nav-right a {
+      color: #dce6ff;
+      opacity: 0.8;
+    }
+
+    .nav-right a:hover {
+      opacity: 1;
+    }
+
+    /* ============================================================
+       HERO / CENTER BRANDING
+       ============================================================ */
+    .hero-wrapper {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+    }
+
     .center-box {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
-      z-index: 10;              /* ABOVE OVERLAYS */
+      z-index: 10;
+      max-width: 720px;
+      padding: 0 16px;
     }
 
     .center-box h1 {
       font-size: 54px;
       font-weight: bold;
       letter-spacing: 12px;
-      text-shadow: 0 0 8px rgba(255,255,255,0.4);
+      text-shadow: 0 0 8px rgba(255,255,255,0.45);
       margin: 0 0 12px 0;
     }
 
-    .center-box p {
+    .center-box p.subtitle {
       font-size: 18px;
       opacity: 0.9;
-      margin: 4px 0;
+      margin: 4px 0 14px 0;
     }
 
-    .center-box a {
-      color: #7fcaff;
-      text-decoration: none;
+    .center-box p.tagline {
+      font-size: 14px;
+      opacity: 0.85;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .center-box p.contact {
+      margin-top: 18px;
+      font-size: 14px;
+      opacity: 0.9;
     }
 
     /* ============================================================
@@ -108,7 +179,7 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
-      z-index: 20;              /* TOPMOST UI */
+      z-index: 20;
     }
 
     .dot {
@@ -126,19 +197,147 @@
     }
 
     /* ============================================================
-       MOBILE FIXES
+       MAIN PAGE CONTENT SECTIONS
        ============================================================ */
-    @media (max-width: 768px) {
-      .center-box h1 {
-        font-size: 32px;
-        letter-spacing: 6px;
+    .page-content {
+      position: relative;
+      z-index: 5;
+      margin-top: 100vh; /* start just below the hero */
+      padding: 40px 0 80px 0;
+    }
+
+    .section {
+      max-width: 1100px;
+      margin: 0 auto 40px auto;
+      padding: 32px 28px 36px 28px;
+      border-radius: 18px;
+      background: rgba(5,10,18,0.94);
+      box-shadow: 0 0 40px rgba(0,0,0,0.7);
+      border: 1px solid rgba(123,189,255,0.12);
+    }
+
+    .section-header {
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 12px;
+      color: #7fcaff;
+      margin-bottom: 6px;
+      opacity: 0.9;
+    }
+
+    .section-title {
+      font-size: 22px;
+      margin: 0 0 16px 0;
+    }
+
+    .section p {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #d7e0ff;
+      margin: 6px 0;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 16px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 16px;
+    }
+
+    .card {
+      padding: 14px 14px 16px 14px;
+      border-radius: 12px;
+      background: radial-gradient(circle at top left,
+        rgba(127,202,255,0.08),
+        rgba(8,14,30,0.96)
+      );
+      border: 1px solid rgba(127,202,255,0.18);
+      font-size: 13px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #ffffff;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(127,202,255,0.4);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #a6d0ff;
+      opacity: 0.9;
+    }
+
+    .program-list {
+      margin-top: 16px;
+    }
+
+    .program-item {
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed rgba(127,202,255,0.25);
+    }
+
+    .program-name {
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .program-tagline {
+      font-size: 13px;
+      color: #c0cffc;
+      margin-top: 3px;
+    }
+
+    .program-meta {
+      font-size: 11px;
+      color: #8fa2d6;
+      margin-top: 4px;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 11px;
+      text-align: center;
+      color: #7282a5;
+      opacity: 0.8;
+    }
+
+    @media (max-width: 900px) {
+      .grid-3 {
+        grid-template-columns: 1fr;
       }
-      .center-box p {
-        font-size: 16px;
+      .grid-2 {
+        grid-template-columns: 1fr;
       }
-      .dot {
-        width: 12px;
-        height: 12px;
+      .nav {
+        padding: 0 18px;
+      }
+      .nav-right {
+        gap: 12px;
+        font-size: 12px;
       }
     }
   </style>
@@ -153,12 +352,28 @@
   <div class="darkener"></div>
   <div class="hud-overlay"></div>
 
-  <!-- CENTER BRANDING -->
-  <div class="center-box">
-    <h1>DRONECORP</h1>
-    <p>American-made unmanned aerial systems.</p>
-    <p>Advanced autonomy • Multi-domain ISR • Tactical Robotics</p>
-    <p>Contact: <a href="mailto:admin@dronecorp.us">admin@dronecorp.us</a></p>
+  <!-- TOP NAV -->
+  <header class="nav">
+    <div class="nav-left">DRONECORP</div>
+    <nav class="nav-right">
+      <a href="#platforms">Platforms</a>
+      <a href="#focus">Focus Areas</a>
+      <a href="#programs">Programs</a>
+      <a href="#partner">Partner</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero-wrapper">
+    <div class="center-box">
+      <h1>DRONECORP</h1>
+      <p class="subtitle">American-made unmanned aerial systems.</p>
+      <p class="tagline">Emerging concepts in autonomous ISR and tactical robotics.</p>
+      <p class="contact">
+        Secure inquiries: <a href="mailto:admin@dronecorp.us">admin@dronecorp.us</a>
+      </p>
+    </div>
   </div>
 
   <!-- SEQUENCE DOTS -->
@@ -168,6 +383,193 @@
     <div class="dot" id="dot2"></div>
     <div class="dot" id="dot3"></div>
   </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="page-content">
+
+    <!-- PLATFORMS -->
+    <section class="section" id="platforms">
+      <div class="section-header">Multi-domain unmanned systems</div>
+      <h2 class="section-title">Concept platforms under evaluation</h2>
+      <p>
+        DroneCorp explores modular air, maritime, and interior-recon architectures intended to
+        interface with existing command-and-control ecosystems. Current work is focused on
+        design studies, prototyping pathways, and integration concepts rather than fielded product.
+      </p>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-title">Tactical ISR Quadrotor</div>
+          <p>
+            Compact multi-sensor airframe concept for close-range reconnaissance, overwatch,
+            and perimeter awareness in contested environments.
+          </p>
+          <div class="pill-row">
+            <span class="pill">VTOL</span>
+            <span class="pill">ISR</span>
+            <span class="pill">Low signature</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Distributed Swarm Constructs</div>
+          <p>
+            Early-stage autonomy and coordination research aimed at swarming tactics, mesh
+            networking, and cooperative sensing across large areas.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Swarm logic</span>
+            <span class="pill">Mesh links</span>
+            <span class="pill">Edge compute</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Interior Recon Micro-UAS</div>
+          <p>
+            Indoor-capable micro platforms designed around mapping, target confirmation,
+            and rapid situational awareness inside dense or GPS-denied structures.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Interior</span>
+            <span class="pill">Autonomous assist</span>
+            <span class="pill">Law enforcement / SOF</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOCUS AREAS -->
+    <section class="section" id="focus">
+      <div class="section-header">R&D emphasis</div>
+      <h2 class="section-title">Core focus areas</h2>
+      <p>
+        Activities are centered on technical exploration, prototyping, and integration rather
+        than mass production. The guiding principle is a U.S.-centric supply chain with an emphasis
+        on reliability, maintainability, and alignment with future autonomy frameworks.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Autonomy & Edge Processing</div>
+          <p>
+            Onboard perception, navigation assists, and mission logic designed to offload operators
+            while maintaining human authority over effects and outcomes.
+          </p>
+        </div>
+        <div class="card">
+          <div class="card-title">Sensor & Payload Integration</div>
+          <p>
+            Open-architecture payload bays intended to host EO/IR, mapping, and
+            specialized mission packages without locking into a single vendor ecosystem.
+          </p>
+        </div>
+        <div class="card">
+          <div class="card-title">Secure Link Concepts</div>
+          <p>
+            Link concepts prioritizing resilience, low probability of intercept/detect,
+            and compatibility with existing tactical networking constructs.
+          </p>
+        </div>
+        <div class="card">
+          <div class="card-title">Manufacturability & Sustainment</div>
+          <p>
+            Designs are evaluated with lifecycle cost, depot-level repair, and
+            U.S.-based component sourcing in mind from the earliest phases.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROGRAMS -->
+    <section class="section" id="programs">
+      <div class="section-header">Exploratory efforts</div>
+      <h2 class="section-title">Representative internal initiatives</h2>
+      <p>
+        The following initiative names describe internal lines of effort and technology
+        exploration. They are not associated with any specific government program of record.
+      </p>
+
+      <div class="program-list">
+        <div class="program-item">
+          <div class="program-name">PROJECT AERIS</div>
+          <div class="program-tagline">
+            Lightweight ISR airframes with emphasis on austere launch, recovery, and rapid tasking.
+          </div>
+          <div class="program-meta">
+            Focus: airframe studies, flight profiles, payload envelopes, operator workload reduction.
+          </div>
+        </div>
+        <div class="program-item">
+          <div class="program-name">PROJECT NIGHTWATCH</div>
+          <div class="program-tagline">
+            Interior and low-visibility reconnaissance concepts for law-enforcement and defense users.
+          </div>
+          <div class="program-meta">
+            Focus: constrained spaces, autonomy assists, low-light sensing, deconfliction with ground teams.
+          </div>
+        </div>
+        <div class="program-item">
+          <div class="program-name">PROJECT HARBORLINE</div>
+          <div class="program-tagline">
+            Perimeter monitoring and multi-domain awareness across air, ground, and maritime boundaries.
+          </div>
+          <div class="program-meta">
+            Focus: integration with existing security stacks, alerting workflows, and layered sensors.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTNERING -->
+    <section class="section" id="partner">
+      <div class="section-header">Collaboration & pathways</div>
+      <h2 class="section-title">Working with DroneCorp</h2>
+      <p>
+        DroneCorp is oriented toward long-term collaboration with systems integrators, technology
+        primes, and specialized end users seeking to evaluate emerging unmanned concepts. The focus
+        is on disciplined experimentation, rapid learning cycles, and transparent technical dialogue.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Government & Defense</div>
+          <p>
+            Exploratory conversations around concept demonstrations, risk-reduction efforts,
+            and participation in experimentation venues aligned with future force design.
+          </p>
+        </div>
+        <div class="card">
+          <div class="card-title">Industry & Integration</div>
+          <p>
+            Partnerships with integrators and primes interested in incorporating small,
+            focused unmanned capabilities into broader C2, sensing, or autonomy stacks.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section" id="contact">
+      <div class="section-header">Secure inquiries</div>
+      <h2 class="section-title">Contact & next steps</h2>
+      <p>
+        For early technical discussions, teaming opportunities, or controlled demonstration
+        requests, please reach out via the address below. High-level overviews can be shared
+        first, with deeper engineering artifacts provided under appropriate agreements.
+      </p>
+      <p>
+        Primary contact: <a href="mailto:admin@dronecorp.us">admin@dronecorp.us</a>
+      </p>
+      <p>
+        Please avoid transmitting sensitive or classified information. If needed, alternate
+        channels can be coordinated after initial contact.
+      </p>
+      <div class="footer">
+        © <span id="year"></span> DroneCorp. All rights reserved.  
+        Conceptual material for discussion; not all capabilities shown are available or fielded.
+      </div>
+    </section>
+
+  </main>
 
   <script>
     // ============================================================
@@ -208,6 +610,24 @@
 
     // Start with the first clip
     playVideo(0);
+
+    // ============================================================
+    // SMOOTH SCROLL FOR NAV LINKS
+    // ============================================================
+    document.querySelectorAll('.nav-right a[href^="#"]').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const id = link.getAttribute('href').slice(1);
+        const target = document.getElementById(id);
+        if (target) {
+          const top = target.getBoundingClientRect().top + window.scrollY - 72;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 
 </body>
