@@ -1,40 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DroneCorp, Inc.</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0d1117;
-      color: #e6e6e6;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      text-align: center;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DroneCorp</title>
+
+<style>
+    /* Reset */
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        background: #0a0f14;
+        color: white;
     }
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      text-transform: uppercase;
-      letter-spacing: .1em;
+
+    /* Video Background */
+    #video-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+        filter: brightness(45%);
     }
-    p { max-width: 600px; opacity: .9; }
-    a { color: #58a6ff; }
-  </style>
+
+    /* HUD Overlay Grid */
+    .hud-overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        background-image: 
+            linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+        background-size: 40px 40px;
+        z-index: 0;
+    }
+
+    /* Center Text */
+    .center-box {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        z-index: 2;
+    }
+
+    .center-box h1 {
+        font-size: 48px;
+        letter-spacing: 8px;
+        margin-bottom: 15px;
+    }
+
+    .center-box p {
+        font-size: 18px;
+        opacity: 0.85;
+    }
+
+    /* Sequence dots */
+    .sequence-indicator {
+        position: fixed;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        z-index: 2;
+    }
+
+    .dot {
+        width: 12px;
+        height: 12px;
+        border: 2px solid white;
+        border-radius: 50%;
+        opacity: 0.5;
+        transition: 0.3s;
+    }
+
+    .dot.active {
+        background: white;
+        opacity: 1;
+    }
+</style>
 </head>
+
 <body>
-  <h1>DroneCorp</h1>
-  <p>
-    American-made unmanned aerial systems.  
-    <br>Website under construction.
-  </p>
-  <p>
-    Contact: <a href="mailto:admin@dronecorp.us">admin@dronecorp.us</a>
-  </p>
+
+<!-- Background Video -->
+<video id="video-bg" autoplay muted playsinline></video>
+
+<!-- HUD Overlay -->
+<div class="hud-overlay"></div>
+
+<!-- Center Branding -->
+<div class="center-box">
+    <h1>DRONECORP</h1>
+    <p>American-made unmanned aerial systems.<br>Advanced autonomy. Multi-domain capability.</p>
+    <p>Contact: <a style="color:#7fcaff;" href="mailto:admin@dronecorp.us">admin@dronecorp.us</a></p>
+</div>
+
+<!-- Sequence Dots -->
+<div class="sequence-indicator">
+    <div class="dot" id="dot0"></div>
+    <div class="dot" id="dot1"></div>
+    <div class="dot" id="dot2"></div>
+    <div class="dot" id="dot3"></div>
+</div>
+
+<script>
+/* VIDEO ROTATION LOGIC */
+const video = document.getElementById("video-bg");
+
+const sequences = [
+    "assets/drone_desert.mp4",
+    "assets/naval_carrier.mp4",
+    "assets/satellite_orbit.mp4",
+    "assets/drone_indoor.mp4"
+];
+
+let current = 0;
+
+function playVideo(index) {
+    video.src = sequences[index];
+    video.play();
+
+    // Highlight dot
+    document.querySelectorAll(".dot").forEach((d, i) => {
+        d.classList.toggle("active", i === index);
+    });
+}
+
+video.addEventListener("ended", () => {
+    current = (current + 1) % sequences.length;
+    playVideo(current);
+});
+
+// Start the sequence
+playVideo(0);
+</script>
+
 </body>
 </html>
+
