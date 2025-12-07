@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DroneCorp – Contact</title>
+
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      height: 100%; width: 100%;
+      overflow-x: hidden;
+      background: #05080c;
+      font-family: Arial, sans-serif;
+      color: white;
+    }
+    a { color:#7fcaff; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+
+    #video-bg {
+      position:fixed; top:0; left:0;
+      width:100%; height:100%;
+      object-fit:cover;
+      z-index:0;
+      filter:brightness(45%);
+      background:black;
+    }
+    .darkener, .hud-overlay {
+      position:fixed; top:0; left:0;
+      width:100%; height:100%;
+      pointer-events:none;
+      z-index:1;
+    }
+    .darkener {
+      background:linear-gradient(
+        rgba(0,0,0,0.30),
+        rgba(0,0,0,0.55)
+      );
+    }
+    .hud-overlay {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size:55px 55px;
+    }
+
+    .nav {
+      position:fixed; top:0; left:0;
+      width:100%; height:64px;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 32px; box-sizing:border-box;
+      z-index:20;
+      background:linear-gradient(to bottom,
+        rgba(5,8,12,0.95),
+        rgba(5,8,12,0.65),
+        transparent
+      );
+      backdrop-filter:blur(6px);
+    }
+    .nav-left {
+      font-weight:bold;
+      letter-spacing:6px;
+      font-size:16px;
+    }
+    .nav-right {
+      display:flex;
+      gap:20px;
+      font-size:14px;
+      text-transform:uppercase;
+    }
+    .nav-right a {
+      color:#dce6ff;
+      opacity:0.8;
+    }
+    .nav-right a:hover { opacity:1; }
+
+    .menu-toggle {
+      display:none;
+      cursor:pointer;
+      font-size:22px;
+      user-select:none;
+    }
+
+    main {
+      position:relative;
+      z-index:5;
+      padding:90px 0 80px 0;
+    }
+
+    .section {
+      max-width:800px;
+      margin:0 auto 24px auto;
+      padding:24px 24px 28px 24px;
+      border-radius:18px;
+      background:rgba(5,10,18,0.94);
+      box-shadow:0 0 40px rgba(0,0,0,0.7);
+      border:1px solid rgba(123,189,255,0.12);
+    }
+    .section-header {
+      text-transform:uppercase;
+      letter-spacing:2px;
+      font-size:12px;
+      color:#7fcaff;
+      margin-bottom:6px;
+      opacity:0.9;
+    }
+    .section-title {
+      font-size:22px;
+      margin:0 0 12px 0;
+    }
+    .section p {
+      font-size:14px;
+      line-height:1.5;
+      color:#d7e0ff;
+      margin:6px 0;
+    }
+
+    form {
+      margin-top:12px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    label {
+      font-size:13px;
+      color:#c5d4ff;
+    }
+    input, select, textarea {
+      width:100%;
+      padding:8px 10px;
+      border-radius:6px;
+      border:1px solid rgba(127,202,255,0.45);
+      background:rgba(4,8,18,0.95);
+      color:#f4f6ff;
+      font-size:13px;
+      box-sizing:border-box;
+    }
+    textarea {
+      min-height:120px;
+      resize:vertical;
+    }
+    .note {
+      font-size:11px;
+      color:#8fa2d6;
+      margin-top:4px;
+    }
+    button {
+      align-self:flex-start;
+      margin-top:4px;
+      padding:8px 18px;
+      border-radius:999px;
+      border:1px solid rgba(127,202,255,0.9);
+      background:linear-gradient(to right,#1b2436,#253d58);
+      color:#e9f3ff;
+      font-size:13px;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      cursor:pointer;
+    }
+    button:hover {
+      filter:brightness(1.1);
+    }
+
+    .footer {
+      margin-top:10px;
+      font-size:11px;
+      text-align:center;
+      color:#7282a5;
+      opacity:0.8;
+    }
+
+    @media (max-width:900px){
+      .nav{padding:0 18px;}
+      .nav-right{gap:12px;font-size:12px;}
+    }
+    @media (max-width:700px){
+      .nav{height:56px;padding:0 14px;}
+      .nav-left{font-size:14px;letter-spacing:4px;}
+      .menu-toggle{display:block;}
+      .nav-right{
+        position:absolute;
+        top:56px;
+        right:0;
+        background:rgba(5,10,18,0.97);
+        flex-direction:column;
+        align-items:flex-start;
+        padding:10px 18px 12px;
+        border-bottom-left-radius:12px;
+        border-left:1px solid rgba(123,189,255,0.25);
+        border-bottom:1px solid rgba(123,189,255,0.25);
+        display:none;
+      }
+      .nav-right.show{display:flex;}
+    }
+  </style>
+</head>
+
+<body>
+  <video id="video-bg" autoplay muted playsinline></video>
+  <div class="darkener"></div>
+  <div class="hud-overlay"></div>
+
+  <header class="nav">
+    <div class="nav-left">DRONECORP</div>
+    <div class="menu-toggle" id="menuToggle">☰</div>
+    <nav class="nav-right" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="platforms.html">Platforms</a>
+      <a href="focus.html">Focus Areas</a>
+      <a href="focus.html#programs">Programs</a>
+      <a href="careers.html#partner">Partner</a>
+      <a href="careers.html">Careers</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="section-header">Contact</div>
+      <h2 class="section-title">Reach DroneCorp</h2>
+      <p>
+        For early-stage discussions, teaming conversations, or technical introductions,
+        use the form below or contact:
+        <br />
+        <strong><a href="mailto:admin@dronecorp.us">admin@dronecorp.us</a></strong>
+      </p>
+      <p class="note">
+        Please do not transmit classified, controlled, or otherwise sensitive material.
+        High-level, unclassified descriptions only.
+      </p>
+
+      <!-- Simple mailto-based form -->
+      <form method="post" action="mailto:admin@dronecorp.us" enctype="text/plain">
+        <div>
+          <label for="name">Name</label>
+          <input id="name" name="Name" type="text" required />
+        </div>
+
+        <div>
+          <label for="org">Organization (optional)</label>
+          <input id="org" name="Organization" type="text" />
+        </div>
+
+        <div>
+          <label for="email">Email</label>
+          <input id="email" name="Email" type="email" required />
+        </div>
+
+        <div>
+          <label for="topic">Topic</label>
+          <select id="topic" name="Topic" required>
+            <option value="" disabled selected>Select one</option>
+            <option value="technical">Technical / R&amp;D</option>
+            <option value="partnership">Partnering / teaming</option>
+            <option value="careers">Careers / collaboration</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="message">Message</label>
+          <textarea id="message" name="Message" required></textarea>
+          <div class="note">
+            Unclassified information only. Do not include operational details or sensitive data.
+          </div>
+        </div>
+
+        <button type="submit">Send secure inquiry</button>
+      </form>
+
+      <div class="footer">
+        © <span id="year"></span> DroneCorp.
+      </div>
+    </section>
+  </main>
+
+  <script>
+    /* Reuse same background video rotation */
+    const video = document.getElementById("video-bg");
+    const sequences = [
+      "assets/drone_desert.mp4",
+      "assets/naval_carrier.mp4",
+      "assets/satellite_orbit.mp4",
+      "assets/drone_indoor.mp4"
+    ];
+    let current = 0;
+    function playVideo(index){
+      video.src = sequences[index];
+      video.load();
+      video.play().catch(()=>{ setTimeout(()=>video.play().catch(()=>{}),200); });
+    }
+    video.addEventListener("ended",()=>{
+      current = (current+1)%sequences.length;
+      playVideo(current);
+    });
+    playVideo(0);
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    /* Mobile nav toggle */
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    if (menuToggle && navLinks) {
+      menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("show");
+      });
+      navLinks.querySelectorAll("a").forEach(a => {
+        a.addEventListener("click", () => {
+          navLinks.classList.remove("show");
+        });
+      });
+    }
+  </script>
+</body>
+</html>
