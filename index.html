@@ -6,18 +6,17 @@
 <title>DroneCorp</title>
 
 <style>
-    /* Reset */
     body, html {
         margin: 0;
         padding: 0;
         height: 100%;
         overflow: hidden;
+        background: #05080c;
         font-family: Arial, sans-serif;
-        background: #0a0f14;
         color: white;
     }
 
-    /* Video Background */
+    /* Background video */
     #video-bg {
         position: fixed;
         top: 0;
@@ -29,20 +28,21 @@
         filter: brightness(45%);
     }
 
-    /* HUD Overlay Grid */
+    /* HUD grid overlay */
     .hud-overlay {
         position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
         pointer-events: none;
-        background-image: 
-            linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
-        background-size: 40px 40px;
+        background-image:
+            linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+        background-size: 60px 60px;
         z-index: 0;
     }
 
-    /* Center Text */
     .center-box {
         position: absolute;
         top: 50%;
@@ -54,19 +54,18 @@
 
     .center-box h1 {
         font-size: 48px;
-        letter-spacing: 8px;
-        margin-bottom: 15px;
+        letter-spacing: 10px;
+        margin-bottom: 10px;
     }
 
     .center-box p {
         font-size: 18px;
-        opacity: 0.85;
+        opacity: 0.9;
     }
 
-    /* Sequence dots */
     .sequence-indicator {
         position: fixed;
-        right: 20px;
+        right: 25px;
         top: 50%;
         transform: translateY(-50%);
         display: flex;
@@ -76,8 +75,8 @@
     }
 
     .dot {
-        width: 12px;
-        height: 12px;
+        width: 14px;
+        height: 14px;
         border: 2px solid white;
         border-radius: 50%;
         opacity: 0.5;
@@ -93,20 +92,15 @@
 
 <body>
 
-<!-- Background Video -->
 <video id="video-bg" autoplay muted playsinline></video>
-
-<!-- HUD Overlay -->
 <div class="hud-overlay"></div>
 
-<!-- Center Branding -->
 <div class="center-box">
     <h1>DRONECORP</h1>
     <p>American-made unmanned aerial systems.<br>Advanced autonomy. Multi-domain capability.</p>
-    <p>Contact: <a style="color:#7fcaff;" href="mailto:admin@dronecorp.us">admin@dronecorp.us</a></p>
+    <p>Contact: <a href="mailto:admin@dronecorp.us" style="color:#7fcaff;">admin@dronecorp.us</a></p>
 </div>
 
-<!-- Sequence Dots -->
 <div class="sequence-indicator">
     <div class="dot" id="dot0"></div>
     <div class="dot" id="dot1"></div>
@@ -115,7 +109,6 @@
 </div>
 
 <script>
-/* VIDEO ROTATION LOGIC */
 const video = document.getElementById("video-bg");
 
 const sequences = [
@@ -131,9 +124,8 @@ function playVideo(index) {
     video.src = sequences[index];
     video.play();
 
-    // Highlight dot
-    document.querySelectorAll(".dot").forEach((d, i) => {
-        d.classList.toggle("active", i === index);
+    document.querySelectorAll(".dot").forEach((dot, i) => {
+        dot.classList.toggle("active", i === index);
     });
 }
 
@@ -142,10 +134,8 @@ video.addEventListener("ended", () => {
     playVideo(current);
 });
 
-// Start the sequence
 playVideo(0);
 </script>
 
 </body>
 </html>
-
