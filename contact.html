@@ -495,11 +495,12 @@
         <div class="card-title">Submit a technical inquiry</div>
 
         <!-- NOTE: To wire this up for real submissions, replace the action URL with Formspree, Getform, etc. -->
-        <form
-          action="mailto:admin@dronecorp.us"
-          method="POST"
-          enctype="text/plain"
-        >
+<form id="contact-form"
+      class="intake-form"
+      action="https://formspree.io/f/YOUR_FORM_ID"
+      method="POST">
+
+
           <div class="form-grid">
             <div class="form-group">
               <label for="name">Name</label>
