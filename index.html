@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DroneCorp.</title>
+  <title>DroneCorp</title>
 
   <style>
     /* ============================================================
@@ -202,7 +202,7 @@
     .page-content {
       position: relative;
       z-index: 5;
-      margin-top: 100vh; /* start just below the hero */
+      margin-top: 80vh; /* start just below the hero */
       padding: 40px 0 80px 0;
     }
 
@@ -325,132 +325,64 @@
       opacity: 0.8;
     }
 
+    @media (max-width: 900px) {
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .nav {
+        padding: 0 18px;
+      }
+      .nav-right {
+        gap: 12px;
+        font-size: 12px;
+      }
+      .page-content {
+        margin-top: 70vh; /* slightly less gap on tablets */
+      }
+    }
+
     /* Extra tweaks for small phones */
-@media (max-width: 700px) {
-  /* Hide the vertical sequence dots – cleaner on mobile */
-  .sequence-indicator {
-    display: none;
-  }
+    @media (max-width: 700px) {
+      /* Hide the vertical sequence dots – cleaner on mobile */
+      .sequence-indicator {
+        display: none;
+      }
 
-  /* Slightly smaller hero text so it fits nicely */
-  .center-box h1 {
-    font-size: 32px;
-    letter-spacing: 6px;
-  }
+      .center-box h1 {
+        font-size: 32px;
+        letter-spacing: 6px;
+      }
 
-  .center-box p.subtitle {
-    font-size: 15px;
-  }
+      .center-box p.subtitle {
+        font-size: 15px;
+      }
 
-  .center-box p.tagline {
-    font-size: 12px;
-  }
+      .center-box p.tagline {
+        font-size: 12px;
+      }
 
-  /* Tighten up the nav bar */
-  .nav {
-    height: 56px;
-    padding: 0 14px;
-  }
+      .nav {
+        height: 56px;
+        padding: 0 14px;
+      }
 
-  .nav-left {
-    font-size: 14px;
-    letter-spacing: 4px;
-  }
+      .nav-left {
+        font-size: 14px;
+        letter-spacing: 4px;
+      }
 
-  .nav-right {
-    gap: 10px;
-    font-size: 11px;
-  }
-}
+      .nav-right {
+        gap: 10px;
+        font-size: 11px;
+      }
 
-  .nav-right {
-    gap: 10px;
-    font-size: 11px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-
-  .hero-wrapper {
-    height: 90vh;
-  }
-
-  .center-box {
-    max-width: 90%;
-  }
-
-  .center-box h1 {
-    font-size: 34px;
-    letter-spacing: 6px;
-  }
-
-  .center-box p.subtitle {
-    font-size: 16px;
-  }
-
-  .center-box p.tagline {
-    font-size: 12px;
-  }
-}
-
-/* Extra tweaks for small phones */
-@media (max-width: 600px) {
-  .nav {
-    height: auto;
-    padding-top: 10px;
-    padding-bottom: 8px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-  }
-
-  .nav-left {
-    font-size: 14px;
-    letter-spacing: 4px;
-  }
-
-  .nav-right {
-    width: 100%;
-    justify-content: flex-start;
-  }
-
-  .hero-wrapper {
-    height: 85vh;
-  }
-
-  .center-box {
-    top: 52%;
-    transform: translate(-50%, -52%);
-    padding: 0 8px;
-  }
-
-  .center-box h1 {
-    font-size: 28px;
-    letter-spacing: 4px;
-  }
-
-  .center-box p.subtitle {
-    font-size: 14px;
-  }
-
-  .center-box p.tagline {
-    font-size: 11px;
-  }
-
-  .sequence-indicator {
-    right: 12px;
-  }
-
-  .dot {
-    width: 12px;
-    height: 12px;
-  }
-
-  .section {
-    margin: 0 10px 30px 10px;
-    padding: 22px 16px 24px 16px;
-  }
-}
-
+      .page-content {
+        margin-top: 60vh; /* much smaller gap on phones */
+      }
+    }
   </style>
 </head>
 
@@ -471,6 +403,7 @@
       <a href="#focus">Focus Areas</a>
       <a href="#programs">Programs</a>
       <a href="#partner">Partner</a>
+      <a href="#careers">Careers</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
@@ -658,6 +591,42 @@
       </div>
     </section>
 
+    <!-- CAREERS -->
+    <section class="section" id="careers">
+      <div class="section-header">Careers & collaborators</div>
+      <h2 class="section-title">Early technical hire / collaborator</h2>
+      <p>
+        DroneCorp is in an early, pre-funding phase focused on design studies, prototyping, and
+        proof-of-concept work. At this stage, the emphasis is on finding one highly capable
+        technical generalist who can help shape the first generation of systems and tooling.
+      </p>
+
+      <div class="card">
+        <div class="card-title">Founding Engineer – Unmanned Systems Prototyper</div>
+        <p>
+          Hybrid role for a hands-on builder who is comfortable moving between CAD, firmware,
+          low-level software, test rigs, and documentation. Ideal candidates enjoy working
+          close to the hardware and are comfortable operating in an ambiguous, startup-style
+          environment.
+        </p>
+        <p>
+          Representative skill areas (not all required):
+        </p>
+        <ul>
+          <li>Small UAS / robotics prototyping and basic mechanical design.</li>
+          <li>Embedded systems, microcontrollers, or companion computers on drones.</li>
+          <li>Basic autonomy / navigation stacks or integration with existing open-source stacks.</li>
+          <li>Sensor and radio integration (cameras, RF front-ends, telemetry links).</li>
+          <li>Ability to build and maintain clean test setups, logs, and simple internal tools.</li>
+        </ul>
+        <p style="font-size:13px; color:#c0cffc;">
+          This role may begin as part-time, contract, or internship-style collaboration while
+          formal funding pathways are developed. U.S. persons only; this description is for
+          exploratory interest and does not constitute a formal offer of employment.
+        </p>
+      </div>
+    </section>
+
     <!-- CONTACT -->
     <section class="section" id="contact">
       <div class="section-header">Secure inquiries</div>
@@ -721,21 +690,6 @@
 
     // Start with the first clip
     playVideo(0);
-
-    // ============================================================
-    // SMOOTH SCROLL FOR NAV LINKS
-    // ============================================================
-    document.querySelectorAll('.nav-right a[href^="#"]').forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        const id = link.getAttribute('href').slice(1);
-        const target = document.getElementById(id);
-        if (target) {
-          const top = target.getBoundingClientRect().top + window.scrollY - 72;
-          window.scrollTo({ top, behavior: 'smooth' });
-        }
-      });
-    });
 
     // Footer year
     document.getElementById('year').textContent = new Date().getFullYear();
