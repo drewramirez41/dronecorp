@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DroneCorp. – Platforms</title>
+
+  <style>
+    :root {
+      --bg-main: #02040a;
+      --bg-panel: rgba(5, 10, 20, 0.96);
+      --border-soft: rgba(120, 170, 255, 0.4);
+      --border-hard: rgba(120, 170, 255, 0.75);
+      --text-main: #f5f7ff;
+      --text-muted: #9aa5c3;
+      --accent: #7fcaff;
+      --accent-strong: #41b3ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: radial-gradient(circle at top, #071021 0%, #02040a 55%, #000000 100%);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* --------------- NAVBAR (matches contact page style) --------------- */
+
+    .nav-shell {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(22px);
+      background: linear-gradient(
+        to bottom,
+        rgba(2, 4, 10, 0.96),
+        rgba(2, 4, 10, 0.70) 65%,
+        transparent 100%
+      );
+      border-bottom: 1px solid rgba(120, 170, 255, 0.25);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-mark {
+      letter-spacing: 0.45em;
+      font-weight: 520;
+      font-size: 15px;
+      text-transform: uppercase;
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+
+    .brand-mark span {
+      opacity: 0.1;
+      margin-left: 0.3em;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 22px;
+      margin: 0;
+      padding: 0;
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.18s ease;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      transform: scaleX(0);
+      transform-origin: center;
+      background: linear-gradient(90deg, transparent, var(--accent-strong), transparent);
+      transition: transform 0.18s ease;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    nav a:hover::after {
+      transform: scaleX(1);
+    }
+
+    nav a.active {
+      color: var(--accent-strong);
+    }
+
+    nav a.active::after {
+      transform: scaleX(1);
+    }
+
+    .nav-burger {
+      display: none;
+      width: 24px;
+      height: 18px;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .nav-burger span {
+      height: 2px;
+      width: 100%;
+      background: var(--text-main);
+    }
+
+    /* --------------- GRID BACKGROUND --------------- */
+
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 80px 80px;
+      opacity: 0.9;
+    }
+
+    /* --------------- MAIN LAYOUT --------------- */
+
+    main {
+      flex: 1;
+      max-width: 1200px;
+      margin: 32px auto 40px;
+      padding: 0 24px 40px;
+    }
+
+    .page-kicker {
+      font-size: 11px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 560;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0 0 6px;
+    }
+
+    .page-subtitle {
+      margin: 0 0 28px;
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 780px;
+      line-height: 1.6;
+    }
+
+    /* --------------- PLATFORM GRID --------------- */
+
+    .platform-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 26px;
+      align-items: flex-start;
+    }
+
+    .panel {
+      border: 1px solid rgba(120, 170, 255, 0.32);
+      background:
+        radial-gradient(circle at top left, rgba(120, 170, 255, 0.14), transparent 60%),
+        var(--bg-panel);
+      box-shadow: 0 26px 40px rgba(0, 0, 0, 0.8);
+      padding: 22px 24px 24px;
+    }
+
+    .panel-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .panel-heading {
+      font-size: 18px;
+      font-weight: 540;
+      margin: 0 0 14px;
+    }
+
+    .panel p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 0 0 14px;
+      line-height: 1.6;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0 14px;
+    }
+
+    .chip {
+      border: 1px solid rgba(120, 170, 255, 0.55);
+      padding: 4px 10px;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: radial-gradient(circle at top, rgba(120, 170, 255, 0.23), transparent 70%);
+    }
+
+    /* Individual concept cards (right column) */
+
+    .concept-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .concept-card {
+      border: 1px solid rgba(120, 170, 255, 0.25);
+      background:
+        radial-gradient(circle at top right, rgba(120, 170, 255, 0.16), transparent 65%),
+        rgba(4, 8, 16, 0.96);
+      padding: 16px 18px 18px;
+    }
+
+    .concept-kicker {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .concept-title {
+      font-size: 15px;
+      font-weight: 540;
+      margin: 0 0 8px;
+    }
+
+    .concept-body {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 0 0 10px;
+      line-height: 1.6;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(120, 170, 255, 0.4);
+      color: var(--accent);
+    }
+
+    /* --------------- FOOTER --------------- */
+
+    footer {
+      border-top: 1px solid rgba(120, 170, 255, 0.18);
+      font-size: 11px;
+      color: var(--text-muted);
+      padding: 12px 24px 18px;
+      text-align: center;
+    }
+
+    /* --------------- RESPONSIVE --------------- */
+
+    @media (max-width: 900px) {
+      .platform-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .panel,
+      .concept-card {
+        padding: 18px 16px 20px;
+      }
+
+      .nav-inner {
+        padding-inline: 16px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      nav ul {
+        display: none;
+      }
+
+      .nav-burger {
+        display: flex;
+      }
+
+      .nav-shell.open nav ul {
+        position: absolute;
+        top: 52px;
+        right: 0;
+        left: 0;
+        padding: 10px 16px 12px;
+        background: rgba(2, 4, 10, 0.98);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        border-bottom: 1px solid rgba(120, 170, 255, 0.25);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grid-overlay"></div>
+
+<header class="nav-shell" id="navShell">
+  <div class="nav-inner">
+    <div class="brand-mark">
+      DRONECORP<span>.</span>
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="platforms.html" class="active">Platforms</a></li>
+        <li><a href="focus.html">Focus Areas</a></li>
+        <li><a href="focus.html#programs">Programs</a></li>
+        <li><a href="careers.html#partner">Partner</a></li>
+        <li><a href="careers.html">Careers</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-burger" id="navBurger" aria-label="Toggle navigation" role="button">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="page-kicker">Multi-domain unmanned systems</div>
+  <h1 class="page-title">Concept platforms under evaluation</h1>
+  <p class="page-subtitle">
+    DroneCorp. explores modular air, maritime, and interior-recon architectures intended to interface
+    with existing command-and-control ecosystems. Current work is focused on design studies,
+    prototyping pathways, and integration concepts rather than fielded product.
+  </p>
+
+  <section class="platform-layout">
+    <!-- LEFT: OVERVIEW PANEL -->
+    <article class="panel">
+      <div class="panel-title">Design focus</div>
+      <h2 class="panel-heading">Applied unmanned systems R&amp;D</h2>
+
+      <p>
+        Platforms described on this page are early-stage concepts. They are intended to explore
+        autonomy frameworks, payload integration patterns, and edge-processing architectures across
+        air, surface, and confined interior environments.
+      </p>
+
+      <p>
+        Each concept is designed around a U.S.-centric supply chain with an emphasis on reliability,
+        maintainability, and clean interfaces to existing C2, mapping, and analytics toolchains.
+      </p>
+
+      <div class="chip-row">
+        <div class="chip">Concept only</div>
+        <div class="chip">R&amp;D emphasis</div>
+        <div class="chip">U.S. supply chain</div>
+      </div>
+
+      <p>
+        Technical roadmaps, detailed specifications, and performance envelopes are available for
+        teaming partners and qualified programs under separate discussion.
+      </p>
+    </article>
+
+    <!-- RIGHT: PLATFORM CARDS -->
+    <aside class="concept-list">
+      <article class="concept-card">
+        <div class="concept-kicker">Air – Close-range ISR</div>
+        <h3 class="concept-title">Tactical ISR quadrotor</h3>
+        <p class="concept-body">
+          Compact multi-sensor airframe concept for close-range reconnaissance, overwatch,
+          and perimeter awareness in contested environments. Envisions onboard perception
+          and navigation assists to reduce operator workload while maintaining human-in-the-loop
+          authority.
+        </p>
+        <div class="tag-row">
+          <span class="tag">VTOL</span>
+          <span class="tag">ISR</span>
+          <span class="tag">LOW SIGNATURE</span>
+          <span class="tag">EDGE AI</span>
+        </div>
+      </article>
+
+      <article class="concept-card">
+        <div class="concept-kicker">Swarm &amp; teaming</div>
+        <h3 class="concept-title">Distributed swarm constructs</h3>
+        <p class="concept-body">
+          Early-stage autonomy and coordination research aimed at dispersed, low-cost vehicles
+          operating as a cooperative mesh. Emphasis on resilient comms, graceful degradation,
+          and integration with existing mission-planning tools rather than bespoke stovepipes.
+        </p>
+        <div class="tag-row">
+          <span class="tag">SWARM</span>
+          <span class="tag">MESH NETWORKING</span>
+          <span class="tag">OPEN API</span>
+        </div>
+      </article>
+
+      <article class="concept-card">
+        <div class="concept-kicker">Interior recon</div>
+        <h3 class="concept-title">Confined-space nano-UAS</h3>
+        <p class="concept-body">
+          Concept vehicle sized for interior and sub-terranean reconnaissance with emphasis on
+          obstacle-dense navigation, low-light sensing, and minimal signature. Intended as a
+          modular payload host for mapping, routing, and digital-twin generation in complex spaces.
+        </p>
+        <div class="tag-row">
+          <span class="tag">INTERIOR</span>
+          <span class="tag">MAPPING</span>
+          <span class="tag">LOW LIGHT</span>
+        </div>
+      </article>
+
+      <article class="concept-card">
+        <div class="concept-kicker">Maritime &amp; littoral</div>
+        <h3 class="concept-title">Carrier-compatible VTOL skimmer</h3>
+        <p class="concept-body">
+          Concept for a compact VTOL platform optimized for launch and recovery in crowded
+          maritime decks and littoral environments. Focus areas include salt-fog resilience,
+          compact stowage envelope, and clean data paths into afloat and ashore C2 systems.
+        </p>
+        <div class="tag-row">
+          <span class="tag">MARITIME</span>
+          <span class="tag">VTOL</span>
+          <span class="tag">DECK OPS</span>
+        </div>
+      </article>
+    </aside>
+  </section>
+</main>
+
+<footer>
+  © <span id="year"></span> DroneCorp. Conceptual material for discussion; not all capabilities shown are available or fielded.
+</footer>
+
+<script>
+  // Mobile nav toggle
+  const navShell = document.getElementById('navShell');
+  const burger = document.getElementById('navBurger');
+
+  if (burger) {
+    burger.addEventListener('click', () => {
+      navShell.classList.toggle('open');
+    });
+  }
+
+  // Footer year
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
