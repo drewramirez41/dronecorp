@@ -1,1 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DroneCorp. – Partner</title>
+
+  <style>
+    :root {
+      --bg-main: #02040a;
+      --bg-panel: #050914;
+      --border-soft: rgba(120,170,255,0.4);
+      --border-hard: rgba(120,170,255,0.8);
+      --text-main: #f5f7ff;
+      --text-muted: #9aa5c3;
+      --accent: #7fcaff;
+      --accent-strong: #41b3ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: radial-gradient(circle at top, #071021 0%, #02040a 55%, #000 100%);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    /* NAVBAR (same pattern as other subpages) */
+    .nav-shell {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      background: linear-gradient(
+        to bottom,
+        rgba(5,8,12,0.96),
+        rgba(5,8,12,0.75),
+        rgba(5,8,12,0.4),
+        transparent
+      );
+      border-bottom: 1px solid rgba(127,202,255,0.22);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 24px 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    .brand-mark {
+      font-weight: 600;
+      letter-spacing: 0.45em;
+      font-size: 15px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .brand-mark span {
+      margin-left: 0.25em;
+      opacity: 0.9;
+    }
+
+    .nav-links {
+      margin-left: auto;
+      display: flex;
+      gap: 22px;
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .nav-links a {
+      color: #dbe4ff;
+      text-decoration: none;
+      padding-bottom: 4px;
+      position: relative;
+      opacity: 0.8;
+      transition: opacity 0.18s ease;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.18s ease;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      transform: scaleX(1);
+    }
+
+    .nav-links a.active {
+      opacity: 1;
+      color: var(--accent);
+    }
+
+    .nav-burger {
+      display: none;
+      margin-left: auto;
+      width: 24px;
+      height: 18px;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .nav-burger span {
+      height: 2px;
+      width: 100%;
+      background: var(--text-main);
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner { padding-inline: 16px; }
+      .nav-links { display: none; }
+      .nav-burger { display: flex; }
+      .nav-shell.open .nav-links {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 52px;
+        left: 0;
+        right: 0;
+        padding: 10px 18px 14px;
+        background: rgba(5,8,12,0.98);
+        border-bottom: 1px solid rgba(127,202,255,0.25);
+      }
+    }
+
+    /* GRID OVERLAY */
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 80px 80px;
+      opacity: 0.9;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 96px auto 48px;
+      padding: 0 24px 40px;
+    }
+
+    .page-kicker {
+      font-size: 11px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 560;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0 0 6px;
+    }
+
+    .page-subtitle {
+      margin: 0 0 24px;
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 780px;
+      line-height: 1.6;
+    }
+
+    /* PRINCIPLES STRIP */
+    .principles-strip {
+      margin: 10px 0 30px;
+      padding: 16px 20px;
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      background:
+        radial-gradient(circle at top left, rgba(120,170,255,0.18), transparent 65%),
+        #050914;
+      box-shadow: 0 24px 36px rgba(0,0,0,0.9);
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
+      gap: 16px 20px;
+    }
+
+    .principles-heading {
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .principles-kicker {
+      font-size: 16px;
+      font-weight: 540;
+      margin-bottom: 4px;
+    }
+
+    .principles-copy {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .principles-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .chip {
+      border-radius: 999px;
+      border: 1px solid rgba(127,202,255,0.7);
+      padding: 4px 10px;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      white-space: nowrap;
+      background: radial-gradient(circle at top, rgba(120,170,255,0.23), transparent 70%);
+    }
+
+    /* PARTNER GRID */
+    .section-heading {
+      font-size: 13px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 4px 0 10px;
+    }
+
+    .partner-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .partner-card {
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      background:
+        radial-gradient(circle at top left, rgba(120,170,255,0.16), transparent 60%),
+        #050914;
+      box-shadow: 0 26px 40px rgba(0,0,0,0.9);
+      padding: 18px 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .partner-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-hard);
+      box-shadow: 0 26px 44px rgba(0,0,0,0.96);
+    }
+
+    .partner-kicker {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .partner-title {
+      font-size: 16px;
+      font-weight: 540;
+    }
+
+    .partner-copy {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 2px;
+    }
+
+    .pill {
+      border-radius: 999px;
+      border: 1px solid rgba(127,202,255,0.6);
+      padding: 3px 9px;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .note {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 16px;
+      max-width: 740px;
+      line-height: 1.6;
+    }
+
+    footer {
+      max-width: 1200px;
+      margin: 0 auto 22px;
+      padding: 0 24px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 900px) {
+      main {
+        margin-top: 88px;
+        padding-inline: 16px;
+      }
+      .principles-strip {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .partner-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-overlay"></div>
+
+  <!-- NAVBAR -->
+  <header class="nav-shell" id="navShell">
+    <div class="nav-inner">
+      <div class="brand-mark">DRONECORP<span>.</span></div>
+
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="platforms.html">Platforms</a>
+        <a href="focus-areas.html">Focus Areas</a>
+        <a href="programs.html">Programs</a>
+        <a href="partner.html" class="active">Partner</a>
+        <a href="careers.html">Careers</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="nav-burger" id="navBurger"><span></span><span></span><span></span></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="page-kicker">Teaming</div>
+    <h1 class="page-title">Partner with DroneCorp.</h1>
+    <p class="page-subtitle">
+      DroneCorp. is structured to plug into larger programs as a focused autonomy and ISR contributor, not a
+      full-stack prime. The goal is to bring disciplined, U.S.-centric unmanned capabilities into efforts led
+      by major integrators, government labs, and trusted suppliers.
+    </p>
+
+    <!-- PRINCIPLES STRIP -->
+    <section class="principles-strip">
+      <div>
+        <div class="principles-heading">How DroneCorp. partners</div>
+        <div class="principles-kicker">Focused scope, clean interfaces, no theatrics.</div>
+        <p class="principles-copy">
+          Work is centered on technically honest experiments, realistic roadmaps, and architectures that can be
+          supported over time. DroneCorp. is comfortable operating as a small piece of a much larger system, with a
+          bias toward repeatable integration instead of one-off demos.
+        </p>
+      </div>
+
+      <div class="principles-tags">
+        <span class="chip">Subcontractor-friendly</span>
+        <span class="chip">U.S.-centric supply chain</span>
+        <span class="chip">Engineering-led intake</span>
+        <span class="chip">No mass marketing</span>
+      </div>
+    </section>
+
+    <div class="section-heading">Partner profiles</div>
+
+    <section class="partner-grid">
+      <!-- Card 1 -->
+      <article class="partner-card">
+        <div class="partner-kicker">Primes &amp; major integrators</div>
+        <h2 class="partner-title">ISR &amp; autonomy component provider</h2>
+        <p class="partner-copy">
+          Support for primes seeking specialized unmanned capability inside larger proposals or programs of record.
+          Typical roles include supplying concept platforms, autonomy modules, and integration support into existing
+          C2, networking, and analytics stacks.
+        </p>
+        <div class="meta-row">
+          <span class="pill">ISR payload paths</span>
+          <span class="pill">Edge autonomy</span>
+          <span class="pill">Interface discipline</span>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="partner-card">
+        <div class="partner-kicker">Component &amp; sensor providers</div>
+        <h2 class="partner-title">Showcase for new payloads &amp; comms</h2>
+        <p class="partner-copy">
+          Collaboration with sensor, radio, and computing vendors to validate hardware on representative unmanned
+          platforms. Emphasis is on realistic integration stories, performance characterization, and honest feedback
+          from constrained environments.
+        </p>
+        <div class="meta-row">
+          <span class="pill">Payload integration</span>
+          <span class="pill">Edge compute</span>
+          <span class="pill">SWaP awareness</span>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="partner-card">
+        <div class="partner-kicker">Government labs &amp; ranges</div>
+        <h2 class="partner-title">Experiment-ready platforms</h2>
+        <p class="partner-copy">
+          Unmanned platforms configured for lab and range experimentation where autonomy stacks, networking concepts,
+          or new TTPs need a flexible air or surface vehicle. Focus is on safety envelopes, telemetry, and data
+          capture for follow-on analysis.
+        </p>
+        <div class="meta-row">
+          <span class="pill">Test &amp; evaluation</span>
+          <span class="pill">Data-forward</span>
+          <span class="pill">Safety-focused</span>
+        </div>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="partner-card">
+        <div class="partner-kicker">Universities &amp; research groups</div>
+        <h2 class="partner-title">Bridging prototypes to fieldable systems</h2>
+        <p class="partner-copy">
+          Teaming with research organizations that have strong algorithms or concepts, but limited access to
+          deployable platforms. DroneCorp. focuses on hardening, packaging, and integration paths that keep academic
+          work compatible with operational constraints.
+        </p>
+        <div class="meta-row">
+          <span class="pill">Joint experiments</span>
+          <span class="pill">Transitional R&amp;D</span>
+          <span class="pill">Open interface bias</span>
+        </div>
+      </article>
+    </section>
+
+    <p class="note">
+      Partner descriptions are illustrative and do not imply existing agreements. Specific teaming discussions are
+      handled through direct contact and, where appropriate, formal NDAs or other frameworks requested by the
+      counterpart.
+    </p>
+  </main>
+
+  <footer>
+    © 2025 DroneCorp. Conceptual material for discussion; not all capabilities shown are available or fielded.
+  </footer>
+
+  <script>
+    const navShell = document.getElementById("navShell");
+    const navBurger = document.getElementById("navBurger");
+    navBurger.addEventListener("click", () => {
+      navShell.classList.toggle("open");
+    });
+  </script>
+</body>
+</html>
 
