@@ -1,1 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DroneCorp. – Careers</title>
+
+  <style>
+    :root {
+      --bg-main: #02040a;
+      --bg-panel: #050914;
+      --bg-panel-soft: #050915;
+      --border-soft: rgba(120,170,255,0.4);
+      --border-hard: rgba(120,170,255,0.8);
+      --text-main: #f5f7ff;
+      --text-muted: #9aa5c3;
+      --accent: #7fcaff;
+      --accent-strong: #41b3ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: radial-gradient(circle at top, #071021 0%, #02040a 55%, #000 100%);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    /* GRID OVERLAY */
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 80px 80px;
+      opacity: 0.9;
+    }
+
+    /* NAVBAR (same style as other subpages) */
+    .nav-shell {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      background: linear-gradient(
+        to bottom,
+        rgba(5,8,12,0.96),
+        rgba(5,8,12,0.75),
+        rgba(5,8,12,0.4),
+        transparent
+      );
+      border-bottom: 1px solid rgba(127,202,255,0.22);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 24px 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    .brand-mark {
+      font-weight: 600;
+      letter-spacing: 0.45em;
+      font-size: 15px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .brand-mark span {
+      margin-left: 0.25em;
+      opacity: 0.9;
+    }
+
+    .nav-links {
+      margin-left: auto;
+      display: flex;
+      gap: 22px;
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .nav-links a {
+      color: #dbe4ff;
+      text-decoration: none;
+      padding-bottom: 4px;
+      position: relative;
+      opacity: 0.8;
+      transition: opacity 0.18s ease;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.18s ease;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      transform: scaleX(1);
+    }
+
+    .nav-links a.active {
+      opacity: 1;
+      color: var(--accent);
+    }
+
+    .nav-burger {
+      display: none;
+      margin-left: auto;
+      width: 24px;
+      height: 18px;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .nav-burger span {
+      height: 2px;
+      width: 100%;
+      background: var(--text-main);
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner { padding-inline: 16px; }
+      .nav-links { display: none; }
+      .nav-burger { display: flex; }
+      .nav-shell.open .nav-links {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 52px;
+        left: 0;
+        right: 0;
+        padding: 10px 18px 14px;
+        background: rgba(5,8,12,0.98);
+        border-bottom: 1px solid rgba(127,202,255,0.25);
+      }
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 96px auto 48px;
+      padding: 0 24px 40px;
+    }
+
+    .page-kicker {
+      font-size: 11px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 560;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0 0 6px;
+    }
+
+    .page-subtitle {
+      margin: 0 0 22px;
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 780px;
+      line-height: 1.6;
+    }
+
+    .context-strip {
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      background:
+        radial-gradient(circle at top left, rgba(120,170,255,0.18), transparent 65%),
+        var(--bg-panel);
+      box-shadow: 0 24px 36px rgba(0,0,0,0.9);
+      padding: 16px 18px 14px;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      align-items: center;
+    }
+
+    .context-label {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .context-copy {
+      flex: 1 1 220px;
+    }
+
+    .context-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      border-radius: 999px;
+      border: 1px solid rgba(127,202,255,0.7);
+      padding: 4px 10px;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      white-space: nowrap;
+      background: radial-gradient(circle at top, rgba(120,170,255,0.23), transparent 70%);
+    }
+
+    .section-heading {
+      font-size: 13px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 4px 0 10px;
+    }
+
+    /* ACCORDION */
+    .accordion {
+      border-radius: 18px;
+      border: 1px solid rgba(120,170,255,0.4);
+      background: linear-gradient(
+        to bottom,
+        rgba(5,9,20,0.98),
+        rgba(5,9,20,0.96)
+      );
+      box-shadow: 0 26px 40px rgba(0,0,0,0.95);
+      overflow: hidden;
+    }
+
+    .accordion-item + .accordion-item {
+      border-top: 1px solid rgba(120,170,255,0.25);
+    }
+
+    .accordion-header {
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+      background: radial-gradient(circle at top left, rgba(120,170,255,0.12), transparent 60%);
+      transition: background 0.16s ease;
+    }
+
+    .accordion-header:hover {
+      background: radial-gradient(circle at top left, rgba(120,170,255,0.18), transparent 65%);
+    }
+
+    .accordion-title-block {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .accordion-role {
+      font-size: 15px;
+      font-weight: 540;
+    }
+
+    .accordion-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .badge {
+      border-radius: 999px;
+      border: 1px solid rgba(127,202,255,0.6);
+      padding: 2px 8px;
+      white-space: nowrap;
+    }
+
+    .accordion-chevron {
+      font-size: 16px;
+      opacity: 0.8;
+      transition: transform 0.18s ease;
+    }
+
+    .accordion-item.open .accordion-chevron {
+      transform: rotate(90deg);
+    }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.22s ease;
+      background: radial-gradient(circle at top right, rgba(120,170,255,0.12), transparent 70%);
+    }
+
+    .accordion-inner {
+      padding: 12px 18px 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 18px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .accordion-inner h3 {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.17em;
+      color: var(--accent);
+      margin: 0 0 6px;
+    }
+
+    .accordion-inner p {
+      margin: 0 0 10px;
+      line-height: 1.6;
+    }
+
+    .accordion-inner ul {
+      margin: 0 0 10px 18px;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    .accordion-inner ul li + li {
+      margin-top: 4px;
+    }
+
+    .meta-note {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    /* FORM PANEL */
+    .form-shell {
+      border-radius: 14px;
+      border: 1px solid rgba(120,170,255,0.5);
+      background:
+        radial-gradient(circle at top left, rgba(120,170,255,0.18), transparent 60%),
+        var(--bg-panel-soft);
+      padding: 10px 12px 12px;
+    }
+
+    .form-title {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .form-shell p {
+      margin: 0 0 8px;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 8px 10px;
+      margin-bottom: 8px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      background: rgba(5, 10, 22, 0.9);
+      border: 1px solid rgba(120,170,255,0.35);
+      color: var(--text-main);
+      padding: 6px 8px;
+      font-size: 12px;
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(154,165,195,0.6);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 70px;
+      max-height: 200px;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--border-hard);
+      background: rgba(5, 12, 34, 0.98);
+      box-shadow: 0 0 0 1px rgba(120,170,255,0.45);
+    }
+
+    .btn-primary {
+      border: 1px solid var(--border-hard);
+      background: radial-gradient(circle at top, rgba(120,170,255,0.6), rgba(5,15,40,1));
+      color: var(--text-main);
+      padding: 7px 18px;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      cursor: pointer;
+      outline: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.18s ease, transform 0.1s ease, box-shadow 0.18s ease;
+    }
+
+    .btn-primary::after {
+      content: "→";
+      font-size: 11px;
+    }
+
+    .btn-primary:hover {
+      background: radial-gradient(circle at top, rgba(120,170,255,0.8), rgba(5,18,52,1));
+      box-shadow: 0 0 18px rgba(120,170,255,0.45);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 0 8px rgba(120,170,255,0.35);
+    }
+
+    .form-caption {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    footer {
+      max-width: 1200px;
+      margin: 0 auto 22px;
+      padding: 0 24px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 900px) {
+      main {
+        margin-top: 88px;
+        padding-inline: 16px;
+      }
+      .accordion-inner {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .context-strip {
+        padding-inline: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-overlay"></div>
+
+  <!-- NAVBAR -->
+  <header class="nav-shell" id="navShell">
+    <div class="nav-inner">
+      <div class="brand-mark">DRONECORP<span>.</span></div>
+
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="platforms.html">Platforms</a>
+        <a href="focus-areas.html">Focus Areas</a>
+        <a href="programs.html">Programs</a>
+        <a href="partner.html">Partner</a>
+        <a href="careers.html" class="active">Careers</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="nav-burger" id="navBurger"><span></span><span></span><span></span></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="page-kicker">Careers</div>
+    <h1 class="page-title">Build DroneCorp. with us.</h1>
+    <p class="page-subtitle">
+      DroneCorp. is a U.S.-based effort exploring autonomous ISR platforms and enabling technologies. Roles listed
+      here are early-stage and hands-on: small teams, direct impact, and a bias toward technically honest work over
+      marketing.
+    </p>
+
+    <section class="context-strip">
+      <div class="context-label">Hiring posture</div>
+      <div class="context-copy">
+        Positions are structured for candidates comfortable in R&amp;D-heavy, pre-production environments. Some roles
+        anticipate eventual work with defense customers and may favor U.S. persons and candidates able to obtain a
+        clearance, but formal requirements will depend on program specifics.
+      </div>
+      <div class="context-tags">
+        <span class="chip">Early-stage</span>
+        <span class="chip">Engineering-led</span>
+        <span class="chip">No ATS</span>
+      </div>
+    </section>
+
+    <div class="section-heading">Open roles</div>
+
+    <section class="accordion" id="careersAccordion">
+
+      <!-- ROLE 1: Director of Defense Manufacturing & Programs -->
+      <article class="accordion-item open">
+        <header class="accordion-header">
+          <div class="accordion-title-block">
+            <div class="accordion-role">Director of Defense Manufacturing &amp; Programs</div>
+            <div class="accordion-meta">Tucson, AZ · Hybrid · Early leadership hire</div>
+            <div class="badge-row">
+              <span class="badge">Defense manufacturing</span>
+              <span class="badge">DoD programs</span>
+              <span class="badge">Scale-up</span>
+            </div>
+          </div>
+          <div class="accordion-chevron">›</div>
+        </header>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <div>
+              <h3>Role overview</h3>
+              <p>
+                This role is responsible for taking DroneCorp. from prototype hardware and experimental platforms to a
+                disciplined, repeatable manufacturing and delivery posture suitable for defense and government work.
+                You’ve helped build this arc before and are comfortable operating between the shop floor, engineers,
+                and program sponsors.
+              </p>
+
+              <h3>What you'll do</h3>
+              <ul>
+                <li>Design and stand up a small but scalable manufacturing and integration environment for unmanned systems.</li>
+                <li>Define build processes, quality checks, and documentation suitable for defense customers.</li>
+                <li>Partner with engineering on platform baselines, configuration management, and change control.</li>
+                <li>Support capture and execution of early contracts, pilots, and test events.</li>
+                <li>Establish vendor and supply-chain relationships with a U.S.-centric bias.</li>
+                <li>Help shape roadmaps so technology and manufacturing maturity move in step.</li>
+              </ul>
+
+              <h3>Who you are</h3>
+              <ul>
+                <li>Have played a key role in scaling a defense or aerospace hardware effort from prototype to production.</li>
+                <li>Comfortable with DoD or government acquisition pathways (SBIR, OTA, IDIQ, PoR, etc.).</li>
+                <li>Fluent working with both engineers and program/business stakeholders.</li>
+                <li>Hands-on mindset: willing to walk the floor, debug, and iterate with a small team.</li>
+                <li>U.S. person; prior clearance or clearance-eligible is preferred for certain work.</li>
+              </ul>
+
+              <p class="meta-note">
+                Title and scope are flexible for the right person. This is intended as an early leadership hire with
+                strong influence on how DroneCorp. grows.
+              </p>
+            </div>
+
+            <!-- APPLY FORM -->
+            <div>
+              <div class="form-shell">
+                <div class="form-title">Apply – Director of Defense Manufacturing &amp; Programs</div>
+                <p>
+                  This form routes directly to a monitored inbox at DroneCorp. There is no applicant tracking system
+                  and no automated screening.
+                </p>
+                <!-- Uses FormSubmit to send to admin@dronecorp.us -->
+                <form action="https://formsubmit.co/admin@dronecorp.us" method="POST">
+                  <!-- FormSubmit options -->
+                  <input type="hidden" name="_subject" value="Career application – Director of Defense Manufacturing & Programs">
+                  <input type="hidden" name="_template" value="table">
+                  <input type="hidden" name="_captcha" value="false">
+                  <input type="hidden" name="Position" value="Director of Defense Manufacturing & Programs">
+
+                  <div class="form-grid">
+                    <div class="form-group">
+                      <label for="name-dir">Name</label>
+                      <input id="name-dir" name="Name" type="text" required placeholder="Full name">
+                    </div>
+                    <div class="form-group">
+                      <label for="email-dir">Email</label>
+                      <input id="email-dir" name="Email" type="email" required placeholder="work.email@example.com">
+                    </div>
+                    <div class="form-group full">
+                      <label for="link-dir">Resume / LinkedIn</label>
+                      <input id="link-dir" name="Resume_or_Profile" type="text" placeholder="Link to resume, LinkedIn, or portfolio">
+                    </div>
+                    <div class="form-group full">
+                      <label for="msg-dir">Short introduction</label>
+                      <textarea id="msg-dir" name="Message" required placeholder="Brief background and why this role makes sense."></textarea>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn-primary">Submit application</button>
+                  <div class="form-caption">
+                    You should receive a confirmation email from FormSubmit when this is delivered.
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ROLE 2: Autonomy & Systems Integration Engineer -->
+      <article class="accordion-item">
+        <header class="accordion-header">
+          <div class="accordion-title-block">
+            <div class="accordion-role">Autonomy &amp; Systems Integration Engineer</div>
+            <div class="accordion-meta">Tucson, AZ · On-site/Hybrid · First engineering hire</div>
+            <div class="badge-row">
+              <span class="badge">Autonomy</span>
+              <span class="badge">Systems integration</span>
+              <span class="badge">Hands-on</span>
+            </div>
+          </div>
+          <div class="accordion-chevron">›</div>
+        </header>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <div>
+              <h3>Role overview</h3>
+              <p>
+                This is a broad, hands-on engineering role focused on integrating autonomy stacks, payloads, radios,
+                and compute into real unmanned platforms. You’ll work directly with the founder on bringing concepts
+                to life and making sure they can be tested, iterated, and eventually handed to customers.
+              </p>
+
+              <h3>What you'll do</h3>
+              <ul>
+                <li>Integrate sensors, radios, and compute into air and surface platforms.</li>
+                <li>Support autonomy stack bring-up, tuning, and data collection.</li>
+                <li>Design test setups for indoor, range, and field evaluations.</li>
+                <li>Own wiring, mounts, and practical details that make systems shippable.</li>
+                <li>Help define platform baselines and maintain engineering documentation.</li>
+                <li>Collaborate on safety procedures and checklists for flight and ground tests.</li>
+              </ul>
+
+              <h3>Who you are</h3>
+              <ul>
+                <li>Comfortable working across hardware, firmware, and software boundaries.</li>
+                <li>Experience with unmanned systems, robotics, or embedded platforms.</li>
+                <li>Comfortable with lab tools, basic fabrication, and hardware debugging.</li>
+                <li>Enjoy building early versions, testing them hard, and iterating quickly.</li>
+                <li>U.S. person preferred; some work may eventually touch export-controlled domains.</li>
+              </ul>
+
+              <p class="meta-note">
+                Titles like “Senior Autonomy Engineer” or “Lead Systems Engineer” are also possible depending on
+                background. This role is designed to be a cornerstone technical hire.
+              </p>
+            </div>
+
+            <!-- APPLY FORM -->
+            <div>
+              <div class="form-shell">
+                <div class="form-title">Apply – Autonomy &amp; Systems Integration Engineer</div>
+                <p>
+                  Share a brief introduction and links to any work you’re proud of. Informal project portfolios are as
+                  welcome as traditional resumes.
+                </p>
+                <form action="https://formsubmit.co/admin@dronecorp.us" method="POST">
+                  <input type="hidden" name="_subject" value="Career application – Autonomy & Systems Integration Engineer">
+                  <input type="hidden" name="_template" value="table">
+                  <input type="hidden" name="_captcha" value="false">
+                  <input type="hidden" name="Position" value="Autonomy & Systems Integration Engineer">
+
+                  <div class="form-grid">
+                    <div class="form-group">
+                      <label for="name-auto">Name</label>
+                      <input id="name-auto" name="Name" type="text" required placeholder="Full name">
+                    </div>
+                    <div class="form-group">
+                      <label for="email-auto">Email</label>
+                      <input id="email-auto" name="Email" type="email" required placeholder="you@example.com">
+                    </div>
+                    <div class="form-group full">
+                      <label for="link-auto">Resume / GitHub / Portfolio</label>
+                      <input id="link-auto" name="Resume_or_Profile" type="text" placeholder="Links to resume, GitHub, or projects">
+                    </div>
+                    <div class="form-group full">
+                      <label for="msg-auto">Short introduction</label>
+                      <textarea id="msg-auto" name="Message" required placeholder="Background, interests, and relevant work."></textarea>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn-primary">Submit application</button>
+                  <div class="form-caption">
+                    Applications route directly to admin@dronecorp.us for review.
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ROLE 3: Technical Operations & Program Analyst -->
+      <article class="accordion-item">
+        <header class="accordion-header">
+          <div class="accordion-title-block">
+            <div class="accordion-role">Technical Operations &amp; Program Analyst</div>
+            <div class="accordion-meta">Tucson, AZ · Hybrid · Operations backbone</div>
+            <div class="badge-row">
+              <span class="badge">Operations</span>
+              <span class="badge">Programs</span>
+              <span class="badge">R&amp;D support</span>
+            </div>
+          </div>
+          <div class="accordion-chevron">›</div>
+        </header>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <div>
+              <h3>Role overview</h3>
+              <p>
+                This role sits at the intersection of operations, light program management, and technical coordination.
+                The focus is on keeping projects, vendors, documentation, and logistics moving so that engineers and
+                leadership can stay focused on building and testing.
+              </p>
+
+              <h3>What you'll do</h3>
+              <ul>
+                <li>Track tasks, timelines, and deliverables across small R&amp;D efforts and pilots.</li>
+                <li>Support basic contracting artifacts, SOW drafts, and vendor quotes.</li>
+                <li>Coordinate test events, travel, and logistics with partners and ranges.</li>
+                <li>Help maintain documentation, run books, and simple dashboards.</li>
+                <li>Assist with vendor onboarding, inventory, and reordering for key components.</li>
+                <li>Act as a central point of contact for “what’s happening where” inside the company.</li>
+              </ul>
+
+              <h3>Who you are</h3>
+              <ul>
+                <li>Comfortable working in technical environments, even if you’re not writing code daily.</li>
+                <li>Organized, detail-oriented, and calm under changing priorities.</li>
+                <li>Experience in operations, project coordination, defense, or technical programs is a plus.</li>
+                <li>Comfortable communicating with engineers, vendors, and customers.</li>
+                <li>U.S. person preferred; some work may eventually align with export or clearance contexts.</li>
+              </ul>
+
+              <p class="meta-note">
+                This role is intentionally broad: it is meant to absorb the operational load that accumulates as
+                DroneCorp. spins up more experiments, partners, and programs.
+              </p>
+            </div>
+
+            <!-- APPLY FORM -->
+            <div>
+              <div class="form-shell">
+                <div class="form-title">Apply – Technical Operations &amp; Program Analyst</div>
+                <p>
+                  If you like making complex things run smoothly, this role is designed for you. Briefly outline where
+                  you’ve done similar work before.
+                </p>
+                <form action="https://formsubmit.co/admin@dronecorp.us" method="POST">
+                  <input type="hidden" name="_subject" value="Career application – Technical Operations & Program Analyst">
+                  <input type="hidden" name="_template" value="table">
+                  <input type="hidden" name="_captcha" value="false">
+                  <input type="hidden" name="Position" value="Technical Operations & Program Analyst">
+
+                  <div class="form-grid">
+                    <div class="form-group">
+                      <label for="name-ops">Name</label>
+                      <input id="name-ops" name="Name" type="text" required placeholder="Full name">
+                    </div>
+                    <div class="form-group">
+                      <label for="email-ops">Email</label>
+                      <input id="email-ops" name="Email" type="email" required placeholder="you@example.com">
+                    </div>
+                    <div class="form-group full">
+                      <label for="link-ops">Resume / Profile</label>
+                      <input id="link-ops" name="Resume_or_Profile" type="text" placeholder="Link to resume or professional profile">
+                    </div>
+                    <div class="form-group full">
+                      <label for="msg-ops">Short introduction</label>
+                      <textarea id="msg-ops" name="Message" required placeholder="Background, domains you’ve supported, and interests."></textarea>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn-primary">Submit application</button>
+                  <div class="form-caption">
+                    You’ll receive an email confirmation when the application is delivered.
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ROLE 4: Chief Vibes & Sustenance Officer (Fun role) -->
+      <article class="accordion-item">
+        <header class="accordion-header">
+          <div class="accordion-title-block">
+            <div class="accordion-role">Chief Vibes &amp; Sustenance Officer (CVSO)</div>
+            <div class="accordion-meta">Tucson, AZ · On-site · Back-of-house + morale</div>
+            <div class="badge-row">
+              <span class="badge">Kitchen ops</span>
+              <span class="badge">Morale</span>
+              <span class="badge">Startup energy</span>
+            </div>
+          </div>
+          <div class="accordion-chevron">›</div>
+        </header>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <div>
+              <h3>Role overview</h3>
+              <p>
+                The Chief Vibes &amp; Sustenance Officer is responsible for the two most fragile systems in any
+                early-stage company: morale and snacks. This role treats the kitchen as a sustainment node and the
+                common area as a low-friction operating environment.
+              </p>
+
+              <h3>What you'll do</h3>
+              <ul>
+                <li>Maintain snack readiness levels (SRL) at or above mission-acceptable thresholds.</li>
+                <li>Operate the DroneCorp. kitchen as a calm, efficient back-of-house environment.</li>
+                <li>Prepare simple but excellent food for small teams (e.g., wings, tacos, grilled cheese, breakfast runs).</li>
+                <li>Monitor ambient vibes and apply corrective measures (music, coffee, levity) as needed.</li>
+                <li>Help coordinate “we shipped something” cookouts and low-key team events.</li>
+                <li>Serve as an informal pulse check on burnout, late nights, and when people need a break.</li>
+              </ul>
+
+              <h3>Who you are</h3>
+              <ul>
+                <li>Have real back-of-house or kitchen experience, or can run one like you do.</li>
+                <li>Know at least one signature dish people still talk about later.</li>
+                <li>Can make coffee suitable for software engineers and field testers.</li>
+                <li>Comfortable in a shop/warehouse/office hybrid space.</li>
+                <li>Can read a room and adjust energy without making it about you.</li>
+              </ul>
+
+              <p class="meta-note">
+                This is intentionally written with a smile, but it is also a real role: startups run better when
+                somebody owns hospitality, environment, and small rituals that keep people going.
+              </p>
+            </div>
+
+            <!-- APPLY FORM -->
+            <div>
+              <div class="form-shell">
+                <div class="form-title">Apply – Chief Vibes &amp; Sustenance Officer</div>
+                <p>
+                  If you’ve ever run a kitchen, a bar, a food truck, or been the unofficial “house cook” and vibe
+                  monitor for your crew, you’re probably overqualified.
+                </p>
+                <form action="https://formsubmit.co/admin@dronecorp.us" method="POST">
+                  <input type="hidden" name="_subject" value="Career application – Chief Vibes & Sustenance Officer">
+                  <input type="hidden" name="_template" value="table">
+                  <input type="hidden" name="_captcha" value="false">
+                  <input type="hidden" name="Position" value="Chief Vibes & Sustenance Officer">
+
+                  <div class="form-grid">
+                    <div class="form-group">
+                      <label for="name-vibe">Name</label>
+                      <input id="name-vibe" name="Name" type="text" required placeholder="Full name">
+                    </div>
+                    <div class="form-group">
+                      <label for="email-vibe">Email</label>
+                      <input id="email-vibe" name="Email" type="email" required placeholder="you@example.com">
+                    </div>
+                    <div class="form-group full">
+                      <label for="sig-vibe">Signature dish or specialty</label>
+                      <input id="sig-vibe" name="Signature_Dish" type="text" placeholder="Your wings, tacos, pasta, etc.">
+                    </div>
+                    <div class="form-group full">
+                      <label for="msg-vibe">Short introduction</label>
+                      <textarea id="msg-vibe" name="Message" required placeholder="Tell us about your kitchen and vibe experience."></textarea>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn-primary">Submit application</button>
+                  <div class="form-caption">
+                    Yes, this is a real form. No, there is not yet a dress code for this role.
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </section>
+  </main>
+
+  <footer>
+    © 2025 DroneCorp. Conceptual material for discussion; not all capabilities shown are available or fielded.
+  </footer>
+
+  <script>
+    // Mobile nav toggle
+    const navShell = document.getElementById("navShell");
+    const navBurger = document.getElementById("navBurger");
+    if (navBurger) {
+      navBurger.addEventListener("click", () => {
+        navShell.classList.toggle("open");
+      });
+    }
+
+    // Accordion behavior
+    const accordion = document.getElementById("careersAccordion");
+    const items = accordion.querySelectorAll(".accordion-item");
+
+    items.forEach(item => {
+      const header = item.querySelector(".accordion-header");
+      const body = item.querySelector(".accordion-body");
+
+      // Set initial max-height for any item with .open
+      if (item.classList.contains("open")) {
+        body.style.maxHeight = body.scrollHeight + "px";
+      }
+
+      header.addEventListener("click", () => {
+        const isOpen = item.classList.contains("open");
+
+        // Close all
+        items.forEach(other => {
+          if (other !== item) {
+            other.classList.remove("open");
+            const otherBody = other.querySelector(".accordion-body");
+            otherBody.style.maxHeight = 0;
+          }
+        });
+
+        // Toggle current
+        if (!isOpen) {
+          item.classList.add("open");
+          body.style.maxHeight = body.scrollHeight + "px";
+        } else {
+          item.classList.remove("open");
+          body.style.maxHeight = 0;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
 
