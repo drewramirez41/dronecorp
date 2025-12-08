@@ -39,7 +39,7 @@
       text-decoration: underline;
     }
 
-    /* GRID OVERLAY (subtle HUD look) */
+    /* GRID OVERLAY */
     .grid-overlay {
       position: fixed;
       inset: 0;
@@ -52,7 +52,7 @@
       opacity: 0.8;
     }
 
-    /* ===== NAV – match home page ===== */
+    /* ========= NAV (matches home) ========= */
 
     .nav {
       position: fixed;
@@ -109,7 +109,7 @@
       user-select: none;
     }
 
-    /* ===== PAGE LAYOUT ===== */
+    /* ========= PAGE LAYOUT ========= */
 
     main {
       max-width: 1200px;
@@ -159,7 +159,8 @@
       padding: 18px 22px 20px;
     }
 
-    /* DESIGN FOCUS PANEL – big “hero box” */
+    /* DESIGN FOCUS PANEL */
+
     .design-focus {
       margin-bottom: 32px;
     }
@@ -187,8 +188,10 @@
 
     .pill-row {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 8px;
+      align-items: flex-end;
+      min-width: 190px;
     }
 
     .pill {
@@ -204,6 +207,7 @@
     }
 
     /* PLATFORM INTRO STRIP */
+
     .platform-intro-block {
       margin-bottom: 18px;
     }
@@ -215,11 +219,12 @@
       max-width: 1000px;
     }
 
-    /* PLATFORM GRID – cards */
+    /* ========= QUADRANT GRID ========= */
+
     .platform-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      gap: 16px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
     }
 
     .platform-card {
@@ -230,6 +235,9 @@
         rgba(5, 10, 20, 0.98);
       padding: 16px 18px 18px;
       transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .platform-card:hover {
@@ -284,7 +292,13 @@
       text-align: center;
     }
 
-    /* ===== RESPONSIVE ===== */
+    /* ========= RESPONSIVE ========= */
+
+    @media (max-width: 1024px) {
+      .platform-grid {
+        grid-template-columns: minmax(0, 1fr); /* stack on tablets/phones */
+      }
+    }
 
     @media (max-width: 900px) {
       .nav {
@@ -332,6 +346,13 @@
         flex-direction: column;
         align-items: flex-start;
       }
+
+      .pill-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: center;
+      }
     }
   </style>
 </head>
@@ -364,7 +385,7 @@
       concepts rather than fielded product.
     </p>
 
-    <!-- DESIGN FOCUS PANEL (big hero card) -->
+    <!-- DESIGN FOCUS PANEL -->
     <section class="design-focus panel">
       <div class="section-label">Design focus</div>
 
@@ -402,17 +423,19 @@
       </div>
     </section>
 
-    <!-- PLATFORM CARDS -->
+    <!-- QUADRANT CARDS -->
     <section class="platform-grid">
 
       <article class="platform-card">
-        <div class="platform-kicker">Air – close-range ISR</div>
-        <h3 class="platform-name">Tactical ISR quadrotor</h3>
-        <p class="platform-body">
-          Compact multi-sensor airframe concept for close-range reconnaissance, overwatch, and perimeter awareness in
-          contested environments. Envisions onboard perception and navigation assists to reduce operator workload while
-          maintaining human-in-the-loop authority.
-        </p>
+        <div>
+          <div class="platform-kicker">Air – close-range ISR</div>
+          <h3 class="platform-name">Tactical ISR quadrotor</h3>
+          <p class="platform-body">
+            Compact multi-sensor airframe concept for close-range reconnaissance, overwatch, and perimeter awareness in
+            contested environments. Envisions onboard perception and navigation assists to reduce operator workload while
+            maintaining human-in-the-loop authority.
+          </p>
+        </div>
         <div class="platform-tags">
           <span class="tag">VTOL</span>
           <span class="tag">ISR</span>
@@ -422,13 +445,15 @@
       </article>
 
       <article class="platform-card">
-        <div class="platform-kicker">Swarm &amp; teaming</div>
-        <h3 class="platform-name">Distributed swarm constructs</h3>
-        <p class="platform-body">
-          Early-stage autonomy and coordination research aimed at dispersed, low-cost vehicles operating as a cooperative
-          mesh. Focus on resilient comms, graceful degradation, and integration with existing mission-planning tools rather
-          than bespoke stovepipes.
-        </p>
+        <div>
+          <div class="platform-kicker">Swarm &amp; teaming</div>
+          <h3 class="platform-name">Distributed swarm constructs</h3>
+          <p class="platform-body">
+            Early-stage autonomy and coordination research aimed at dispersed, low-cost vehicles operating as a cooperative
+            mesh. Focus on resilient comms, graceful degradation, and integration with existing mission-planning tools rather
+            than bespoke stovepipes.
+          </p>
+        </div>
         <div class="platform-tags">
           <span class="tag">Swarm</span>
           <span class="tag">Mesh networking</span>
@@ -437,13 +462,15 @@
       </article>
 
       <article class="platform-card">
-        <div class="platform-kicker">Interior recon</div>
-        <h3 class="platform-name">Confined-space nano-UAS</h3>
-        <p class="platform-body">
-          Concept vehicle sized for interior and sub-terranean reconnaissance with emphasis on obstacle-dense navigation,
-          low-light sensing, and minimal signature. Intended as a modular payload host for mapping, routing, and digital-twin
-          generation in complex spaces.
-        </p>
+        <div>
+          <div class="platform-kicker">Interior recon</div>
+          <h3 class="platform-name">Confined-space nano-UAS</h3>
+          <p class="platform-body">
+            Concept vehicle sized for interior and sub-terranean reconnaissance with emphasis on obstacle-dense navigation,
+            low-light sensing, and minimal signature. Intended as a modular payload host for mapping, routing, and digital-twin
+            generation in complex spaces.
+          </p>
+        </div>
         <div class="platform-tags">
           <span class="tag">Interior</span>
           <span class="tag">Mapping</span>
@@ -452,13 +479,15 @@
       </article>
 
       <article class="platform-card">
-        <div class="platform-kicker">Maritime &amp; littoral ISR</div>
-        <h3 class="platform-name">Carrier-adjacent surface ISR skiff</h3>
-        <p class="platform-body">
-          Small unmanned surface concept intended for pier-side and littoral perimeter awareness. Envisions modular sensor
-          masts, AIS awareness, and tight integration with existing naval C2 picture rather than bespoke visualization
-          stacks.
-        </p>
+        <div>
+          <div class="platform-kicker">Maritime &amp; littoral ISR</div>
+          <h3 class="platform-name">Carrier-adjacent surface ISR skiff</h3>
+          <p class="platform-body">
+            Small unmanned surface concept intended for pier-side and littoral perimeter awareness. Envisions modular sensor
+            masts, AIS awareness, and tight integration with existing naval C2 picture rather than bespoke visualization
+            stacks.
+          </p>
+        </div>
         <div class="platform-tags">
           <span class="tag">Maritime</span>
           <span class="tag">Perimeter ISR</span>
@@ -477,7 +506,7 @@
     // Footer year
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Mobile nav toggle (same behavior as home)
+    // Mobile nav toggle
     const menuToggle = document.getElementById("menuToggle");
     const navLinks = document.getElementById("navLinks");
 
