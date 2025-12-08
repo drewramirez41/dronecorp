@@ -10,7 +10,7 @@
       --bg-main: #02040a;
       --bg-panel: rgba(5, 10, 20, 0.96);
       --border-soft: rgba(120, 170, 255, 0.35);
-      --border-strong: rgba(120, 170, 255, 0.7);
+      --border-strong: rgba(120, 170, 255, 0.75);
       --text-main: #f5f7ff;
       --text-muted: #9aa5c3;
       --accent: #7fcaff;
@@ -39,20 +39,20 @@
       text-decoration: underline;
     }
 
-    /* GRID OVERLAY */
+    /* GRID OVERLAY (subtle HUD look) */
     .grid-overlay {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: -1;
       background-image:
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
       background-size: 80px 80px;
-      opacity: 0.9;
+      opacity: 0.8;
     }
 
-    /* ===== NAV (MATCHES HOME) ===== */
+    /* ===== NAV – match home page ===== */
 
     .nav {
       position: fixed;
@@ -153,69 +153,80 @@
       border-radius: 10px;
       border: 1px solid var(--border-soft);
       background:
-        radial-gradient(circle at top left, rgba(120, 170, 255, 0.16), transparent 60%),
+        radial-gradient(circle at top left, rgba(120,170,255,0.16), transparent 60%),
         var(--bg-panel);
-      box-shadow: 0 24px 36px rgba(0, 0, 0, 0.9);
-      padding: 18px 20px 20px;
+      box-shadow: 0 24px 38px rgba(0, 0, 0, 0.9);
+      padding: 18px 22px 20px;
     }
 
-    /* DESIGN FOCUS PANEL */
+    /* DESIGN FOCUS PANEL – big “hero box” */
     .design-focus {
       margin-bottom: 32px;
     }
 
-    .design-title {
-      font-size: 16px;
-      font-weight: 540;
-      margin: 0 0 10px;
+    .design-focus-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
     }
 
-    .design-body {
+    .design-focus-title-block h2 {
+      margin: 0 0 4px;
+      font-size: 17px;
+      font-weight: 540;
+    }
+
+    .design-focus-body {
       font-size: 13px;
       color: var(--text-muted);
       line-height: 1.7;
-      margin: 0 0 10px;
+      margin: 0 0 6px;
     }
 
     .pill-row {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 10px;
     }
 
     .pill {
       border-radius: 999px;
-      border: 1px solid rgba(120, 170, 255, 0.5);
-      padding: 3px 10px;
+      border: 1px solid rgba(120, 170, 255, 0.55);
+      padding: 4px 11px;
       font-size: 10px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--accent);
-      background: radial-gradient(circle at top, rgba(120, 170, 255, 0.23), transparent 70%);
+      background: radial-gradient(circle at top, rgba(120,170,255,0.25), transparent 72%);
+      white-space: nowrap;
     }
 
     /* PLATFORM INTRO STRIP */
-    .platform-intro {
-      margin-bottom: 22px;
+    .platform-intro-block {
+      margin-bottom: 18px;
+    }
+
+    .platform-intro-text {
       font-size: 13px;
+      line-height: 1.7;
       color: var(--text-muted);
       max-width: 1000px;
     }
 
-    /* PLATFORM GRID */
+    /* PLATFORM GRID – cards */
     .platform-grid {
       display: grid;
       grid-template-columns: minmax(0, 1fr);
       gap: 16px;
-      margin-top: 6px;
     }
 
     .platform-card {
       border-radius: 10px;
       border: 1px solid rgba(120, 170, 255, 0.25);
       background:
-        radial-gradient(circle at top right, rgba(120, 170, 255, 0.18), transparent 60%),
+        radial-gradient(circle at top right, rgba(120,170,255,0.18), transparent 60%),
         rgba(5, 10, 20, 0.98);
       padding: 16px 18px 18px;
       transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.15s ease;
@@ -257,7 +268,7 @@
 
     .tag {
       border-radius: 999px;
-      border: 1px solid rgba(120, 170, 255, 0.4);
+      border: 1px solid rgba(120,170,255,0.4);
       padding: 2px 9px;
       font-size: 10px;
       letter-spacing: 0.18em;
@@ -308,13 +319,18 @@
         align-items: flex-start;
         padding: 10px 18px 12px;
         border-bottom-left-radius: 12px;
-        border-left: 1px solid rgba(123, 189, 255, 0.25);
-        border-bottom: 1px solid rgba(123, 189, 255, 0.25);
+        border-left: 1px solid rgba(123,189,255,0.25);
+        border-bottom: 1px solid rgba(123,189,255,0.25);
         display: none;
       }
 
       .nav-right.show {
         display: flex;
+      }
+
+      .design-focus-header {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   </style>
@@ -323,7 +339,7 @@
 <body>
   <div class="grid-overlay"></div>
 
-  <!-- NAVBAR (SAME AS HOME) -->
+  <!-- NAVBAR -->
   <header class="nav">
     <div class="nav-left">DRONECORP.</div>
     <div class="menu-toggle" id="menuToggle">☰</div>
@@ -343,44 +359,52 @@
     <div class="page-kicker">Multi-domain unmanned systems</div>
     <h1 class="page-title">Concept Platforms Under Evaluation</h1>
     <p class="page-subtitle">
-      DroneCorp. explores modular air, maritime, and interior-recon architectures designed to interface with
-      existing command-and-control ecosystems. Work is centered on design studies, prototyping pathways, and
-      integration concepts rather than fielded product.
+      DroneCorp. explores modular air, maritime, and interior-recon architectures designed to interface with existing
+      command-and-control ecosystems. Current work is focused on design studies, prototyping pathways, and integration
+      concepts rather than fielded product.
     </p>
 
-    <!-- DESIGN FOCUS -->
+    <!-- DESIGN FOCUS PANEL (big hero card) -->
     <section class="design-focus panel">
       <div class="section-label">Design focus</div>
-      <h2 class="design-title">Applied unmanned systems R&amp;D</h2>
-      <p class="design-body">
-        Platforms described on this page are early-stage concepts. They are intended to explore autonomy frameworks,
-        payload integration patterns, and edge-processing architectures across air, surface, and confined interior
-        environments.
-      </p>
-      <p class="design-body">
-        Each concept is designed around a U.S.-centric supply chain with emphasis on reliability, maintainability,
-        and clean interfaces to existing C2, mapping, and analytics toolchains. Technical roadmaps and detailed
-        specifications are available for teaming partners and qualified programs under separate discussion.
-      </p>
-      <div class="pill-row">
-        <span class="pill">Concept only</span>
-        <span class="pill">R&amp;D emphasis</span>
-        <span class="pill">U.S. supply chain</span>
+
+      <div class="design-focus-header">
+        <div class="design-focus-title-block">
+          <h2>Applied unmanned systems R&amp;D</h2>
+          <p class="design-focus-body">
+            Platforms described on this page are early-stage concepts. They are intended to explore autonomy frameworks,
+            payload integration patterns, and edge-processing architectures across air, surface, and confined interior
+            environments.
+          </p>
+          <p class="design-focus-body">
+            Each concept is designed around a U.S.-centric supply chain with an emphasis on reliability, maintainability,
+            and clean interfaces to existing C2, mapping, and analytics toolchains. Technical roadmaps, detailed
+            specifications, and performance envelopes are available for teaming partners and qualified programs under
+            separate discussion.
+          </p>
+        </div>
+
+        <div class="pill-row">
+          <span class="pill">Concept only</span>
+          <span class="pill">R&amp;D emphasis</span>
+          <span class="pill">U.S. supply chain</span>
+        </div>
       </div>
     </section>
 
-    <!-- INTRO STRIP -->
-    <section class="platform-intro">
+    <!-- PLATFORM FAMILIES STRIP -->
+    <section class="platform-intro-block">
       <div class="section-label">Platform families</div>
-      Illustrative concepts spanning close-range ISR, interior recon, maritime perimeter awareness, and distributed
-      swarm constructs. Naming, payloads, and deployment envelopes are representative and subject to change as design
-      work progresses.
+      <div class="platform-intro-text">
+        Illustrative concepts spanning close-range ISR, interior recon, maritime perimeter awareness, and distributed
+        swarm constructs. Naming, payloads, and deployment envelopes are representative and subject to change as work
+        progresses.
+      </div>
     </section>
 
-    <!-- PLATFORM GRID -->
+    <!-- PLATFORM CARDS -->
     <section class="platform-grid">
 
-      <!-- AIR – CLOSE-RANGE ISR -->
       <article class="platform-card">
         <div class="platform-kicker">Air – close-range ISR</div>
         <h3 class="platform-name">Tactical ISR quadrotor</h3>
@@ -397,14 +421,13 @@
         </div>
       </article>
 
-      <!-- SWARM & TEAMING -->
       <article class="platform-card">
         <div class="platform-kicker">Swarm &amp; teaming</div>
         <h3 class="platform-name">Distributed swarm constructs</h3>
         <p class="platform-body">
           Early-stage autonomy and coordination research aimed at dispersed, low-cost vehicles operating as a cooperative
-          mesh. Focus on resilient comms, graceful degradation, and integration with existing mission-planning tools
-          rather than bespoke stovepipes.
+          mesh. Focus on resilient comms, graceful degradation, and integration with existing mission-planning tools rather
+          than bespoke stovepipes.
         </p>
         <div class="platform-tags">
           <span class="tag">Swarm</span>
@@ -413,14 +436,13 @@
         </div>
       </article>
 
-      <!-- INTERIOR RECON -->
       <article class="platform-card">
         <div class="platform-kicker">Interior recon</div>
         <h3 class="platform-name">Confined-space nano-UAS</h3>
         <p class="platform-body">
           Concept vehicle sized for interior and sub-terranean reconnaissance with emphasis on obstacle-dense navigation,
-          low-light sensing, and minimal signature. Intended as a modular payload host for mapping, routing, and
-          digital-twin generation in complex spaces.
+          low-light sensing, and minimal signature. Intended as a modular payload host for mapping, routing, and digital-twin
+          generation in complex spaces.
         </p>
         <div class="platform-tags">
           <span class="tag">Interior</span>
@@ -429,14 +451,13 @@
         </div>
       </article>
 
-      <!-- MARITIME & LITTORAL -->
       <article class="platform-card">
         <div class="platform-kicker">Maritime &amp; littoral ISR</div>
         <h3 class="platform-name">Carrier-adjacent surface ISR skiff</h3>
         <p class="platform-body">
-          Small unmanned surface concept intended for pier-side and littoral perimeter awareness. Envisions modular
-          sensor masts, AIS awareness, and tight integration with existing naval C2 picture rather than bespoke
-          visualization stacks.
+          Small unmanned surface concept intended for pier-side and littoral perimeter awareness. Envisions modular sensor
+          masts, AIS awareness, and tight integration with existing naval C2 picture rather than bespoke visualization
+          stacks.
         </p>
         <div class="platform-tags">
           <span class="tag">Maritime</span>
