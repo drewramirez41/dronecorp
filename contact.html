@@ -4,204 +4,537 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DroneCorp. – Contact</title>
-
   <style>
+    :root {
+      --bg-main: #02040a;
+      --bg-panel: rgba(5,10,20,0.96);
+      --border-soft: rgba(120,170,255,0.4);
+      --border-hard: rgba(120,170,255,0.75);
+      --text-main: #f5f7ff;
+      --text-muted: #9aa5c3;
+      --accent: #7fcaff;
+      --accent-strong: #41b3ff;
+      --danger: #ff6f6f;
+    }
+
+    * { box-sizing: border-box; }
+
     html, body {
       margin: 0;
       padding: 0;
-      background: #05080c;
-      color: white;
-      font-family: Arial, sans-serif;
+      min-height: 100%;
+      background: radial-gradient(circle at top, #071021 0%, #02040a 55%, #000 100%);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    /* --- NAVBAR (same as homepage) --- */
-    .nav {
+    /* SHARED NAVBAR */
+    .nav-shell {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 64px;
+      right: 0;
+      z-index: 20;
+      background: linear-gradient(to bottom, rgba(5,8,12,0.96), rgba(5,8,12,0.75), rgba(5,8,12,0.4), transparent);
+      border-bottom: 1px solid rgba(127,202,255,0.22);
+      backdrop-filter: blur(10px);
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 24px 10px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 0 32px;
-      background: linear-gradient(to bottom, rgba(5,8,12,0.95), rgba(5,8,12,0.65), transparent);
-      backdrop-filter: blur(6px);
-      z-index: 40;
     }
-
-    .nav-left {
-      letter-spacing: 6px;
-      font-weight: bold;
-      font-size: 16px;
+    .brand-mark {
+      font-weight: 600;
+      letter-spacing: 0.45em;
+      font-size: 15px;
+      text-transform: uppercase;
+      white-space: nowrap;
     }
-
-    .nav-right {
+    .brand-mark span {
+      margin-left: 0.25em;
+      opacity: 0.9;
+    }
+    .nav-links {
+      margin-left: auto;
       display: flex;
       gap: 22px;
-      font-size: 14px;
+      font-size: 13px;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
     }
-
-    .nav-right a {
-      color: #dce6ff;
-      opacity: 0.8;
+    .nav-links a {
+      color: #dbe4ff;
       text-decoration: none;
+      padding-bottom: 4px;
+      position: relative;
+      opacity: 0.8;
+      transition: opacity 0.18s ease;
     }
-    .nav-right a:hover { opacity: 1; }
-
-    .menu-toggle {
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.18s ease;
+    }
+    .nav-links a:hover {
+      opacity: 1;
+    }
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      transform: scaleX(1);
+    }
+    .nav-links a.active {
+      opacity: 1;
+      color: var(--accent);
+    }
+    .nav-burger {
       display: none;
+      margin-left: auto;
+      width: 24px;
+      height: 18px;
+      flex-direction: column;
+      justify-content: space-between;
       cursor: pointer;
-      font-size: 24px;
     }
-
-    @media (max-width: 760px) {
-      .menu-toggle {
-        display: block;
-      }
-      .nav-right {
-        position: absolute;
-        top: 64px;
-        right: 0;
-        background: rgba(5,8,12,0.97);
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 12px 18px;
-        width: 200px;
-        display: none;
-        border-bottom-left-radius: 12px;
-        border-left: 1px solid rgba(123,189,255,0.25);
-        border-bottom: 1px solid rgba(123,189,255,0.25);
-      }
-      .nav-right.show {
+    .nav-burger span {
+      height: 2px;
+      width: 100%;
+      background: var(--text-main);
+    }
+    @media (max-width: 720px) {
+      .nav-inner { padding-inline: 16px; }
+      .nav-links { display: none; }
+      .nav-burger { display: flex; }
+      .nav-shell.open .nav-links {
         display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 52px;
+        left: 0;
+        right: 0;
+        padding: 10px 18px 14px;
+        background: rgba(5,8,12,0.98);
+        border-bottom: 1px solid rgba(127,202,255,0.25);
       }
     }
 
-    /* --- PAGE CONTENT --- */
-    main {
-      padding: 120px 32px 60px;
-      max-width: 900px;
-      margin: auto;
+    /* GRID OVERLAY */
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 80px 80px;
+      opacity: 0.9;
     }
 
-    h1 {
-      font-size: 32px;
+    main {
+      max-width: 1200px;
+      margin: 96px auto 48px;
+      padding: 0 24px 40px;
+    }
+
+    .page-kicker {
+      font-size: 11px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--accent);
       margin-bottom: 8px;
     }
 
-    .subtitle {
-      font-size: 15px;
-      color: #9fb2d4;
+    .page-title {
+      font-size: 28px;
+      font-weight: 560;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0 0 6px;
+    }
+
+    .page-subtitle {
+      margin: 0 0 30px;
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 780px;
       line-height: 1.6;
-      margin-bottom: 28px;
+    }
+
+    .contact-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.35fr);
+      gap: 28px;
+      align-items: flex-start;
     }
 
     .panel {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(127,202,255,0.25);
-      padding: 24px;
-      border-radius: 10px;
-      margin-bottom: 40px;
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      background:
+        radial-gradient(circle at top left, rgba(120,170,255,0.16), transparent 60%),
+        var(--bg-panel);
+      box-shadow: 0 26px 40px rgba(0,0,0,0.9);
+      padding: 22px 24px 24px;
+    }
+
+    .panel-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .panel-heading {
+      font-size: 16px;
+      font-weight: 540;
+      margin: 0 0 14px;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .chip {
+      border: 1px solid rgba(120,170,255,0.5);
+      padding: 4px 10px;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border-radius: 999px;
+      background: radial-gradient(circle at top, rgba(120,170,255,0.23), transparent 70%);
+    }
+
+    .panel p,
+    .panel ul {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .panel ul {
+      margin: 0 0 14px 16px;
+      padding-left: 0;
+    }
+
+    .panel ul li + li { margin-top: 4px; }
+
+    .panel-note {
+      font-size: 11px;
+      color: var(--danger);
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+    .panel-note span { font-weight: 600; }
+
+    /* FORM PANEL */
+    .form-panel {
+      border-radius: 16px;
+      border: 1px solid rgba(120,170,255,0.4);
+      background:
+        radial-gradient(circle at top right, rgba(120,170,255,0.23), transparent 65%),
+        var(--bg-panel);
+      box-shadow: 0 26px 40px rgba(0,0,0,0.95);
+      padding: 22px 24px 24px;
+    }
+
+    .form-kicker {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .form-title {
+      margin: 0 0 16px;
+      font-size: 17px;
+      font-weight: 540;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 14px 16px;
+      margin-bottom: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
     }
 
     label {
-      font-size: 12px;
+      font-size: 11px;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      letter-spacing: 2px;
-      color: #9bb7d9;
+      color: var(--text-muted);
     }
 
-    input, textarea {
-      width: 100%;
-      margin-top: 6px;
-      margin-bottom: 18px;
-      padding: 10px;
-      background: rgba(0,0,0,0.45);
-      border: 1px solid rgba(127,202,255,0.28);
-      color: white;
-      border-radius: 6px;
-      font-size: 14px;
+    input[type="text"],
+    input[type="email"],
+    textarea,
+    select {
+      background: rgba(5,10,22,0.9);
+      border: 1px solid rgba(120,170,255,0.35);
+      color: var(--text-main);
+      padding: 8px 10px;
+      font-size: 13px;
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(154,165,195,0.6);
     }
 
     textarea {
-      height: 140px;
       resize: vertical;
+      min-height: 110px;
+      max-height: 260px;
     }
 
-    button {
-      padding: 12px 30px;
-      background: #0f273f;
-      border: 1px solid #65aef3;
-      color: white;
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--border-hard);
+      background: rgba(5,12,34,0.98);
+      box-shadow: 0 0 0 1px rgba(120,170,255,0.45);
+    }
+
+    .helper-text {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .submit-row {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      border-radius: 999px;
+      border: 1px solid var(--border-hard);
+      background: radial-gradient(circle at top, rgba(120,170,255,0.6), rgba(5,15,40,1));
+      color: var(--text-main);
+      padding: 9px 22px;
+      font-size: 12px;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      letter-spacing: 2px;
       cursor: pointer;
-      border-radius: 6px;
+      outline: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.18s ease, transform 0.1s ease, box-shadow 0.18s ease;
+    }
+    .btn-primary::after {
+      content: "→";
+      font-size: 12px;
+    }
+    .btn-primary:hover {
+      background: radial-gradient(circle at top, rgba(120,170,255,0.8), rgba(5,18,52,1));
+      box-shadow: 0 0 20px rgba(120,170,255,0.45);
+      transform: translateY(-1px);
+    }
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 0 8px rgba(120,170,255,0.35);
     }
 
-    button:hover {
-      background: #144066;
-      border-color: #7fcaff;
+    .submit-caption {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    footer {
+      border-top: 1px solid rgba(120,170,255,0.18);
+      font-size: 11px;
+      color: var(--text-muted);
+      padding: 12px 24px 18px;
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        margin-top: 88px;
+        padding-inline: 16px;
+      }
+      .contact-layout {
+        grid-template-columns: minmax(0,1fr);
+      }
+      .panel,
+      .form-panel {
+        padding-inline: 18px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page-title { font-size: 24px; }
     }
   </style>
 </head>
-
 <body>
+  <div class="grid-overlay"></div>
 
-<header class="nav">
-  <div class="nav-left">DRONECORP.</div>
-  <div class="menu-toggle" id="menuToggle">☰</div>
+  <!-- NAVBAR -->
+  <header class="nav-shell" id="navShell">
+    <div class="nav-inner">
+      <div class="brand-mark">DRONECORP<span>.</span></div>
 
-  <nav class="nav-right" id="navLinks">
-    <a href="index.html">Home</a>
-    <a href="platforms.html">Platforms</a>
-    <a href="focus.html">Focus Areas</a>
-    <a href="programs.html">Programs</a>
-    <a href="partner.html">Partner</a>
-    <a href="careers.html">Careers</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-</header>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="platforms.html">Platforms</a>
+        <a href="focus-areas.html">Focus Areas</a>
+        <a href="programs.html">Programs</a>
+        <a href="partner.html">Partner</a>
+        <a href="careers.html">Careers</a>
+        <a href="contact.html" class="active">Contact</a>
+      </nav>
 
-<main>
+      <div class="nav-burger" id="navBurger"><span></span><span></span><span></span></div>
+    </div>
+  </header>
 
-  <h1>Reach DroneCorp.</h1>
-  <p class="subtitle">
-    For early-stage discussions, teaming exploration, or technical introductions, use the form below.  
-    DroneCorp. does not accept classified or sensitive operational details.
-  </p>
+  <main>
+    <div class="page-kicker">Contact</div>
+    <h1 class="page-title">Reach DroneCorp.</h1>
+    <p class="page-subtitle">
+      Initial engagements are centered on technical exploration, teaming discussions, and concept validation.
+      Submissions are reviewed by a small engineering-led team; there is no marketing list or automated sales workflow.
+    </p>
 
-  <div class="panel">
-    <form action="https://formsubmit.co/admin@dronecorp.us" method="POST">
+    <section class="contact-layout">
+      <!-- INTAKE POSTURE -->
+      <aside class="panel">
+        <div class="panel-title">Intake posture</div>
+        <h2 class="panel-heading">How DroneCorp. handles outreach</h2>
 
-      <label>Name</label>
-      <input type="text" name="Name" required>
+        <div class="chip-row">
+          <div class="chip">R&amp;D-centric intake</div>
+          <div class="chip">No mass mailing</div>
+          <div class="chip">U.S.-based</div>
+        </div>
 
-      <label>Organization</label>
-      <input type="text" name="Organization">
+        <p>
+          DroneCorp. is a pre-production effort exploring autonomous systems, ISR platforms, and enabling technologies.
+          Engagements are generally technical and exploratory rather than transactional sales calls.
+        </p>
 
-      <label>Email</label>
-      <input type="email" name="Email" required>
+        <p>Typical topics include:</p>
+        <ul>
+          <li>Autonomy, edge processing, and onboard AI.</li>
+          <li>Concept platforms for air, maritime, and interior ISR.</li>
+          <li>Integration with existing command-and-control ecosystems.</li>
+          <li>Early-stage teaming, prototyping, and subcontractor discussions.</li>
+        </ul>
 
-      <label>Message</label>
-      <textarea name="Message" required></textarea>
+        <p class="panel-note">
+          <span>Unclassified information only.</span> Do not transmit classified, export-controlled, or otherwise
+          sensitive operational information. High-level context, constraints, and desired outcomes are sufficient.
+        </p>
+      </aside>
 
-      <button type="submit">Send Inquiry</button>
-    </form>
-  </div>
+      <!-- FORM PANEL -->
+      <section class="form-panel">
+        <div class="form-kicker">Secure intake form</div>
+        <h2 class="form-title">Submit a technical inquiry</h2>
 
-</main>
+        <!-- FormSubmit: sends directly to admin@dronecorp.us -->
+        <form action="https://formsubmit.co/admin@dronecorp.us" method="POST">
+          <!-- optional tweaks -->
+          <input type="hidden" name="_subject" value="DroneCorp. Contact Intake" />
+          <input type="hidden" name="_captcha" value="false" />
 
-<script>
-  const menuToggle = document.getElementById("menuToggle");
-  const navLinks = document.getElementById("navLinks");
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input id="name" name="Name" type="text" required placeholder="Full name" />
+            </div>
 
-  menuToggle.addEventListener("click", () => {
-    navLinks.classList.toggle("show");
-  });
-</script>
+            <div class="form-group">
+              <label for="org">Organization</label>
+              <input id="org" name="Organization" type="text" placeholder="Company / unit (optional)" />
+            </div>
 
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input id="email" name="Email" type="email" required placeholder="work.email@example.mil" />
+            </div>
+
+            <div class="form-group">
+              <label for="topic">Topic</label>
+              <select id="topic" name="Topic" required>
+                <option value="" disabled selected>Select one</option>
+                <option>Autonomy / edge processing</option>
+                <option>Interior ISR / tactical recon</option>
+                <option>Maritime ISR / carrier-based ops</option>
+                <option>Swarm or distributed constructs</option>
+                <option>Other / exploratory</option>
+              </select>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="message">Message</label>
+              <textarea id="message" name="Message" rows="6" required
+                placeholder="Briefly describe the problem space, constraints, and what you’re looking to explore."></textarea>
+            </div>
+          </div>
+
+          <p class="helper-text">
+            Keep descriptions high-level and conceptual. Do not include locations, mission identifiers, or sensitive
+            operational detail.
+          </p>
+
+          <div class="submit-row">
+            <button type="submit" class="btn-primary">Send secure inquiry</button>
+            <div class="submit-caption">
+              Submissions are routed to a small engineering-led intake queue.
+            </div>
+          </div>
+        </form>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    © 2025 DroneCorp. All rights reserved.
+  </footer>
+
+  <script>
+    const navShell = document.getElementById("navShell");
+    const navBurger = document.getElementById("navBurger");
+    navBurger.addEventListener("click", () => {
+      navShell.classList.toggle("open");
+    });
+  </script>
 </body>
 </html>
