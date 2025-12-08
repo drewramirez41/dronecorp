@@ -9,7 +9,7 @@
   :root {
     --bg-main: #02040a;
     --panel: #0b1220;
-    --panel-light: #152033;
+    --panel-light: #121b2c;
     --text-main: #e8eefc;
     --text-muted: #96a0b8;
     --accent: #7fcaff;
@@ -21,7 +21,7 @@
   body {
     margin: 0;
     padding: 0;
-    background: var(--bg-main);
+    background: radial-gradient(circle at top, #071021 0%, #02040a 55%, #000 100%);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     color: var(--text-main);
   }
@@ -88,26 +88,26 @@
   .section-subtext {
     color: var(--text-muted);
     line-height: 1.6;
-    margin-bottom: 45px;
+    margin-bottom: 32px;
     max-width: 800px;
   }
 
   /* DESIGN FOCUS PANEL */
   .focus-card {
-    background: var(--panel);
+    background: linear-gradient(135deg, #0b1220 0%, #141f33 40%, #0b1220 100%);
     border: 1px solid var(--border);
-    box-shadow: 0 22px 45px rgba(0,0,0,0.65);
-    border-radius: 10px;
-    padding: 28px 34px;
-    margin-bottom: 55px;
+    box-shadow: 0 26px 48px rgba(0,0,0,0.8);
+    border-radius: 12px;
+    padding: 28px 34px 26px;
+    margin-bottom: 52px;
   }
 
   .focus-title {
-    font-size: 14px;
+    font-size: 13px;
     letter-spacing: 0.25em;
     text-transform: uppercase;
     color: var(--text-muted);
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 
   .focus-heading {
@@ -120,12 +120,13 @@
     font-size: 15px;
     line-height: 1.65;
     color: var(--text-muted);
-    margin-bottom: 20px;
+    margin-bottom: 14px;
   }
 
-  /* CHIPS */
+  /* CHIPS UNDER TEXT */
   .chip-row {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     margin-top: 8px;
   }
@@ -141,36 +142,65 @@
     color: var(--accent);
   }
 
-  /* PLATFORM GRID */
+  /* PLATFORM GRID – QUADRANT STYLE */
+  .platforms-header {
+    margin-bottom: 10px;
+  }
+
   .grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 25px;
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2x2 QUADRANT */
+    gap: 22px 22px;
   }
 
   .platform-card {
     background: var(--panel-light);
     border: 1px solid var(--border);
-    padding: 26px 30px;
-    border-radius: 10px;
-    box-shadow: 0 18px 35px rgba(0,0,0,0.45);
-    transition: transform 0.2s, border-color 0.2s;
+    padding: 22px 24px 20px;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.55);
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .platform-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top left, rgba(127,202,255,0.20), transparent 55%);
+    opacity: 0.0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+  }
+
+  .platform-card:hover::before {
+    opacity: 1;
   }
 
   .platform-card:hover {
     transform: translateY(-4px);
     border-color: var(--accent);
+    box-shadow: 0 26px 50px rgba(0,0,0,0.75);
+  }
+
+  .platform-kicker {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
   }
 
   .platform-title {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 600;
     margin-bottom: 8px;
   }
 
   .platform-subtext {
     color: var(--text-muted);
-    line-height: 1.6;
+    line-height: 1.55;
     margin-bottom: 14px;
     font-size: 14px;
   }
@@ -190,6 +220,26 @@
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(255,255,255,0.08);
     color: #aac4ff;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 980px) {
+    .grid {
+      grid-template-columns: 1fr; /* stack on smaller screens */
+    }
+
+    .focus-card {
+      padding: 22px 20px 20px;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .nav-inner {
+      padding-inline: 16px;
+    }
+    nav a {
+      margin-left: 18px;
+    }
   }
 </style>
 </head>
@@ -213,9 +263,7 @@
 
 <main>
 
-  <!-- REMOVED main header per your request -->
-
-  <!-- DESIGN FOCUS -->
+  <!-- DESIGN FOCUS CARD (kept as-is, header above removed) -->
   <div class="focus-card">
     <div class="focus-title">Design Focus</div>
     <div class="focus-heading">Applied unmanned systems R&D</div>
@@ -223,45 +271,55 @@
     <div class="focus-text">
       Platforms described on this page are early-stage concepts. They are intended to explore autonomy frameworks,
       payload integration patterns, and edge-processing architectures across air, surface, and confined interior environments.
-      Each concept is designed around a U.S.-centric supply chain, emphasizing reliability, maintainability, and clean
-      interfaces to existing C2, mapping, and analytics toolchains.
+      Each concept is designed around a U.S.-centric supply chain with an emphasis on reliability, maintainability,
+      and clean interfaces to existing C2, mapping, and analytics toolchains. Technical roadmaps, detailed
+      specifications, and performance envelopes are available for teaming partners and qualified programs under
+      separate discussion.
     </div>
 
-    <!-- MOVED HERE UNDER TEXT -->
     <div class="chip-row">
-      <div class="chip">Concept</div>
+      <div class="chip">concept</div>
       <div class="chip">R&D emphasis</div>
       <div class="chip">U.S. supply chain</div>
     </div>
   </div>
 
-  <!-- PLATFORM FAMILIES -->
-  <div class="section-title">Platform Families</div>
-  <div class="section-subtext">
-    Illustrative concepts spanning close-range ISR, interior recon, maritime perimeter awareness, and distributed swarm constructs.
+  <!-- PLATFORM FAMILIES – QUADRANT GRID -->
+  <div class="platforms-header">
+    <div class="section-title">Platform Families</div>
+    <div class="section-subtext">
+      Illustrative concepts spanning close-range ISR, interior recon, maritime perimeter awareness, and distributed swarm constructs.
+      Naming, payloads, and deployment envelopes are representative and subject to change as work progresses.
+    </div>
   </div>
 
   <div class="grid">
 
-    <!-- AIR ISR -->
+    <!-- Quadrant 1: Air – close-range ISR -->
     <div class="platform-card">
-      <div class="platform-title">Tactical ISR Quadrotor</div>
+      <div class="platform-kicker">Air – Close-range ISR</div>
+      <div class="platform-title">Tactical ISR quadrotor</div>
       <div class="platform-subtext">
-        Close-range multi-sensor reconnaissance quadrotor with edge-AI navigation assisting reduced operator workload in contested environments.
+        Compact multi-sensor airframe concept for close-range reconnaissance, overwatch, and perimeter awareness
+        in contested environments. Envisions onboard perception and navigation assists to reduce operator workload
+        while maintaining human-in-the-loop authority.
       </div>
       <div class="tag-row">
         <div class="tag">VTOL</div>
         <div class="tag">ISR</div>
-        <div class="tag">Edge-AI</div>
         <div class="tag">Low Signature</div>
+        <div class="tag">Edge AI</div>
       </div>
     </div>
 
-    <!-- SWARM -->
+    <!-- Quadrant 2: Swarm & teaming -->
     <div class="platform-card">
-      <div class="platform-title">Distributed Swarm Constructs</div>
+      <div class="platform-kicker">Swarm & Teaming</div>
+      <div class="platform-title">Distributed swarm constructs</div>
       <div class="platform-subtext">
-        Cooperative mesh autonomy research aimed at dispersed, low-cost agents operating as a coordinated swarm.
+        Early-stage autonomy and coordination research aimed at dispersed, low-cost vehicles operating as a
+        cooperative mesh. Focus on resilient comms, graceful degradation, and integration with existing mission-planning
+        tools rather than bespoke stovepipes.
       </div>
       <div class="tag-row">
         <div class="tag">Swarm</div>
@@ -270,11 +328,14 @@
       </div>
     </div>
 
-    <!-- INTERIOR RECON -->
+    <!-- Quadrant 3: Interior recon -->
     <div class="platform-card">
-      <div class="platform-title">Confined-Space Nano-UAS</div>
+      <div class="platform-kicker">Interior Recon</div>
+      <div class="platform-title">Confined-space nano-UAS</div>
       <div class="platform-subtext">
-        Nano-class platform for interior recon with obstacle-dense navigation, low-light sensing, and minimal signature.
+        Concept vehicle sized for interior and sub-terranean reconnaissance with emphasis on obstacle-dense navigation,
+        low-light sensing, and minimal signature. Intended as a modular payload host for mapping, routing, and digital-twin
+        generation in complex spaces.
       </div>
       <div class="tag-row">
         <div class="tag">Interior</div>
@@ -283,11 +344,14 @@
       </div>
     </div>
 
-    <!-- MARITIME ISR -->
+    <!-- Quadrant 4: Maritime & littoral ISR -->
     <div class="platform-card">
-      <div class="platform-title">Carrier-Adjacent Surface ISR Skiff</div>
+      <div class="platform-kicker">Maritime & Littoral ISR</div>
+      <div class="platform-title">Carrier-adjacent surface ISR skiff</div>
       <div class="platform-subtext">
-        Littoral perimeter awareness craft designed for modular mast payloads, AIS awareness, and naval C2 integration.
+        Small unmanned surface concept intended for pier-side and littoral perimeter awareness. Envisions modular
+        sensor masts, AIS awareness, and tight integration with existing naval C2 picture rather than bespoke
+        visualization stacks.
       </div>
       <div class="tag-row">
         <div class="tag">Maritime</div>
