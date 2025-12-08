@@ -6,531 +6,203 @@
   <title>DroneCorp. – Platforms</title>
 
   <style>
-    :root {
-      --bg-main: #02040a;
-      --bg-panel: rgba(5, 10, 20, 0.96);
-      --border-soft: rgba(120, 170, 255, 0.4);
-      --border-hard: rgba(120, 170, 255, 0.75);
-      --text-main: #f5f7ff;
-      --text-muted: #9aa5c3;
-      --accent: #7fcaff;
-      --accent-strong: #41b3ff;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
     html, body {
       margin: 0;
       padding: 0;
-      min-height: 100%;
-      background: radial-gradient(circle at top, #071021 0%, #02040a 55%, #000000 100%);
-      color: var(--text-main);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: Arial, sans-serif;
+      background: #05080c;
+      color: #e8efff;
     }
 
-    body {
-      display: flex;
-      flex-direction: column;
-    }
-
-    a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-
-    /* ---------------------- NAVBAR ---------------------- */
-
-    .nav-shell {
-      position: sticky;
+    /* --- NAVBAR (Unified across all pages) --- */
+    .nav {
+      position: fixed;
       top: 0;
-      z-index: 20;
-      backdrop-filter: blur(22px);
-      background: linear-gradient(to bottom, rgba(2, 4, 10, 0.95), rgba(2, 4, 10, 0.65) 60%, transparent 100%);
-      border-bottom: 1px solid rgba(120, 170, 255, 0.25);
-    }
-
-    .nav-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 16px 24px 12px;
+      left: 0;
+      width: 100%;
+      height: 64px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 0 32px;
+      box-sizing: border-box;
+      z-index: 50;
+      background: linear-gradient(
+        to bottom,
+        rgba(5, 8, 12, 0.95),
+        rgba(5, 8, 12, 0.65),
+        transparent
+      );
+      backdrop-filter: blur(6px);
     }
 
-    .brand-mark {
-      letter-spacing: 0.45em;
-      font-weight: 520;
-      font-size: 15px;
-      text-transform: uppercase;
-      color: var(--text-main);
-      white-space: nowrap;
-    }
-    .brand-mark span {
-      opacity: 0.1;
-      margin-left: 0.3em;
+    .nav-left {
+      font-weight: bold;
+      font-size: 16px;
+      letter-spacing: 6px;
     }
 
-    nav ul {
-      list-style: none;
+    .nav-right {
       display: flex;
       gap: 22px;
-      margin: 0;
-      padding: 0;
-      font-size: 13px;
-      letter-spacing: 0.16em;
+      font-size: 14px;
       text-transform: uppercase;
     }
 
-    nav a {
-      color: var(--text-muted);
+    .nav-right a {
+      color: #dce6ff;
+      opacity: 0.8;
       text-decoration: none;
-      position: relative;
-      padding-bottom: 4px;
-      transition: color 0.18s ease;
+      transition: opacity 0.2s ease;
+    }
+    .nav-right a:hover {
+      opacity: 1;
     }
 
-    nav a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 1px;
-      transform: scaleX(0);
-      transform-origin: center;
-      background: linear-gradient(90deg, transparent, var(--accent-strong), transparent);
-      transition: transform 0.18s ease;
-    }
-
-    nav a:hover {
-      color: var(--accent);
-    }
-    nav a:hover::after {
-      transform: scaleX(1);
-    }
-
-    nav a.active {
-      color: var(--accent-strong);
-    }
-    nav a.active::after {
-      transform: scaleX(1);
-    }
-
-    .nav-burger {
+    .menu-toggle {
       display: none;
-      width: 24px;
-      height: 18px;
-      flex-direction: column;
-      justify-content: space-between;
       cursor: pointer;
-    }
-    .nav-burger span {
-      height: 2px;
-      width: 100%;
-      background: var(--text-main);
+      font-size: 24px;
     }
 
-    /* ---------------------- GRID BACKGROUND ---------------------- */
-
-    .grid-overlay {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 80px 80px;
-      opacity: 0.9;
-    }
-
-    /* ---------------------- MAIN LAYOUT ---------------------- */
-
-    main {
-      flex: 1;
-      max-width: 1200px;
-      margin: 32px auto 40px;
-      padding: 0 24px 40px;
-    }
-
-    .page-kicker {
-      font-size: 11px;
-      letter-spacing: 0.26em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-
-    .page-title {
-      font-size: 28px;
-      font-weight: 560;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin: 0 0 6px;
-    }
-
-    .page-subtitle {
-      margin: 0 0 28px;
-      font-size: 14px;
-      color: var(--text-muted);
-      max-width: 820px;
-      line-height: 1.7;
-    }
-
-    /* ---------------------- DESIGN FOCUS PANEL ---------------------- */
-
-    .design-panel {
-      border: 1px solid rgba(120, 170, 255, 0.32);
-      background:
-        radial-gradient(circle at top left, rgba(120, 170, 255, 0.18), transparent 55%),
-        var(--bg-panel);
-      box-shadow: 0 28px 44px rgba(0, 0, 0, 0.9);
-      padding: 22px 24px 22px;
-      margin-bottom: 32px;
-    }
-
-    .panel-label {
-      font-size: 11px;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
-    .design-heading {
-      margin: 0 0 12px;
-      font-size: 18px;
-      font-weight: 550;
-    }
-
-    .design-panel p {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.7;
-      margin: 0 0 10px;
-    }
-
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .chip {
-      border: 1px solid rgba(120, 170, 255, 0.5);
-      padding: 4px 10px;
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      background: radial-gradient(circle at top, rgba(120, 170, 255, 0.22), transparent 70%);
-    }
-
-    /* ---------------------- PLATFORM FAMILIES ---------------------- */
-
-    .section-kicker {
-      margin-top: 24px;
-      margin-bottom: 6px;
-      font-size: 12px;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-
-    .section-intro {
-      font-size: 14px;
-      color: var(--text-muted);
-      max-width: 920px;
-      line-height: 1.7;
-      margin-bottom: 20px;
-    }
-
-    .platform-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
-      gap: 18px 20px;
-      margin-bottom: 32px;
-    }
-
-    .platform-card {
-      border: 1px solid rgba(120, 170, 255, 0.24);
-      background:
-        radial-gradient(circle at top right, rgba(120, 170, 255, 0.16), transparent 60%),
-        rgba(3, 7, 16, 0.96);
-      box-shadow: 0 18px 30px rgba(0, 0, 0, 0.9);
-      padding: 16px 18px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .platform-kicker {
-      font-size: 11px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    .platform-title {
-      margin: 2px 0 4px;
-      font-size: 16px;
-      font-weight: 540;
-    }
-
-    .platform-body {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.65;
-    }
-
-    .meta-row {
-      margin-top: 6px;
-      font-size: 11px;
-      color: #7c88a8;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .meta-row span.meta-label {
-      opacity: 0.7;
-      margin-right: 4px;
-    }
-
-    .tag-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
-
-    .tag-pill {
-      border-radius: 999px;
-      border: 1px solid rgba(120, 170, 255, 0.45);
-      padding: 3px 9px;
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      background: rgba(9, 16, 32, 0.9);
-    }
-
-    /* ---------------------- FOOTER ---------------------- */
-
-    footer {
-      border-top: 1px solid rgba(120, 170, 255, 0.18);
-      font-size: 11px;
-      color: var(--text-muted);
-      padding: 12px 24px 18px;
-      text-align: center;
-    }
-
-    /* ---------------------- RESPONSIVE ---------------------- */
-
-    @media (max-width: 900px) {
-      .nav-inner {
-        padding-inline: 16px;
+    @media (max-width: 760px) {
+      .menu-toggle {
+        display: block;
       }
-      main {
-        padding-inline: 16px;
-      }
-      .platform-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .design-panel {
-        padding-inline: 18px;
-      }
-    }
-
-    @media (max-width: 720px) {
-      nav ul {
-        display: none;
-      }
-      .nav-burger {
-        display: flex;
-      }
-      .nav-shell.open nav ul {
+      .nav-right {
         position: absolute;
-        top: 52px;
+        top: 64px;
         right: 0;
-        left: 0;
-        padding: 10px 16px 12px;
-        background: rgba(2, 4, 10, 0.98);
-        display: flex;
+        background: rgba(5, 8, 12, 0.97);
         flex-direction: column;
-        gap: 10px;
-        border-bottom: 1px solid rgba(120, 170, 255, 0.25);
+        align-items: flex-start;
+        padding: 12px 18px;
+        display: none;
+        width: 200px;
+        border-bottom-left-radius: 12px;
+        border-left: 1px solid rgba(123,189,255,0.25);
+        border-bottom: 1px solid rgba(123,189,255,0.25);
       }
+      .nav-right.show {
+        display: flex;
+      }
+    }
+
+    /* --- PAGE STYLES --- */
+    main {
+      padding: 120px 32px 60px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    h1 {
+      font-size: 34px;
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      color: #92a4c7;
+      max-width: 720px;
+      line-height: 1.5;
+    }
+
+    .section-title {
+      margin-top: 60px;
+      margin-bottom: 12px;
+      letter-spacing: 3px;
+      color: #7fbaff;
+      text-transform: uppercase;
+      font-size: 14px;
+    }
+
+    .panel {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(127,202,255,0.25);
+      padding: 22px;
+      margin-bottom: 28px;
+      border-radius: 8px;
+    }
+
+    .panel h2 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 20px;
+    }
+
+    .panel p {
+      color: #b8c7e3;
+      line-height: 1.55;
     }
   </style>
 </head>
+
 <body>
 
-<div class="grid-overlay"></div>
+<!-- NAV -->
+<header class="nav">
+  <div class="nav-left">DRONECORP.</div>
 
-<header class="nav-shell" id="navShell">
-  <div class="nav-inner">
-    <div class="brand-mark">DRONECORP<span>.</span></div>
+  <div class="menu-toggle" id="menuToggle">☰</div>
 
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="platforms.html" class="active">Platforms</a></li>
-        <li><a href="focus-areas.html">Focus Areas</a></li>
-        <li><a href="programs.html">Programs</a></li>
-        <li><a href="partner.html">Partner</a></li>
-        <li><a href="careers.html">Careers</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-
-    <div class="nav-burger" id="navBurger" aria-label="Toggle navigation" role="button">
-      <span></span><span></span><span></span>
-    </div>
-  </div>
+  <nav class="nav-right" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="platforms.html">Platforms</a>
+    <a href="focus.html">Focus Areas</a>
+    <a href="programs.html">Programs</a>
+    <a href="partner.html">Partner</a>
+    <a href="careers.html">Careers</a>
+    <a href="contact.html">Contact</a>
+  </nav>
 </header>
 
 <main>
-  <!-- PAGE HEADER -->
-  <div class="page-kicker">Multi-domain unmanned systems</div>
-  <h1 class="page-title">Concept platforms under evaluation</h1>
-  <p class="page-subtitle">
-    DroneCorp. explores modular air, maritime, and interior-recon architectures intended to interface with
-    existing command-and-control ecosystems. Current work is focused on design studies, prototyping pathways,
-    and integration concepts rather than fielded product.
+
+  <h1>Concept Platforms Under Evaluation</h1>
+  <p class="subtitle">
+    DroneCorp. explores modular air, maritime, and interior-recon architectures designed to integrate with existing command-and-control ecosystems. Work is centered on design studies, prototyping pathways, and integration concepts.
   </p>
 
-  <!-- DESIGN FOCUS PANEL -->
-  <section class="design-panel">
-    <div class="panel-label">Design focus</div>
-    <h2 class="design-heading">Applied unmanned systems R&amp;D</h2>
+  <div class="section-title">Design Focus</div>
+  <div class="panel">
+    <h2>Applied unmanned systems R&D</h2>
     <p>
-      Platforms described on this page are early-stage concepts used to explore autonomy frameworks,
-      payload integration patterns, and edge-processing architectures across air, surface, and confined
-      interior environments.
+      Early-stage exploration of autonomy frameworks, payload integration patterns, and edge-processing architectures across air, surface, and confined interior environments.
     </p>
+  </div>
+
+  <div class="section-title">Platform Families</div>
+
+  <div class="panel">
+    <h2>Tactical ISR Quadrotor</h2>
     <p>
-      Each concept is designed around a U.S.-centric supply chain with an emphasis on reliability,
-      maintainability, and clean interfaces to existing C2, mapping, and analytics toolchains.
-      Technical roadmaps and detailed specifications are available for teaming partners and qualified
-      programs under separate discussion.
+      Multi-sensor close-range reconnaissance platform emphasizing low signature, edge-AI navigation helps reduce operator workload while maintaining human-on-the-loop authority.
     </p>
-    <div class="chip-row">
-      <div class="chip">Concept only</div>
-      <div class="chip">R&amp;D emphasis</div>
-      <div class="chip">U.S. supply chain</div>
-    </div>
-  </section>
+  </div>
 
-  <!-- PLATFORM FAMILIES INTRO -->
-  <h3 class="section-kicker">Platform families</h3>
-  <p class="section-intro">
-    Illustrative concepts spanning close-range ISR, interior recon, maritime perimeter awareness, and
-    distributed swarm constructs. Naming, payloads, and deployment envelopes are representative and
-    subject to change.
-  </p>
+  <div class="panel">
+    <h2>Distributed Swarm Constructs</h2>
+    <p>
+      Research into cooperative mesh autonomy, resilient comms, graceful degradation, and integration with existing mission-planning tools rather than bespoke stovepipes.
+    </p>
+  </div>
 
-  <!-- PLATFORM GRID -->
-  <section class="platform-grid">
-    <!-- Tactical ISR quadrotor -->
-    <article class="platform-card">
-      <div class="platform-kicker">Air – Close-range ISR</div>
-      <h4 class="platform-title">Tactical ISR quadrotor</h4>
-      <p class="platform-body">
-        Compact multi-sensor airframe concept for close-range reconnaissance, overwatch, and perimeter
-        awareness in contested environments. Envisions onboard perception, navigation assists, and mission
-        logic designed to reduce operator workload while maintaining human-in-the-loop authority.
-      </p>
-      <div class="meta-row">
-        <span class="meta-label">Stage:</span> Concept study – pre-prototype
-      </div>
-      <div class="tag-row">
-        <span class="tag-pill">VTOL</span>
-        <span class="tag-pill">ISR</span>
-        <span class="tag-pill">Low signature</span>
-        <span class="tag-pill">Edge AI</span>
-      </div>
-    </article>
+  <div class="panel">
+    <h2>Confined-Space Nano-UAS</h2>
+    <p>
+      Interior reconnaissance vehicle for sub-terrain and low-light conditions. Supports mapping, routing, and digital-twin generation in complex spaces.
+    </p>
+  </div>
 
-    <!-- Distributed swarm constructs -->
-    <article class="platform-card">
-      <div class="platform-kicker">Swarm &amp; teaming</div>
-      <h4 class="platform-title">Distributed swarm constructs</h4>
-      <p class="platform-body">
-        Early-stage autonomy and coordination research aimed at dispersed, low-cost vehicles operating as a
-        cooperative mesh. Focus on resilient comms, graceful degradation, and integration with existing
-        mission-planning tools rather than bespoke stovepipes.
-      </p>
-      <div class="meta-row">
-        <span class="meta-label">Stage:</span> Algorithmic concepts – lab validation
-      </div>
-      <div class="tag-row">
-        <span class="tag-pill">Swarm</span>
-        <span class="tag-pill">Mesh networking</span>
-        <span class="tag-pill">Open API</span>
-      </div>
-    </article>
-
-    <!-- Confined-space nano-UAS -->
-    <article class="platform-card">
-      <div class="platform-kicker">Interior recon</div>
-      <h4 class="platform-title">Confined-space nano-UAS</h4>
-      <p class="platform-body">
-        Concept vehicle sized for interior and sub-terrain reconnaissance with emphasis on obstacle-dense
-        navigation, low-light sensing, and minimal signature. Intended as a modular payload host for mapping,
-        routing, and digital-twin generation in complex spaces.
-      </p>
-      <div class="meta-row">
-        <span class="meta-label">Stage:</span> Requirements shaping
-      </div>
-      <div class="tag-row">
-        <span class="tag-pill">Interior</span>
-        <span class="tag-pill">Mapping</span>
-        <span class="tag-pill">Low light</span>
-      </div>
-    </article>
-
-    <!-- Littoral perimeter ISR -->
-    <article class="platform-card">
-      <div class="platform-kicker">Maritime &amp; littoral</div>
-      <h4 class="platform-title">Carrier-adjacent perimeter ISR</h4>
-      <p class="platform-body">
-        Notional unmanned platform family intended to extend situational awareness around carrier
-        strike groups and high-value maritime assets. Concepts emphasize launch-and-recover simplicity,
-        line-of-sight relay, and integration into existing watchfloor workflows.
-      </p>
-      <div class="meta-row">
-        <span class="meta-label">Stage:</span> Architecture &amp; interface studies
-      </div>
-      <div class="tag-row">
-        <span class="tag-pill">Maritime</span>
-        <span class="tag-pill">Perimeter ISR</span>
-        <span class="tag-pill">C2 integration</span>
-      </div>
-    </article>
-  </section>
 </main>
 
-<footer>
-  © 2025 DroneCorp. All rights reserved.
-</footer>
-
 <script>
-  // Mobile nav toggle
-  const navShell = document.getElementById('navShell');
-  const burger = document.getElementById('navBurger');
+  const menuToggle = document.getElementById("menuToggle");
+  const navLinks = document.getElementById("navLinks");
 
-  if (burger) {
-    burger.addEventListener('click', () => {
-      navShell.classList.toggle('open');
-    });
-  }
+  menuToggle.addEventListener("click", () => {
+    navLinks.classList.toggle("show");
+  });
 </script>
 
 </body>
