@@ -4,118 +4,175 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DroneCorp.</title>
-
   <style>
-    /* GLOBAL RESET */
+    :root {
+      --bg-main: #05080c;
+      --nav-bg-top: rgba(5,8,12,0.96);
+      --nav-bg-mid: rgba(5,8,12,0.70);
+      --text-main: #f5f7ff;
+      --text-muted: #a0acc7;
+      --accent: #7fcaff;
+    }
+
+    * { box-sizing: border-box; }
+
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       width: 100%;
       overflow-x: hidden;
-      background: #05080c;
-      font-family: Arial, sans-serif;
-      color: white;
+      background: var(--bg-main);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text-main);
     }
 
     a {
-      color: #7fcaff;
+      color: var(--accent);
       text-decoration: none;
     }
-    a:hover {
-      text-decoration: underline;
-    }
+    a:hover { text-decoration: underline; }
 
-    /* BACKGROUND VIDEO */
-    #video-bg {
+    /* SHARED NAVBAR (same on all pages) */
+    .nav-shell {
       position: fixed;
       top: 0;
       left: 0;
+      right: 0;
+      z-index: 20;
+      background: linear-gradient(to bottom, var(--nav-bg-top), var(--nav-bg-mid), transparent);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(127,202,255,0.18);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 24px 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    .brand-mark {
+      font-weight: 600;
+      letter-spacing: 0.45em;
+      font-size: 15px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .brand-mark span {
+      margin-left: 0.25em;
+      opacity: 0.9;
+    }
+
+    .nav-links {
+      margin-left: auto;
+      display: flex;
+      gap: 22px;
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .nav-links a {
+      color: #dbe4ff;
+      text-decoration: none;
+      padding-bottom: 4px;
+      position: relative;
+      opacity: 0.8;
+      transition: opacity 0.18s ease;
+    }
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.18s ease;
+    }
+    .nav-links a:hover {
+      opacity: 1;
+    }
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      transform: scaleX(1);
+    }
+    .nav-links a.active {
+      opacity: 1;
+      color: var(--accent);
+    }
+
+    .nav-burger {
+      display: none;
+      margin-left: auto;
+      width: 24px;
+      height: 18px;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+    .nav-burger span {
+      height: 2px;
+      width: 100%;
+      background: var(--text-main);
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        padding-inline: 16px;
+      }
+      .nav-links {
+        display: none;
+      }
+      .nav-burger {
+        display: flex;
+      }
+      .nav-shell.open .nav-links {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 52px;
+        right: 0;
+        left: 0;
+        background: rgba(5,8,12,0.98);
+        padding: 10px 18px 14px;
+        border-bottom: 1px solid rgba(127,202,255,0.25);
+      }
+    }
+
+    /* BACKGROUND VIDEO + OVERLAYS */
+    #video-bg {
+      position: fixed;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
       z-index: 0;
-      filter: brightness(45%);
+      filter: brightness(0.48);
       background: black;
     }
 
-    /* OVERLAYS */
     .darkener {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        rgba(0,0,0,0.30),
-        rgba(0,0,0,0.55)
-      );
+      inset: 0;
+      background: linear-gradient(rgba(0,0,0,0.38), rgba(0,0,0,0.65));
       z-index: 1;
       pointer-events: none;
     }
 
     .hud-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
+      inset: 0;
       z-index: 1;
+      pointer-events: none;
       background-image:
         linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
       background-size: 55px 55px;
-    }
-
-    /* TOP NAV */
-    .nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 32px;
-      box-sizing: border-box;
-      z-index: 20;
-      background: linear-gradient(to bottom,
-        rgba(5,8,12,0.95),
-        rgba(5,8,12,0.65),
-        transparent
-      );
-      backdrop-filter: blur(6px);
-    }
-
-    .nav-left {
-      font-weight: bold;
-      letter-spacing: 6px;
-      font-size: 16px;
-    }
-
-    .nav-right {
-      display: flex;
-      gap: 20px;
-      font-size: 14px;
-      text-transform: uppercase;
-    }
-
-    .nav-right a {
-      color: #dce6ff;
-      opacity: 0.8;
-    }
-    .nav-right a:hover {
-      opacity: 1;
-    }
-
-    /* Mobile nav toggle */
-    .menu-toggle {
-      display: none;
-      cursor: pointer;
-      font-size: 22px;
-      user-select: none;
     }
 
     /* HERO */
@@ -126,127 +183,83 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      z-index: 5;
     }
 
     .center-box {
-      position: relative;
       text-align: center;
-      z-index: 10;
       max-width: 720px;
       padding: 0 16px;
     }
 
     .center-box h1 {
       font-size: 54px;
-      font-weight: bold;
-      letter-spacing: 12px;
-      margin: 0 0 12px 0;
-      text-shadow: 0 0 8px rgba(255,255,255,0.45);
-    }
-
-    .glow-blue {
-      color: #e9f3ff;
-      text-shadow:
-        0 0 6px rgba(127,202,255,0.8),
-        0 0 14px rgba(127,202,255,0.5);
+      letter-spacing: 0.9em;
+      margin: 0 0 12px;
+      text-indent: 0.9em;
+      text-shadow: 0 0 8px rgba(255,255,255,0.4);
     }
 
     .subtitle {
       font-size: 18px;
-      opacity: 0.9;
       margin: 4px 0;
+      opacity: 0.92;
     }
 
     .tagline {
       font-size: 14px;
       text-transform: uppercase;
-      letter-spacing: 2px;
-      opacity: 0.85;
-      color: #7fcaff;
-      margin: 6px 0 0 0;
-      min-height: 1.2em; /* keeps layout stable while typing */
+      letter-spacing: 0.22em;
+      color: var(--accent);
+      margin-top: 8px;
+      min-height: 1.2em;
     }
 
     .footer {
       position: absolute;
       bottom: 18px;
       left: 0;
-      width: 100%;
+      right: 0;
       text-align: center;
       font-size: 11px;
       color: #7282a5;
-      opacity: 0.8;
+      opacity: 0.85;
       z-index: 5;
-      pointer-events: none;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-      .nav {
-        padding: 0 18px;
-      }
-      .nav-right {
-        gap: 12px;
-        font-size: 12px;
-      }
     }
 
     @media (max-width: 700px) {
-      .hero-wrapper {
-        height: 90vh;
-        min-height: 380px;
-      }
-
       .center-box h1 {
         font-size: 32px;
-        letter-spacing: 6px;
+        letter-spacing: 0.5em;
+        text-indent: 0.5em;
       }
-
-      .subtitle {
-        font-size: 15px;
-      }
-
-      .tagline {
-        font-size: 12px;
-      }
-
-      .nav {
-        height: 56px;
-        padding: 0 14px;
-      }
-
-      .nav-left {
-        font-size: 14px;
-        letter-spacing: 4px;
-      }
-
-      /* turn on burger menu */
-      .menu-toggle {
-        display: block;
-      }
-
-      .nav-right {
-        position: absolute;
-        top: 56px;
-        right: 0;
-        background: rgba(5,10,18,0.97);
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 10px 18px 12px;
-        border-bottom-left-radius: 12px;
-        border-left: 1px solid rgba(123,189,255,0.25);
-        border-bottom: 1px solid rgba(123,189,255,0.25);
-        display: none; /* hidden until toggled */
-      }
-
-      .nav-right.show {
-        display: flex;
-      }
+      .subtitle { font-size: 15px; }
+      .tagline { font-size: 12px; }
     }
   </style>
 </head>
-
 <body>
+  <!-- NAVBAR -->
+  <header class="nav-shell" id="navShell">
+    <div class="nav-inner">
+      <div class="brand-mark">DRONECORP<span>.</span></div>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html" class="active">Home</a>
+        <a href="platforms.html">Platforms</a>
+        <a href="focus-areas.html">Focus Areas</a>
+        <a href="programs.html">Programs</a>
+        <a href="partner.html">Partner</a>
+        <a href="careers.html">Careers</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="nav-burger" id="navBurger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </header>
+
   <!-- BACKGROUND VIDEO -->
   <video id="video-bg" autoplay muted playsinline></video>
 
@@ -254,37 +267,21 @@
   <div class="darkener"></div>
   <div class="hud-overlay"></div>
 
-  <!-- NAV -->
-  <header class="nav">
-    <div class="nav-left">DRONECORP.</div>
-    <div class="menu-toggle" id="menuToggle">☰</div>
-    <nav class="nav-right" id="navLinks">
-      <a href="index.html">Home</a>
-      <a href="platforms.html">Platforms</a>
-      <a href="focus.html">Focus Areas</a>
-      <a href="focus.html#programs">Programs</a>
-      <a href="careers.html#partner">Partner</a>
-      <a href="careers.html">Careers</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-  </header>
-
   <!-- HERO -->
-  <div class="hero-wrapper">
-    <div class="center-box">
-      <h1 class="glow-blue">DRONECORP.</h1>
+  <main class="hero-wrapper">
+    <section class="center-box">
+      <h1>DRONECORP.</h1>
       <p class="subtitle">American-made unmanned aerial systems.</p>
       <p id="tagline" class="tagline"></p>
-    </div>
+    </section>
 
     <div class="footer">
-      © <span id="year"></span> DroneCorp. Conceptual material for discussion; not all
-      capabilities shown are available or fielded.
+      © <span id="year"></span> DroneCorp. Conceptual material for discussion; not all capabilities shown are available or fielded.
     </div>
-  </div>
+  </main>
 
   <script>
-    /* VIDEO ROTATION */
+    // VIDEO ROTATION
     const video = document.getElementById("video-bg");
     const sequences = [
       "assets/drone_desert.mp4",
@@ -294,8 +291,8 @@
     ];
     let current = 0;
 
-    function playVideo(index) {
-      video.src = sequences[index];
+    function playVideo(idx) {
+      video.src = sequences[idx];
       video.load();
       video.play().catch(() => {
         setTimeout(() => video.play().catch(() => {}), 200);
@@ -309,44 +306,34 @@
 
     playVideo(0);
 
-    /* YEAR IN FOOTER */
+    // YEAR
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    /* FAST TYPE-OUT TAGLINE */
+    // FAST TYPE-OUT TAGLINE
     const taglineEl = document.getElementById("tagline");
     const taglineText = "EMERGING CONCEPTS IN AUTONOMOUS ISR AND TACTICAL ROBOTICS.";
 
-    function typeTextFast(el, text, speed) {
+    (function typeTextFast(el, text, speed) {
       el.textContent = "";
       let i = 0;
-      const interval = setInterval(() => {
+      const timer = setInterval(() => {
         el.textContent += text.charAt(i);
         i++;
-        if (i >= text.length) {
-          clearInterval(interval);
-        }
+        if (i >= text.length) clearInterval(timer);
       }, speed);
-    }
+    })(taglineEl, taglineText, 10);
 
-    // quick, almost-instant terminal feel
-    typeTextFast(taglineEl, taglineText, 10);
+    // MOBILE NAV TOGGLE
+    const navShell = document.getElementById("navShell");
+    const navBurger = document.getElementById("navBurger");
 
-    /* MOBILE NAV TOGGLE */
-    const menuToggle = document.getElementById("menuToggle");
-    const navLinks = document.getElementById("navLinks");
+    navBurger.addEventListener("click", () => {
+      navShell.classList.toggle("open");
+    });
 
-    if (menuToggle && navLinks) {
-      menuToggle.addEventListener("click", () => {
-        navLinks.classList.toggle("show");
-      });
-
-      // close menu when a link is tapped on mobile
-      navLinks.querySelectorAll("a").forEach(a => {
-        a.addEventListener("click", () => {
-          navLinks.classList.remove("show");
-        });
-      });
-    }
+    document.querySelectorAll(".nav-links a").forEach(a => {
+      a.addEventListener("click", () => navShell.classList.remove("open"));
+    });
   </script>
 </body>
 </html>
