@@ -1,0 +1,66 @@
+@media (max-width: 768px) {
+    /* HERO SECTION */
+    .hero-container {
+        padding-top: 60px;
+        padding-bottom: 60px;
+        text-align: center;
+    }
+
+    .hero-title {
+        font-size: 32px;
+        letter-spacing: 0.15em;
+    }
+
+    .hero-subtitle {
+        font-size: 15px;
+        margin-top: 8px;
+    }
+
+    .hero-tagline {
+        font-size: 13px;
+        margin-top: 12px;
+    }
+
+    /* NAVBAR */
+    nav {
+        padding: 14px 20px;
+    }
+
+    nav .logo {
+        font-size: 20px;
+        letter-spacing: 0.18em;
+    }
+
+    nav ul {
+        gap: 14px;
+    }
+
+    /* CAREERS PAGE */
+    .careers-header {
+        padding: 50px 20px;
+    }
+
+    .careers-header h1 {
+        font-size: 26px;
+        line-height: 1.2;
+    }
+
+    .careers-header p {
+        font-size: 15px;
+        line-height: 1.5;
+        margin-top: 8px;
+    }
+
+    /* SECTION SPACING */
+    section {
+        padding: 40px 20px;
+    }
+
+    /* Universal width fix */
+    .content-wrapper {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 16px;
+        box-sizing: border-box;
+    }
+}
