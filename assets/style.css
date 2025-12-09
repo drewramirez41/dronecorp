@@ -287,26 +287,57 @@ body {
     margin-top: 30px;
 }
 
+/* ===== Careers role cards ===== */
+
 .role-grid {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
 }
 
 .role-card {
+    position: relative;
     border-radius: 18px;
-    border: 1px solid rgba(135,155,255,0.35);
-    background: radial-gradient(circle at top left, rgba(47,141,255,0.22), rgba(4,7,25,0.98));
-    padding: 14px 18px;
-    box-shadow: 0 18px 42px rgba(0,0,0,0.8);
+    border: 1px solid rgba(135,155,255,0.32);
+    background: radial-gradient(circle at top left, rgba(47,141,255,0.18), rgba(4,7,25,0.98));
+    padding: 16px 18px 14px;
+    box-shadow: 0 14px 32px rgba(0,0,0,0.8);
+    overflow: hidden;
+    cursor: pointer;
+    transform: translateY(0);
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease;
+}
+
+.role-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top left, rgba(90,180,255,0.18), transparent 60%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+}
+
+.role-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(147,174,255,0.7);
+    box-shadow: 0 20px 44px rgba(0,0,0,0.95);
+}
+
+.role-card:hover::before {
+    opacity: 1;
 }
 
 .role-header {
+    position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 12px;
-    cursor: pointer;
 }
 
 .role-title-block {
@@ -318,7 +349,7 @@ body {
 .role-title {
     font-size: 15px;
     text-transform: uppercase;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.17em;
     color: #ffffff;
 }
 
@@ -339,33 +370,50 @@ body {
     letter-spacing: 0.14em;
     text-transform: uppercase;
     border-radius: 999px;
-    padding: 4px 8px;
-    border: 1px solid rgba(135,155,255,0.7);
+    padding: 3px 8px 4px;
+    border: 1px solid rgba(135,155,255,0.8);
     color: #c1cffb;
-    background: rgba(6,10,35,0.9);
+    background: rgba(6,10,35,0.95);
 }
 
 .role-chevron {
     font-size: 18px;
     color: #8ea2ff;
-    transition: transform 0.18s ease;
+    transition: transform 0.18s ease, color 0.18s ease;
+    margin-top: 2px;
 }
 
 .role-card.open .role-chevron {
     transform: rotate(90deg);
+    color: #ffffff;
 }
 
+/* collapsed details with smooth open/close */
 .role-body {
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px solid rgba(135,155,255,0.25);
     font-size: 14px;
     color: #c8d2ff;
-    display: none;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+        max-height 0.22s ease,
+        opacity 0.18s ease;
 }
 
 .role-card.open .role-body {
-    display: block;
+    max-height: 340px; /* enough for bullets; adjust if needed */
+    opacity: 1;
+}
+
+.role-body h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.17em;
+    color: #8fa2ff;
+    margin-bottom: 4px;
 }
 
 .role-body ul {
@@ -376,6 +424,24 @@ body {
 .role-body li {
     margin-bottom: 4px;
 }
+
+/* subtle scroll-in animation */
+.role-card {
+    opacity: 0;
+    transform: translateY(12px);
+}
+
+.role-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+        opacity 0.28s ease,
+        transform 0.28s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease;
+}
+
 
 /* Apply panel */
 .apply-panel {
