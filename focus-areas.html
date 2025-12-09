@@ -1,285 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>DroneCorp. – Focus Areas</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <style>
-    :root {
-      --bg-main: #02040a;
-      --panel: #050914;
-      --text-main: #f5f7ff;
-      --text-muted: #9aa5c3;
-      --accent: #7fcaff;
-      --accent-strong: #41b3ff;
-    }
-
-    * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      min-height: 100%;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #050a18 0%, #02040a 55%, #000 100%);
-      color: var(--text-main);
-    }
-
-    a { color: inherit; text-decoration: none; }
-
-    /* NAV (same) */
-    .nav-shell {
-      position: fixed; top: 0; left: 0; right: 0;
-      z-index: 100;
-      background: linear-gradient(to bottom,
-        rgba(5, 8, 12, 0.96),
-        rgba(5, 8, 12, 0.70),
-        transparent);
-      backdrop-filter: blur(8px);
-    }
-    .nav-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 14px 32px 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .brand-mark {
-      font-size: 15px;
-      letter-spacing: 0.45em;
-      font-weight: 520;
-      text-transform: uppercase;
-      color: #f5f7ff;
-      white-space: nowrap;
-      display: inline-flex;
-      align-items: baseline;
-    }
-    .brand-dot {
-      font-size: 0.6em;
-      margin-left: 0.18em;
-      transform: translateY(-0.05em);
-      opacity: 0.85;
-    }
-    .main-nav {
-      display: flex;
-      gap: 22px;
-      font-size: 13px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-    .main-nav a {
-      color: #c6d2f5;
-      padding-bottom: 4px;
-      position: relative;
-      opacity: 0.82;
-      transition: color 0.16s ease, opacity 0.16s ease;
-    }
-    .main-nav a::after {
-      content: "";
-      position: absolute;
-      left: 0; right: 0; bottom: 0;
-      height: 1px;
-      transform: scaleX(0);
-      transform-origin: center;
-      background: linear-gradient(90deg, transparent, var(--accent-strong), transparent);
-      transition: transform 0.16s ease;
-    }
-    .main-nav a:hover {
-      color: var(--accent);
-      opacity: 1;
-    }
-    .main-nav a:hover::after { transform: scaleX(1); }
-    .main-nav a.active {
-      color: var(--accent-strong);
-      opacity: 1;
-    }
-    .main-nav a.active::after { transform: scaleX(1); }
-    @media (max-width: 768px) {
-      .nav-inner { padding: 12px 16px 8px; }
-      .main-nav { gap: 12px; font-size: 11px; }
-      .brand-mark { font-size: 13px; letter-spacing: 0.35em; }
-    }
-
-    .grid-overlay {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
-      background-size: 70px 70px;
-      opacity: 0.8;
-    }
-
-    .page-wrap {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 96px 32px 40px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .kicker {
-      font-size: 11px;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 6px;
-    }
-
-    h1.page-title {
-      margin: 0 0 8px;
-      font-size: 28px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      font-weight: 560;
-    }
-
-    .page-lead {
-      margin: 0 0 28px;
-      font-size: 14px;
-      color: var(--text-muted);
-      max-width: 880px;
-      line-height: 1.6;
-    }
-
-    .focus-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px 20px;
-    }
-
-    .focus-card {
-      background: radial-gradient(circle at top left, rgba(120,170,255,0.16), transparent 60%), var(--panel);
-      border-radius: 14px;
-      border: 1px solid rgba(120,170,255,0.35);
-      padding: 18px 18px 16px;
-      box-shadow: 0 20px 36px rgba(0,0,0,0.9);
-      transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease;
-    }
-
-    .focus-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(120,170,255,0.9);
-      box-shadow: 0 24px 44px rgba(0,0,0,0.95);
-    }
-
-    .focus-title {
-      font-size: 15px;
-      font-weight: 540;
-      margin-bottom: 6px;
-    }
-
-    .focus-tagline {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-
-    .focus-body {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    @media (max-width: 960px) {
-      .page-wrap { padding: 92px 20px 32px; }
-      .focus-grid { grid-template-columns: minmax(0,1fr); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DroneCorp – Focus Areas</title>
+    <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <div class="grid-overlay"></div>
+<div class="page">
+    <header class="navbar">
+        <div class="navbar-brand">DRONECORP<span class="navbar-dot">.</span></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="platforms.html">Platforms</a></li>
+                <li><a href="focus-areas.html" class="active">Focus Areas</a></li>
+                <li><a href="programs.html">Programs</a></li>
+                <li><a href="partner.html">Partner</a></li>
+                <li><a href="careers.html">Careers</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <header class="nav-shell">
-    <div class="nav-inner">
-      <a href="index.html" class="brand-mark">
-        DRONECORP<span class="brand-dot">.</span>
-      </a>
-      <nav class="main-nav">
-        <a href="index.html">Home</a>
-        <a href="platforms.html">Platforms</a>
-        <a href="focus-areas.html" class="active">Focus Areas</a>
-        <a href="programs.html">Programs</a>
-        <a href="partner.html">Partner</a>
-        <a href="careers.html">Careers</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-    </div>
-  </header>
+    <main class="main">
+        <section class="section">
+            <div class="section-narrow">
+                <div class="section-title-kicker">Focus Areas</div>
+                <h1 class="section-title">Autonomous ISR and tactical robotics</h1>
+                <p class="section-body">
+                    We focus on the pieces that make small UAS operationally useful: reliable autonomy building blocks,
+                    resilient links, and ground systems that keep crews in control without drowning them in UI.
+                </p>
 
-  <main class="page-wrap">
-    <div class="kicker">Technical focus</div>
-    <h1 class="page-title">Focus Areas</h1>
-    <p class="page-lead">
-      DroneCorp. is oriented around autonomy, perception, and integration work that connects unmanned platforms
-      into existing command-and-control and analytics ecosystems. Focus areas below outline where early-stage teaming
-      and research conversations are most relevant.
-    </p>
+                <div class="card-grid">
+                    <article class="card">
+                        <h2 class="card-title">Autonomy primitives</h2>
+                        <p class="card-body">
+                            Low-level behaviors such as hold, follow, orbit, waypoint stitching, and indoor navigation
+                            that can be composed into mission-specific playbooks.
+                        </p>
+                    </article>
+                    <article class="card">
+                        <h2 class="card-title">Links &amp; sensing</h2>
+                        <p class="card-body">
+                            RF-aware designs that respect contested environments—prioritizing link budget, interference
+                            awareness, and clear paths to export-controlled variants.
+                        </p>
+                    </article>
+                    <article class="card">
+                        <h2 class="card-title">Ground systems</h2>
+                        <p class="card-body">
+                            Ground control experiences that present only what matters to the operator, with hooks for
+                            integration into existing tactical networks and C2 stacks.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
 
-    <section class="focus-grid">
-      <article class="focus-card">
-        <div class="focus-title">Autonomy &amp; Edge AI</div>
-        <div class="focus-tagline">Onboard decision support</div>
-        <p class="focus-body">
-          Lightweight autonomy stacks, assistive navigation, and perception pipelines tuned for constrained compute.
-          Emphasis on explainable behaviors, tunable levels of human-in-the-loop control, and clean interfaces into
-          higher-level mission planning tools.
-        </p>
-      </article>
-
-      <article class="focus-card">
-        <div class="focus-title">Navigation &amp; State Estimation</div>
-        <div class="focus-tagline">Challenged environments</div>
-        <p class="focus-body">
-          Visual-inertial odometry, GPS-degraded navigation, and place-recognition approaches for interior and urban
-          operations. Focused on robust state estimation that can be exposed via simple, documented APIs.
-        </p>
-      </article>
-
-      <article class="focus-card">
-        <div class="focus-title">Communications &amp; Networking</div>
-        <div class="focus-tagline">Swarm &amp; mesh constructs</div>
-        <p class="focus-body">
-          Resilient, low-bandwidth comms, mesh networking between vehicles, and efficient telemetry formats. Priority on
-          working within existing radios and waveforms rather than bespoke hardware wherever possible.
-        </p>
-      </article>
-
-      <article class="focus-card">
-        <div class="focus-title">Mission Systems &amp; Tooling</div>
-        <div class="focus-tagline">Operator-centric workflows</div>
-        <p class="focus-body">
-          Mission-planning UIs, replay and debrief tooling, and automation that reduces operator workload while keeping
-          critical decisions transparent. Integration with existing C2, TDL, and analytics pipelines is favored over
-          standalone tooling.
-        </p>
-      </article>
-
-      <article class="focus-card">
-        <div class="focus-title">Test, Safety &amp; Validation</div>
-        <div class="focus-tagline">Operational realism</div>
-        <p class="focus-body">
-          Structured flight-test approaches, safety cases, and instrumentation to characterize autonomy performance.
-          Emphasis on reproducible test harnesses and data products that partner teams can reuse.
-        </p>
-      </article>
-
-      <article class="focus-card">
-        <div class="focus-title">Manufacturing &amp; Supply Chain</div>
-        <div class="focus-tagline">U.S.-centric sourcing</div>
-        <p class="focus-body">
-          Practical manufacturing paths for small-batch and low-rate production using a U.S.-leaning supply chain.
-          Work includes design-for-manufacture considerations, documentation, and options for future scaling with
-          qualified partners.
-        </p>
-      </article>
-    </section>
-  </main>
+    <footer class="footer">
+        © 2025 DroneCorp. Conceptual material for discussion; not an offer.
+    </footer>
+</div>
 </body>
 </html>
