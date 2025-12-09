@@ -2,71 +2,79 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>DroneCorp. – US Unmanned Systems</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DroneCorp.</title>
+
   <style>
     :root {
-      --bg-main: #05080c;
-      --nav-bg-top: rgba(5,8,12,0.96);
-      --nav-bg-mid: rgba(5,8,12,0.70);
+      --bg-main: #02040a;
       --text-main: #f5f7ff;
-      --text-muted: #a0acc7;
+      --text-muted: #9aa5c3;
       --accent: #7fcaff;
+      --accent-strong: #41b3ff;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
-      width: 100%;
-      overflow-x: hidden;
-      background: var(--bg-main);
+      min-height: 100%;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #050a18 0%, #02040a 55%, #000 100%);
       color: var(--text-main);
     }
 
     a {
-      color: var(--accent);
+      color: inherit;
       text-decoration: none;
     }
-    a:hover { text-decoration: underline; }
 
-    /* SHARED NAVBAR (same on all pages) */
+    /* ===== NAV / LOGO (shared on all pages) ===== */
     .nav-shell {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      z-index: 20;
-      background: linear-gradient(to bottom, var(--nav-bg-top), var(--nav-bg-mid), transparent);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(127,202,255,0.18);
+      z-index: 100;
+      background: linear-gradient(to bottom,
+        rgba(5, 8, 12, 0.96),
+        rgba(5, 8, 12, 0.70),
+        transparent
+      );
+      backdrop-filter: blur(8px);
     }
 
     .nav-inner {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 14px 24px 10px;
+      padding: 14px 32px 10px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
     }
 
     .brand-mark {
-      font-weight: 600;
-      letter-spacing: 0.45em;
       font-size: 15px;
+      letter-spacing: 0.45em;
+      font-weight: 520;
       text-transform: uppercase;
+      color: #f5f7ff;
       white-space: nowrap;
-    }
-    .brand-mark span {
-      margin-left: 0.25em;
-      opacity: 0.9;
+      display: inline-flex;
+      align-items: baseline;
     }
 
-    .nav-links {
-      margin-left: auto;
+    .brand-dot {
+      font-size: 0.6em;
+      margin-left: 0.18em;
+      transform: translateY(-0.05em);
+      opacity: 0.85;
+    }
+
+    .main-nav {
       display: flex;
       gap: 22px;
       font-size: 13px;
@@ -74,177 +82,173 @@
       text-transform: uppercase;
     }
 
-    .nav-links a {
-      color: #dbe4ff;
-      text-decoration: none;
+    .main-nav a {
+      color: #c6d2f5;
       padding-bottom: 4px;
       position: relative;
-      opacity: 0.8;
-      transition: opacity 0.18s ease;
+      opacity: 0.82;
+      transition: color 0.16s ease, opacity 0.16s ease;
     }
-    .nav-links a::after {
+
+    .main-nav a::after {
       content: "";
       position: absolute;
       left: 0;
       right: 0;
       bottom: 0;
       height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
       transform: scaleX(0);
       transform-origin: center;
-      transition: transform 0.18s ease;
+      background: linear-gradient(90deg, transparent, var(--accent-strong), transparent);
+      transition: transform 0.16s ease;
     }
-    .nav-links a:hover {
+
+    .main-nav a:hover {
+      color: var(--accent);
       opacity: 1;
     }
-    .nav-links a:hover::after,
-    .nav-links a.active::after {
+
+    .main-nav a:hover::after {
       transform: scaleX(1);
     }
-    .nav-links a.active {
+
+    .main-nav a.active {
+      color: var(--accent-strong);
       opacity: 1;
-      color: var(--accent);
     }
 
-    .nav-burger {
-      display: none;
-      margin-left: auto;
-      width: 24px;
-      height: 18px;
-      flex-direction: column;
-      justify-content: space-between;
-      cursor: pointer;
-    }
-    .nav-burger span {
-      height: 2px;
-      width: 100%;
-      background: var(--text-main);
+    .main-nav a.active::after {
+      transform: scaleX(1);
     }
 
-    @media (max-width: 720px) {
+    @media (max-width: 768px) {
       .nav-inner {
-        padding-inline: 16px;
+        padding: 12px 16px 8px;
       }
-      .nav-links {
-        display: none;
+      .main-nav {
+        gap: 12px;
+        font-size: 11px;
       }
-      .nav-burger {
-        display: flex;
-      }
-      .nav-shell.open .nav-links {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: 52px;
-        right: 0;
-        left: 0;
-        background: rgba(5,8,12,0.98);
-        padding: 10px 18px 14px;
-        border-bottom: 1px solid rgba(127,202,255,0.25);
+      .brand-mark {
+        font-size: 13px;
+        letter-spacing: 0.35em;
       }
     }
 
-    /* BACKGROUND VIDEO + OVERLAYS */
-    #video-bg {
+    /* ===== GRID OVERLAY ===== */
+    .grid-overlay {
       position: fixed;
       inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      pointer-events: none;
       z-index: 0;
-      filter: brightness(0.48);
-      background: black;
-    }
-
-    .darkener {
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(rgba(0,0,0,0.38), rgba(0,0,0,0.65));
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .hud-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
       background-image:
-        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
-      background-size: 55px 55px;
+        linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+      background-size: 70px 70px;
+      opacity: 0.7;
     }
 
-    /* HERO */
-    .hero-wrapper {
+    /* ===== HERO ===== */
+    .hero {
       position: relative;
-      height: 100vh;
-      min-height: 480px;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 5;
+      padding-top: 80px; /* header clearance */
+      overflow: hidden;
     }
 
-    .center-box {
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url("assets/naval_carrier.jpg"); /* update path if needed */
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.45);
+      z-index: -2;
+    }
+
+    .hero-dark {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(0,0,0,0.35), rgba(0,0,0,0.7));
+      z-index: -1;
+    }
+
+    .hero-center {
       text-align: center;
-      max-width: 720px;
+      max-width: 800px;
       padding: 0 16px;
     }
 
-    .center-box h1 {
-      font-size: 54px;
-      letter-spacing: 0.9em;
-      margin: 0 0 12px;
-      text-indent: 0.9em;
-      text-shadow: 0 0 8px rgba(255,255,255,0.4);
-    }
-
-    .subtitle {
-      font-size: 18px;
-      margin: 4px 0;
-      opacity: 0.92;
-    }
-
-    .tagline {
-      font-size: 14px;
+    .hero-title {
+      font-size: 52px;
+      letter-spacing: 0.7em;
+      font-weight: 600;
+      margin: 0 0 10px;
       text-transform: uppercase;
-      letter-spacing: 0.22em;
+      color: #f5f7ff;
+      text-shadow:
+        0 0 10px rgba(255,255,255,0.45),
+        0 0 22px rgba(127,202,255,0.85);
+    }
+
+    .hero-title .brand-dot {
+      font-size: 0.6em;
+      margin-left: 0.2em;
+    }
+
+    .hero-subtitle {
+      margin: 0 0 8px;
+      font-size: 16px;
+      color: #d7e2ff;
+    }
+
+    .hero-tagline {
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
       color: var(--accent);
-      margin-top: 8px;
       min-height: 1.2em;
     }
 
-    .footer {
+    .hero-footnote {
       position: absolute;
       bottom: 18px;
-      left: 0;
-      right: 0;
-      text-align: center;
+      left: 50%;
+      transform: translateX(-50%);
       font-size: 11px;
       color: #7282a5;
       opacity: 0.85;
-      z-index: 5;
+      text-align: center;
+      padding: 0 16px;
     }
 
-    @media (max-width: 700px) {
-      .center-box h1 {
-        font-size: 32px;
-        letter-spacing: 0.5em;
-        text-indent: 0.5em;
+    @media (max-width: 720px) {
+      .hero-title {
+        font-size: 34px;
+        letter-spacing: 0.45em;
       }
-      .subtitle { font-size: 15px; }
-      .tagline { font-size: 12px; }
+      .hero-subtitle {
+        font-size: 14px;
+      }
+      .hero-tagline {
+        font-size: 11px;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- NAVBAR -->
-  <header class="nav-shell" id="navShell">
-    <div class="nav-inner">
-      <div class="brand-mark">DRONECORP<span>.</span></div>
+  <div class="grid-overlay"></div>
 
-      <nav class="nav-links" id="navLinks">
+  <!-- NAV -->
+  <header class="nav-shell">
+    <div class="nav-inner">
+      <a href="index.html" class="brand-mark">
+        DRONECORP<span class="brand-dot">.</span>
+      </a>
+      <nav class="main-nav">
         <a href="index.html" class="active">Home</a>
         <a href="platforms.html">Platforms</a>
         <a href="focus-areas.html">Focus Areas</a>
@@ -253,87 +257,45 @@
         <a href="careers.html">Careers</a>
         <a href="contact.html">Contact</a>
       </nav>
-
-      <div class="nav-burger" id="navBurger">
-        <span></span><span></span><span></span>
-      </div>
     </div>
   </header>
 
-  <!-- BACKGROUND VIDEO -->
-  <video id="video-bg" autoplay muted playsinline></video>
-
-  <!-- OVERLAYS -->
-  <div class="darkener"></div>
-  <div class="hud-overlay"></div>
-
   <!-- HERO -->
-  <main class="hero-wrapper">
-    <section class="center-box">
-      <h1>DRONECORP.</h1>
-      <p class="subtitle">American-made unmanned aerial systems.</p>
-      <p id="tagline" class="tagline"></p>
-    </section>
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-dark"></div>
 
-    <div class="footer">
+    <div class="hero-center">
+      <h1 class="hero-title">
+        DRONECORP<span class="brand-dot">.</span>
+      </h1>
+      <p class="hero-subtitle">American-made unmanned aerial systems.</p>
+      <p id="tagline" class="hero-tagline"></p>
+    </div>
+
+    <div class="hero-footnote">
       © <span id="year"></span> DroneCorp. Conceptual material for discussion; not all capabilities shown are available or fielded.
     </div>
-  </main>
+  </section>
 
   <script>
-    // VIDEO ROTATION
-    const video = document.getElementById("video-bg");
-    const sequences = [
-      "assets/drone_desert.mp4",
-      "assets/naval_carrier.mp4",
-      "assets/satellite_orbit.mp4",
-      "assets/drone_indoor.mp4"
-    ];
-    let current = 0;
-
-    function playVideo(idx) {
-      video.src = sequences[idx];
-      video.load();
-      video.play().catch(() => {
-        setTimeout(() => video.play().catch(() => {}), 200);
-      });
-    }
-
-    video.addEventListener("ended", () => {
-      current = (current + 1) % sequences.length;
-      playVideo(current);
-    });
-
-    playVideo(0);
-
-    // YEAR
+    // Year
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // FAST TYPE-OUT TAGLINE
+    // Fast type-out tagline
     const taglineEl = document.getElementById("tagline");
     const taglineText = "EMERGING CONCEPTS IN AUTONOMOUS ISR AND TACTICAL ROBOTICS.";
+    let i = 0;
+    const speed = 12;
 
-    (function typeTextFast(el, text, speed) {
-      el.textContent = "";
-      let i = 0;
-      const timer = setInterval(() => {
-        el.textContent += text.charAt(i);
+    function typeTagline() {
+      if (i <= taglineText.length) {
+        taglineEl.textContent = taglineText.slice(0, i);
         i++;
-        if (i >= text.length) clearInterval(timer);
-      }, speed);
-    })(taglineEl, taglineText, 10);
-
-    // MOBILE NAV TOGGLE
-    const navShell = document.getElementById("navShell");
-    const navBurger = document.getElementById("navBurger");
-
-    navBurger.addEventListener("click", () => {
-      navShell.classList.toggle("open");
-    });
-
-    document.querySelectorAll(".nav-links a").forEach(a => {
-      a.addEventListener("click", () => navShell.classList.remove("open"));
-    });
+        setTimeout(typeTagline, speed);
+      }
+    }
+    typeTagline();
   </script>
 </body>
 </html>
