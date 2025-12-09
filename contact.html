@@ -6,420 +6,116 @@
   <title>DroneCorp. – Contact</title>
 
   <style>
-    :root {
-      --bg-main: #02040a;
-      --bg-panel: rgba(5, 10, 20, 0.96);
-      --border-soft: rgba(120, 170, 255, 0.35);
-      --border-hard: rgba(120, 170, 255, 0.75);
-      --text-main: #f5f7ff;
-      --text-muted: #9aa5c3;
-      --accent: #7fcaff;
-      --accent-strong: #41b3ff;
-      --danger: #ff6f6f;
+    :root{
+      --panel:#050a16;
+      --panel-soft:#050b19;
+      --border-soft:rgba(120,170,255,0.35);
+      --text-main:#f5f7ff;
+      --text-muted:#9aa5c3;
+      --accent:#7fcaff;
+      --accent-strong:#41b3ff;
+      --danger:#ff6f6f;
+    }
+    *{box-sizing:border-box;}
+    html,body{
+      margin:0;padding:0;min-height:100%;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#040815 0%,#02040a 55%,#000 100%);
+      color:var(--text-main);
+    }
+    a{color:inherit;text-decoration:none;}
+
+    .nav-shell{position:sticky;top:0;z-index:30;backdrop-filter:blur(18px);background:linear-gradient(to bottom,rgba(2,4,10,0.96),rgba(2,4,10,0.85),transparent);border-bottom:1px solid rgba(120,170,255,0.25);}
+    .nav-inner{max-width:1200px;margin:0 auto;padding:14px 24px 10px;display:flex;align-items:center;justify-content:space-between;}
+    .brand{display:inline-flex;align-items:baseline;gap:2px;font-size:15px;letter-spacing:0.32em;text-transform:uppercase;font-weight:520;color:#f5f7ff;white-space:nowrap;}
+    .brand .dot{letter-spacing:0;transform:translateX(-0.12em);}
+    nav ul{list-style:none;display:flex;gap:22px;margin:0;padding:0;font-size:13px;letter-spacing:0.16em;text-transform:uppercase;}
+    nav a{color:#9aa5c3;position:relative;padding-bottom:4px;transition:color .18s ease;}
+    nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;transform:scaleX(0);transform-origin:center;background:linear-gradient(90deg,transparent,var(--accent-strong),transparent);transition:transform .18s ease;}
+    nav a:hover{color:var(--accent);}
+    nav a:hover::after,nav a.active::after{transform:scaleX(1);}
+    nav a.active{color:var(--accent-strong);}
+
+    .page-shell{max-width:1200px;margin:32px auto 40px;padding:0 24px 40px;}
+    .page-kicker{font-size:11px;letter-spacing:0.26em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;}
+    h1{margin:0 0 6px;font-size:24px;font-weight:560;letter-spacing:0.08em;text-transform:uppercase;}
+    .page-subtitle{margin:0 0 22px;font-size:14px;color:var(--text-muted);max-width:780px;line-height:1.6;}
+
+    .layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1.3fr);gap:22px;align-items:flex-start;}
+
+    .panel{
+      border:1px solid var(--border-soft);
+      background:radial-gradient(circle at top left,rgba(120,170,255,0.16),transparent 60%),var(--panel);
+      padding:18px 20px 18px;
+      box-shadow:0 24px 40px rgba(0,0,0,0.9);
+    }
+    .panel-label{font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
+    .panel h2{margin:0 0 10px;font-size:16px;}
+    .panel p{margin:0 0 10px;font-size:13px;color:var(--text-muted);line-height:1.6;}
+    .panel ul{margin:0 0 10px 18px;padding:0;font-size:13px;color:var(--text-muted);line-height:1.6;}
+    .panel ul li+li{margin-top:4px;}
+
+    .chip-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px;margin-bottom:10px;}
+    .chip{border:1px solid rgba(120,170,255,0.5);border-radius:999px;padding:4px 11px;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);background:radial-gradient(circle at top,rgba(120,170,255,0.23),transparent 70%);}
+
+    .panel-note{font-size:11px;color:var(--danger);margin-top:8px;line-height:1.6;}
+
+    /* form side */
+    form .field-row{display:flex;gap:10px;margin-bottom:10px;}
+    form .field{flex:1 1 0;display:flex;flex-direction:column;gap:4px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-muted);}
+    input[type="text"],input[type="email"],select,textarea{
+      background:rgba(5,10,22,0.95);
+      border:1px solid rgba(120,170,255,0.35);
+      color:var(--text-main);
+      padding:7px 9px;
+      font-size:13px;
+      outline:none;font-family:inherit;
+    }
+    textarea{min-height:110px;resize:vertical;}
+    input::placeholder,textarea::placeholder{color:rgba(154,165,195,0.7);}
+    input:focus,select:focus,textarea:focus{
+      border-color:var(--accent-strong);
+      box-shadow:0 0 0 1px rgba(120,170,255,0.5);
+      background:rgba(5,12,34,0.98);
+    }
+    select{
+      appearance:none;-webkit-appearance:none;-moz-appearance:none;
+      background-image:linear-gradient(45deg,transparent 50%,var(--accent) 50%),linear-gradient(135deg,var(--accent) 50%,transparent 50%);
+      background-position:calc(100% - 14px) 50%, calc(100% - 8px) 50%;
+      background-size:6px 6px,6px 6px;
+      background-repeat:no-repeat;
     }
 
-    * { box-sizing: border-box; }
+    .helper-text{font-size:11px;color:var(--text-muted);margin-top:6px;line-height:1.5;}
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      min-height: 100%;
-      background: radial-gradient(circle at top, #071021 0%, #02040a 55%, #000 100%);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--text-main);
+    .submit-row{margin-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+    .btn{
+      border-radius:999px;border:1px solid rgba(120,170,255,0.6);
+      padding:9px 20px;
+      font-size:12px;letter-spacing:0.2em;text-transform:uppercase;
+      background:radial-gradient(circle at top,rgba(120,170,255,0.7),rgba(5,15,40,1));
+      color:#f5f7ff;cursor:pointer;
+      transition:background .18s ease,box-shadow .18s ease,transform .08s ease;
     }
-
-    body {
-      display: flex;
-      flex-direction: column;
+    .btn:hover{
+      background:radial-gradient(circle at top,rgba(120,170,255,0.9),rgba(5,18,52,1));
+      box-shadow:0 0 22px rgba(120,170,255,0.55);
+      transform:translateY(-1px);
     }
+    .submit-caption{font-size:11px;color:var(--text-muted);}
 
-    /* NAV – same look */
+    footer{border-top:1px solid rgba(120,170,255,0.2);font-size:11px;color:var(--text-muted);text-align:center;padding:10px 24px 16px;margin-top:30px;}
 
-    .nav-shell {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(20px);
-      background: linear-gradient(
-        to bottom,
-        rgba(2, 4, 10, 0.96),
-        rgba(2, 4, 10, 0.85),
-        transparent
-      );
-      border-bottom: 1px solid rgba(120, 170, 255, 0.25);
-    }
-
-    .nav-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 14px 24px 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .brand {
-      display: inline-flex;
-      align-items: baseline;
-      gap: 2px;
-      font-size: 15px;
-      letter-spacing: 0.32em;
-      text-transform: uppercase;
-      font-weight: 520;
-      color: var(--text-main);
-      white-space: nowrap;
-    }
-
-    .brand span.dot {
-      letter-spacing: 0;
-      font-size: 15px;
-      transform: translateX(-0.12em);
-    }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 22px;
-      margin: 0;
-      padding: 0;
-      font-size: 13px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      position: relative;
-      padding-bottom: 4px;
-      transition: color 0.18s ease;
-    }
-
-    nav a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 1px;
-      transform: scaleX(0);
-      transform-origin: center;
-      background: linear-gradient(90deg, transparent, var(--accent-strong), transparent);
-      transition: transform 0.18s ease;
-    }
-
-    nav a:hover {
-      color: var(--accent);
-    }
-
-    nav a:hover::after,
-    nav a.active::after {
-      transform: scaleX(1);
-    }
-
-    nav a.active {
-      color: var(--accent-strong);
-    }
-
-    .grid-overlay {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 80px 80px;
-      opacity: 0.9;
-    }
-
-    main {
-      flex: 1;
-      max-width: 1200px;
-      margin: 32px auto 40px;
-      padding: 0 24px 40px;
-    }
-
-    .page-kicker {
-      font-size: 11px;
-      letter-spacing: 0.26em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-
-    .page-title {
-      font-size: 26px;
-      font-weight: 560;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin: 0 0 6px;
-    }
-
-    .page-subtitle {
-      margin: 0 0 28px;
-      font-size: 14px;
-      color: var(--text-muted);
-      max-width: 760px;
-      line-height: 1.6;
-    }
-
-    .contact-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.35fr);
-      gap: 28px;
-      align-items: flex-start;
-    }
-
-    /* LEFT: INTAKE POSTURE */
-
-    .panel {
-      border: 1px solid rgba(120,170,255,0.3);
-      background: radial-gradient(circle at top left, rgba(120,170,255,0.16), transparent 60%), var(--bg-panel);
-      box-shadow: 0 26px 40px rgba(0,0,0,0.8);
-      padding: 22px 24px 24px;
-    }
-
-    .panel-title {
-      font-size: 12px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-
-    .panel-heading {
-      font-size: 15px;
-      font-weight: 540;
-      margin: 0 0 14px;
-    }
-
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-
-    .chip {
-      border: 1px solid rgba(120,170,255,0.5);
-      padding: 4px 10px;
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      background: radial-gradient(circle at top, rgba(120,170,255,0.23), transparent 70%);
-      border-radius: 999px;
-    }
-
-    .panel p {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin: 0 0 14px;
-      line-height: 1.6;
-    }
-
-    .panel ul {
-      margin: 0 0 14px 16px;
-      padding-left: 0;
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    .panel-note {
-      font-size: 11px;
-      color: var(--danger);
-      margin-top: 10px;
-      line-height: 1.6;
-    }
-
-    .panel-note span {
-      font-weight: 600;
-    }
-
-    /* RIGHT: FORM */
-
-    .form-panel {
-      border: 1px solid rgba(120,170,255,0.4);
-      background: radial-gradient(circle at top right, rgba(120,170,255,0.23), transparent 65%), var(--bg-panel);
-      box-shadow: 0 26px 40px rgba(0,0,0,0.9);
-      padding: 22px 24px 24px;
-    }
-
-    .form-kicker {
-      font-size: 11px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 4px;
-    }
-
-    .form-title {
-      margin: 0 0 14px;
-      font-size: 16px;
-      font-weight: 540;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: minmax(0,1fr) minmax(0,1fr);
-      gap: 14px 16px;
-      margin-bottom: 14px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .form-group.full-width {
-      grid-column: 1 / -1;
-    }
-
-    label {
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    input[type="text"],
-    input[type="email"],
-    select,
-    textarea {
-      background: rgba(5,10,22,0.9);
-      border: 1px solid rgba(120,170,255,0.35);
-      color: var(--text-main);
-      padding: 8px 10px;
-      font-size: 13px;
-      outline: none;
-      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-      font-family: inherit;
-    }
-
-    input::placeholder,
-    textarea::placeholder {
-      color: rgba(154,165,195,0.6);
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 110px;
-      max-height: 260px;
-    }
-
-    select {
-      appearance: none;
-      background-image: linear-gradient(45deg, transparent 50%, var(--accent) 50%),
-                        linear-gradient(135deg, var(--accent) 50%, transparent 50%);
-      background-position: calc(100% - 14px) 50%, calc(100% - 8px) 50%;
-      background-size: 6px 6px, 6px 6px;
-      background-repeat: no-repeat;
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus {
-      border-color: var(--border-hard);
-      background: rgba(5,12,34,0.98);
-      box-shadow: 0 0 0 1px rgba(120,170,255,0.45);
-    }
-
-    .helper-text {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 6px;
-      line-height: 1.5;
-    }
-
-    .submit-row {
-      margin-top: 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary {
-      border: 1px solid var(--border-hard);
-      background: radial-gradient(circle at top, rgba(120,170,255,0.6), rgba(5,15,40,1));
-      color: var(--text-main);
-      padding: 9px 22px;
-      font-size: 12px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      cursor: pointer;
-      outline: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: background 0.18s ease, transform 0.1s ease, box-shadow 0.18s ease;
-      border-radius: 999px;
-    }
-
-    .btn-primary::after {
-      content: "→";
-      font-size: 12px;
-    }
-
-    .btn-primary:hover {
-      background: radial-gradient(circle at top, rgba(120,170,255,0.8), rgba(5,18,52,1));
-      box-shadow: 0 0 20px rgba(120,170,255,0.45);
-      transform: translateY(-1px);
-    }
-
-    .btn-primary:active {
-      transform: translateY(0);
-      box-shadow: 0 0 8px rgba(120,170,255,0.35);
-    }
-
-    .submit-caption {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    footer {
-      border-top: 1px solid rgba(120,170,255,0.18);
-      font-size: 11px;
-      color: var(--text-muted);
-      padding: 12px 24px 18px;
-      text-align: center;
-    }
-
-    @media (max-width: 900px) {
-      .contact-layout {
-        grid-template-columns: minmax(0,1fr);
-      }
-
-      .panel,
-      .form-panel {
-        padding: 18px 16px 20px;
-      }
-    }
-
-    @media (max-width: 720px) {
-      .nav-inner {
-        padding-inline: 16px;
-      }
-      nav ul {
-        gap: 14px;
-        font-size: 11px;
-      }
+    @media(max-width:900px){
+      .page-shell{padding-inline:16px;}
+      .layout{grid-template-columns:1fr;gap:18px;}
     }
   </style>
 </head>
 <body>
-
-<div class="grid-overlay"></div>
-
 <header class="nav-shell">
   <div class="nav-inner">
-    <a href="index.html" class="brand">
-      <span>DRONECORP</span><span class="dot">.</span>
-    </a>
+    <a href="index.html" class="brand"><span>DRONECORP</span><span class="dot">.</span></a>
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
@@ -434,20 +130,19 @@
   </div>
 </header>
 
-<main>
+<main class="page-shell">
   <div class="page-kicker">Contact</div>
-  <h1 class="page-title">Reach DroneCorp.</h1>
+  <h1>Reach DroneCorp.</h1>
   <p class="page-subtitle">
-    Use this channel for early technical discussions, teaming conversations, or concept validation.
-    Submissions route to a small engineering-led intake queue. There is no marketing list or automated sales
-    workflow behind this form.
+    Use this channel for early technical discussions, teaming exploration, or concept validation. Submissions route
+    to a small engineering-led intake queue. There is no marketing list or automated sales workflow behind this form.
   </p>
 
-  <section class="contact-layout">
-    <!-- LEFT: INTAKE -->
+  <section class="layout">
+    <!-- Intake posture -->
     <aside class="panel">
-      <div class="panel-title">Intake posture</div>
-      <h2 class="panel-heading">How we handle outreach</h2>
+      <div class="panel-label">Intake posture</div>
+      <h2>How we handle outreach</h2>
 
       <div class="chip-row">
         <span class="chip">R&amp;D-centric intake</span>
@@ -460,7 +155,6 @@
         technologies. We are currently biased toward engineering discussions over transactional sales calls.
       </p>
 
-      <p>Typical topics include:</p>
       <ul>
         <li>Autonomy, edge processing, and onboard AI concepts.</li>
         <li>Interior, maritime, and close-range ISR use cases.</li>
@@ -469,66 +163,64 @@
       </ul>
 
       <p class="panel-note">
-        <span>Unclassified information only.</span>
-        Do not transmit classified, export-controlled, or otherwise sensitive operational information.
-        High-level context and constraints are sufficient.
+        Unclassified information only. Please avoid locations, mission identifiers, export-controlled details, or
+        sensitive operational data. High-level context and constraints are sufficient.
       </p>
     </aside>
 
-    <!-- RIGHT: FORM -->
-    <section class="form-panel">
-      <div class="form-kicker">Secure intake form</div>
-      <h2 class="form-title">Submit an inquiry</h2>
+    <!-- Form -->
+    <section class="panel">
+      <div class="panel-label">Secure intake form</div>
+      <h2>Submit an inquiry</h2>
 
       <form action="https://formsubmit.co/admin@dronecorp.us" method="POST">
-        <!-- FormSubmit config -->
-        <input type="hidden" name="_subject" value="DroneCorp. Contact – New Inquiry" />
-        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_subject" value="DroneCorp. – Contact intake" />
         <input type="hidden" name="_next" value="https://dronecorp.us/thanks.html" />
+        <input type="hidden" name="_template" value="table" />
 
-        <div class="form-grid">
-          <div class="form-group">
+        <div class="field-row">
+          <div class="field">
             <label for="name">Name</label>
             <input id="name" name="Name" type="text" required placeholder="Full name">
           </div>
-
-          <div class="form-group">
+          <div class="field">
             <label for="org">Organization</label>
             <input id="org" name="Organization" type="text" placeholder="Company / unit (optional)">
           </div>
+        </div>
 
-          <div class="form-group">
+        <div class="field-row">
+          <div class="field">
             <label for="email">Email</label>
             <input id="email" name="Email" type="email" required placeholder="work.email@example.mil">
           </div>
-
-          <div class="form-group">
+          <div class="field">
             <label for="topic">Topic</label>
             <select id="topic" name="Topic" required>
               <option value="" disabled selected>Select one</option>
               <option>Autonomy / edge processing</option>
               <option>Interior ISR / tactical recon</option>
-              <option>Maritime ISR / carrier-based ops</option>
+              <option>Maritime ISR / carrier-adjacent ops</option>
               <option>Swarm or distributed constructs</option>
-              <option>Teaming or subcontracting</option>
+              <option>Teaming / subcontractor discussion</option>
               <option>Other / exploratory</option>
             </select>
           </div>
+        </div>
 
-          <div class="form-group full-width">
-            <label for="message">Message</label>
-            <textarea id="message" name="Message" rows="6" required
-              placeholder="Brief, unclassified description of what you’re exploring and how we might help."></textarea>
-          </div>
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="Message" required
+            placeholder="Brief, unclassified description of what you’re exploring and how we might help."></textarea>
         </div>
 
         <p class="helper-text">
-          Keep descriptions high-level and conceptual. Do not include locations, mission identifiers,
-          or sensitive operational detail.
+          Keep descriptions high-level and conceptual. Do not include locations, mission identifiers, or sensitive
+          operational detail.
         </p>
 
         <div class="submit-row">
-          <button type="submit" class="btn-primary">Send secure inquiry</button>
+          <button type="submit" class="btn">Send secure inquiry</button>
           <div class="submit-caption">
             Submissions are routed to a small engineering-led intake queue.
           </div>
@@ -539,12 +231,8 @@
 </main>
 
 <footer>
-  © <span id="year"></span> DroneCorp. All rights reserved.
+  © <span id="year"></span> DroneCorp. Conceptual material for discussion; not all capabilities shown are available or fielded.
 </footer>
-
-<script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-</script>
-
+<script>document.getElementById("year").textContent=new Date().getFullYear();</script>
 </body>
 </html>
