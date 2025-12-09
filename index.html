@@ -26,7 +26,7 @@
     <main class="main">
         <!-- HERO -->
         <section class="hero">
-            <video class="hero-video" autoplay muted loop playsinline>
+            <video class="hero-video" autoplay muted loop playsinline preload="auto">
                 <source src="assets/drone_desert.mp4" type="video/mp4">
             </video>
             <div class="hero-overlay"></div>
@@ -38,13 +38,11 @@
                 <p class="hero-subtitle">
                     Small-batch, defense-aligned UAS platforms for teams that need sovereign hardware and tight feedback loops.
                 </p>
-                <p class="hero-tagline">
-                    EMERGING CONCEPTS IN AUTONOMOUS ISR AND TACTICAL ROBOTICS.
-                </p>
+                <p class="hero-tagline" id="hero-tagline"></p>
             </div>
         </section>
 
-        <!-- AI / GENERATED COPY SECTION -->
+        <!-- “AI style” conceptual copy below hero -->
         <section class="section hero-copy">
             <div class="hero-copy-inner">
                 <div class="hero-copy-label">Conceptual overview</div>
@@ -58,44 +56,71 @@
     </footer>
 </div>
 
-<!-- Simple typewriter-style "AI generated" copy -->
 <script>
+/* Ensure hero video keeps playing even after navigation / reload */
 document.addEventListener('DOMContentLoaded', function () {
-    const el = document.getElementById('ai-copy');
-    if (!el) return;
+    const video = document.querySelector('.hero-video');
+    const safePlay = () => {
+        if (!video) return;
+        const p = video.play();
+        if (p && typeof p.then === 'function') {
+            p.catch(() => {});
+        }
+    };
+    safePlay();
+    window.addEventListener('pageshow', safePlay);
+});
 
-    const lines = [
+/* Typeout for blue tagline + conceptual paragraph */
+document.addEventListener('DOMContentLoaded', function () {
+    const taglineEl = document.getElementById('hero-tagline');
+    const copyEl = document.getElementById('ai-copy');
+
+    const taglineText = 'EMERGING CONCEPTS IN AUTONOMOUS ISR AND TACTICAL ROBOTICS.';
+    const copyLines = [
         "DroneCorp. is an early-stage U.S. unmanned systems effort exploring autonomy-heavy ISR concepts, small-batch manufacturing, and defense-aligned R&D.",
-        "The goal is not to be the biggest prime on day one, but to be the team that wires the first racks, flies the first sorties, and closes the loop with operators as fast as possible.",
-        "Everything here is conceptual material meant to frame what a sovereign, American-made UAS microfoundry could look like as it scales from prototypes to operational racks."
+        "The aim is to function as a sovereign UAS microfoundry: close to the hardware, close to operators, and honest about what is and isn’t field-ready.",
+        "Everything on this site is conceptual material meant to describe the direction of the work, not a catalog of production capabilities."
     ];
+
+    let taglineIndex = 0;
+
+    function typeTagline() {
+        if (!taglineEl) return;
+        if (taglineIndex <= taglineText.length) {
+            taglineEl.textContent = taglineText.slice(0, taglineIndex);
+            taglineIndex++;
+            setTimeout(typeTagline, 22);
+        } else {
+            // after tagline finishes, start the paragraph typing
+            typeCopy();
+        }
+    }
 
     let lineIndex = 0;
     let charIndex = 0;
     let current = "";
-    const typingDelay = 24;
-    const linePause = 1400;
 
-    function type() {
-        if (lineIndex >= lines.length) {
-            return;
-        }
+    function typeCopy() {
+        if (!copyEl || lineIndex >= copyLines.length) return;
 
-        const text = lines[lineIndex];
+        const text = copyLines[lineIndex];
         if (charIndex < text.length) {
             current += text.charAt(charIndex);
-            el.textContent = current;
+            copyEl.textContent = current;
             charIndex++;
-            setTimeout(type, typingDelay);
+            setTimeout(typeCopy, 16);
         } else {
             lineIndex++;
             charIndex = 0;
-            current += (lineIndex < lines.length ? "\n\n" : "");
-            setTimeout(type, linePause);
+            if (lineIndex < copyLines.length) {
+                current += "\n\n";
+                setTimeout(typeCopy, 900);
+            }
         }
     }
 
-    type();
+    typeTagline();
 });
 </script>
 </body>
