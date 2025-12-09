@@ -1,163 +1,324 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DroneCorp – U.S. Unmanned Aerial Systems</title>
-    <link rel="stylesheet" href="assets/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DroneCorp. – US Unmanned Systems</title>
+
+  <style>
+    :root {
+      --bg-main: #02040a;
+      --text-main: #f5f7ff;
+      --text-muted: #9aa5c3;
+      --accent: #7fcaff;
+      --accent-strong: #41b3ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #000;
+      color: var(--text-main);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ---------- BACKGROUND VIDEO + GRID ---------- */
+
+    #video-bg {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.45);
+      z-index: 0;
+      background: radial-gradient(circle at top, #111828 0%, #02040a 55%, #000 100%);
+    }
+
+    .hud-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mix-blend-mode: screen;
+    }
+
+    .dark-fade {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.55) 55%, rgba(0,0,0,0.9) 100%);
+    }
+
+    /* ---------- NAVBAR (SHARED STYLE) ---------- */
+
+    .nav-shell {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(20px);
+      background: linear-gradient(
+        to bottom,
+        rgba(2, 4, 10, 0.96),
+        rgba(2, 4, 10, 0.85),
+        transparent
+      );
+      border-bottom: 1px solid rgba(120, 170, 255, 0.25);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 24px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 2px;
+      font-size: 15px;
+      letter-spacing: 0.32em; /* tighter than before */
+      text-transform: uppercase;
+      font-weight: 520;
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+
+    .brand span.dot {
+      letter-spacing: 0;       /* so dot hugs the P */
+      font-size: 15px;
+      transform: translateX(-0.12em); /* tuck dot under the P a bit */
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 22px;
+      margin: 0;
+      padding: 0;
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.18s ease;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      transform: scaleX(0);
+      transform-origin: center;
+      background: linear-gradient(90deg, transparent, var(--accent-strong), transparent);
+      transition: transform 0.18s ease;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    nav a:hover::after,
+    nav a.active::after {
+      transform: scaleX(1);
+    }
+
+    nav a.active {
+      color: var(--accent-strong);
+    }
+
+    /* ---------- HERO SECTION ---------- */
+
+    main {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero {
+      min-height: calc(100vh - 80px);
+      display: flex;
+      align-items: center;
+      justify-content: center;   /* hard-center horizontally */
+      padding: 80px 24px 40px;
+    }
+
+    .hero-inner {
+      text-align: center;
+    }
+
+    .hero-logo {
+      margin: 0 0 14px;
+      font-size: clamp(42px, 5vw, 56px);
+      font-weight: 550;
+      letter-spacing: 0.35em;      /* tightened hero spacing */
+      text-transform: uppercase;
+      color: #fdfefe;
+      text-shadow:
+        0 0 18px rgba(255, 255, 255, 0.75),
+        0 0 40px rgba(127, 202, 255, 0.6);
+    }
+
+    .hero-logo span.dot {
+      letter-spacing: 0;
+      display: inline-block;
+      transform: translateX(-0.18em);  /* pull dot closer to P */
+    }
+
+    .hero-subtitle {
+      margin: 0 0 10px;
+      font-size: 15px;
+      color: var(--text-main);
+      opacity: 0.92;
+    }
+
+    .hero-tagline {
+      margin: 0;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    footer {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 14px 24px 18px;
+      font-size: 11px;
+      color: var(--text-muted);
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.9),
+        rgba(0, 0, 0, 0.0)
+      );
+      border-top: 1px solid rgba(120, 170, 255, 0.25);
+    }
+
+    /* ---------- MOBILE ---------- */
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        padding-inline: 16px;
+      }
+
+      nav ul {
+        gap: 14px;
+        font-size: 11px;
+      }
+
+      .hero {
+        padding-top: 96px;
+      }
+
+      .hero-logo {
+        letter-spacing: 0.26em;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="page">
-    <header class="navbar">
-        <div class="navbar-brand">DRONECORP<span class="navbar-dot">.</span></div>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="platforms.html">Platforms</a></li>
-                <li><a href="focus-areas.html">Focus Areas</a></li>
-                <li><a href="programs.html">Programs</a></li>
-                <li><a href="partner.html">Partner</a></li>
-                <li><a href="careers.html">Careers</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <main class="main">
-        <!-- HERO -->
-        <section class="hero">
-            <video class="hero-video" autoplay muted loop playsinline preload="auto">
-                <source src="assets/drone_desert.mp4" type="video/mp4">
-            </video>
-            <div class="hero-overlay"></div>
-            <div class="hero-grid"></div>
+  <!-- Background video -->
+  <video id="video-bg" autoplay muted playsinline loop></video>
+  <div class="hud-overlay"></div>
+  <div class="dark-fade"></div>
 
-            <div class="hero-inner">
-                <div class="hero-kicker">American-made unmanned aerial systems.</div>
-                <h1 class="hero-title">DRONECORP<span class="navbar-dot">.</span></h1>
-                <p class="hero-subtitle">
-                    Small-batch, defense-aligned UAS platforms for teams that need sovereign hardware and tight feedback loops.
-                </p>
-                <p class="hero-tagline" id="hero-tagline"></p>
-            </div>
-        </section>
+  <!-- NAV -->
+  <header class="nav-shell">
+    <div class="nav-inner">
+      <a href="index.html" class="brand">
+        <span>DRONECORP</span><span class="dot">.</span>
+      </a>
+      <nav>
+        <ul>
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="platforms.html">Platforms</a></li>
+          <li><a href="focus-areas.html">Focus Areas</a></li>
+          <li><a href="programs.html">Programs</a></li>
+          <li><a href="partner.html">Partner</a></li>
+          <li><a href="careers.html">Careers</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-        <!-- Conceptual overview -->
-        <section class="section hero-copy">
-            <div class="hero-copy-inner">
-                <div class="hero-copy-label">Conceptual overview</div>
-                <p id="ai-copy"></p>
-            </div>
-        </section>
+  <!-- HERO -->
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <h1 class="hero-logo">
+          <span>DRONECORP</span><span class="dot">.</span>
+        </h1>
+        <p class="hero-subtitle">American-made unmanned aerial systems.</p>
+        <p class="hero-tagline">
+          EMERGING CONCEPTS IN AUTONOMOUS ISR AND TACTICAL ROBOTICS.
+        </p>
+      </div>
+    </section>
+  </main>
 
-        <!-- Focus grid -->
-        <section class="section">
-            <div class="section-narrow">
-                <div class="section-title-kicker">Scope</div>
-                <h2 class="section-title">What DroneCorp. is exploring</h2>
-                <p class="section-body">
-                    This site describes where the work is heading, not a catalog of signed programs. The emphasis is on
-                    small, sharp platforms with honest constraints, built for teams that care about control loops more
-                    than PowerPoints.
-                </p>
+  <footer>
+    © <span id="year"></span> DroneCorp. Conceptual material for discussion; not all capabilities shown are available or fielded.
+  </footer>
 
-                <div class="card-grid">
-                    <article class="card">
-                        <div class="card-kicker">ISR Platforms</div>
-                        <h3 class="card-title">Short-range autonomous ISR</h3>
-                        <p class="card-body">
-                            Compact multirotors optimized for dense urban, maritime, and interior runs. Focus on low-friction deployment,
-                            strong telemetry, and recoverable logs instead of fragile one-off demos.
-                        </p>
-                    </article>
+  <script>
+    // Year
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-                    <article class="card">
-                        <div class="card-kicker">Manufacturing</div>
-                        <h3 class="card-title">Microfoundry mindset</h3>
-                        <p class="card-body">
-                            U.S.-based builds, tight batches, and iterative hardware revisions. The goal is a steady
-                            cadence of testable hardware, not a single “big” production line that never changes.
-                        </p>
-                    </article>
-
-                    <article class="card">
-                        <div class="card-kicker">Edge autonomy</div>
-                        <h3 class="card-title">Onboard decision-making</h3>
-                        <p class="card-body">
-                            Experimentation with onboard perception, guidance, and simple autonomy stacks that survive
-                            RF-hostile, GPS-denied environments without needing a rack of cloud services to function.
-                        </p>
-                    </article>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        © 2025 DroneCorp. Conceptual material for discussion; not an offer or guarantee of capabilities.
-    </footer>
-</div>
-
-<script>
-/* keep hero video alive across navigation */
-document.addEventListener('DOMContentLoaded', function () {
-    const video = document.querySelector('.hero-video');
-    const safePlay = () => {
-        if (!video) return;
-        const p = video.play();
-        if (p && typeof p.then === 'function') {
-            p.catch(() => {});
-        }
-    };
-    safePlay();
-    window.addEventListener('pageshow', safePlay);
-});
-
-/* type out ISR tagline + AI copy */
-document.addEventListener('DOMContentLoaded', function () {
-    const taglineEl = document.getElementById('hero-tagline');
-    const copyEl = document.getElementById('ai-copy');
-
-    const taglineText = 'EMERGING CONCEPTS IN AUTONOMOUS ISR AND TACTICAL ROBOTICS.';
-    const copyLines = [
-        "DroneCorp. is an early-stage U.S. unmanned systems effort exploring autonomy-heavy ISR concepts, small-batch manufacturing, and defense-aligned R&D.",
-        "The aim is to function as a sovereign UAS microfoundry: close to the hardware, close to operators, and honest about what is and isn’t field-ready.",
-        "Everything on this site is conceptual material meant to describe the direction of the work, not a catalog of production capabilities."
+    // Video rotation (re-using what you had)
+    const video = document.getElementById("video-bg");
+    const sequences = [
+      "assets/drone_desert.mp4",
+      "assets/naval_carrier.mp4",
+      "assets/satellite_orbit.mp4",
+      "assets/drone_indoor.mp4"
     ];
+    let current = 0;
 
-    let tIndex = 0;
-    function typeTagline() {
-        if (!taglineEl) return;
-        if (tIndex <= taglineText.length) {
-            taglineEl.textContent = taglineText.slice(0, tIndex);
-            tIndex++;
-            setTimeout(typeTagline, 22);
-        } else {
-            typeCopy();
-        }
+    function playVideo(index) {
+      video.src = sequences[index];
+      video.load();
+      video.play().catch(() => {
+        setTimeout(() => video.play().catch(() => {}), 200);
+      });
     }
 
-    let line = 0, char = 0, buffer = "";
-    function typeCopy() {
-        if (!copyEl || line >= copyLines.length) return;
-        const text = copyLines[line];
-        if (char < text.length) {
-            buffer += text.charAt(char);
-            copyEl.textContent = buffer;
-            char++;
-            setTimeout(typeCopy, 16);
-        } else {
-            line++;
-            char = 0;
-            if (line < copyLines.length) {
-                buffer += "\n\n";
-                setTimeout(typeCopy, 900);
-            }
-        }
-    }
+    video.addEventListener("ended", () => {
+      current = (current + 1) % sequences.length;
+      playVideo(current);
+    });
 
-    typeTagline();
-});
-</script>
+    // On first load, handle both / and /index.html nicely
+    playVideo(0);
+  </script>
 </body>
 </html>
