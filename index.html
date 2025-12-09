@@ -27,10 +27,7 @@
       color: var(--text-main);
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+    a { color: inherit; text-decoration: none; }
 
     /* ---------- BACKGROUND VIDEO + GRID ---------- */
 
@@ -45,7 +42,6 @@
       background: radial-gradient(circle at top, #111828 0%, #02040a 55%, #000 100%);
     }
 
-    /* 1" style grid overlay */
     .hud-overlay {
       position: fixed;
       inset: 0;
@@ -66,7 +62,7 @@
       background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.55) 55%, rgba(0,0,0,0.9) 100%);
     }
 
-    /* ---------- NAVBAR (USE THIS ON EVERY PAGE) ---------- */
+    /* ---------- NAVBAR (SHARED) ---------- */
 
     .nav-shell {
       position: sticky;
@@ -96,17 +92,16 @@
       align-items: baseline;
       gap: 2px;
       font-size: 15px;
-      letter-spacing: 0.32em;       /* tighter than original */
+      letter-spacing: 0.32em;
       text-transform: uppercase;
       font-weight: 520;
       color: var(--text-main);
       white-space: nowrap;
     }
-
     .brand span.dot {
       letter-spacing: 0;
       font-size: 15px;
-      transform: translateX(-0.12em); /* tuck dot toward the P */
+      transform: translateX(-0.12em);
     }
 
     nav ul {
@@ -122,7 +117,6 @@
 
     nav a {
       color: var(--text-muted);
-      text-decoration: none;
       position: relative;
       padding-bottom: 4px;
       transition: color 0.18s ease;
@@ -131,9 +125,7 @@
     nav a::after {
       content: "";
       position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      left: 0; right: 0; bottom: 0;
       height: 1px;
       transform: scaleX(0);
       transform-origin: center;
@@ -144,21 +136,15 @@
     nav a:hover {
       color: var(--accent);
     }
-
     nav a:hover::after,
-    nav a.active::after {
-      transform: scaleX(1);
-    }
+    nav a.active::after { transform: scaleX(1); }
+    nav a.active { color: var(--accent-strong); }
 
-    nav a.active {
-      color: var(--accent-strong);
-    }
-
-    /* ---------- HERO SECTION ---------- */
+    /* ---------- HERO ---------- */
 
     main {
       position: relative;
-      z-index: 3; /* above overlays */
+      z-index: 3;
     }
 
     .hero {
@@ -183,20 +169,19 @@
 
     .hero-logo {
       margin: 0 0 12px;
-      font-size: clamp(46px, 5.8vw, 64px); /* bigger again */
+      font-size: clamp(46px, 5.8vw, 64px);
       font-weight: 550;
-      letter-spacing: 0.35em;              /* tightened vs original wide */
+      letter-spacing: 0.35em;
       text-transform: uppercase;
       color: #fdfefe;
       text-shadow:
         0 0 18px rgba(255, 255, 255, 0.75),
         0 0 40px rgba(127, 202, 255, 0.6);
     }
-
     .hero-logo span.dot {
       letter-spacing: 0;
       display: inline-block;
-      transform: translateX(-0.18em);      /* pull dot closer */
+      transform: translateX(-0.18em);
     }
 
     .hero-subtitle {
@@ -212,7 +197,7 @@
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--accent);
-      min-height: 1.4em; /* keeps layout stable while typing */
+      min-height: 1.4em;
     }
 
     footer {
@@ -231,33 +216,19 @@
     }
 
     @media (max-width: 720px) {
-      .nav-inner {
-        padding-inline: 16px;
-      }
-
-      nav ul {
-        gap: 14px;
-        font-size: 11px;
-      }
-
-      .hero {
-        padding-top: 96px;
-      }
-
-      .hero-logo {
-        letter-spacing: 0.27em;
-      }
+      .nav-inner { padding-inline: 16px; }
+      nav ul { gap: 14px; font-size: 11px; }
+      .hero { padding-top: 96px; }
+      .hero-logo { letter-spacing: 0.27em; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Background / HUD -->
   <video id="video-bg" autoplay muted playsinline></video>
   <div class="hud-overlay"></div>
   <div class="dark-fade"></div>
 
-  <!-- NAVBAR -->
   <header class="nav-shell">
     <div class="nav-inner">
       <a href="index.html" class="brand">
@@ -277,7 +248,6 @@
     </div>
   </header>
 
-  <!-- HERO -->
   <main>
     <section class="hero">
       <div class="hero-inner">
@@ -301,10 +271,9 @@
   </footer>
 
   <script>
-    // Year
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // -------- VIDEO ROTATION (FIXED) --------
+    // Video rotation
     const video = document.getElementById("video-bg");
     const sequences = [
       "assets/drone_desert.mp4",
@@ -327,9 +296,9 @@
       playVideo(current);
     });
 
-    playVideo(0); // start
+    playVideo(0);
 
-    // -------- FAST TYPE-OUT TAGLINE (BLUE LINE) --------
+    // Type-out tagline
     const taglineEl = document.getElementById("tagline");
     const taglineText = "EMERGING CONCEPTS IN AUTONOMOUS ISR AND TACTICAL ROBOTICS.";
 
@@ -339,13 +308,10 @@
       const interval = setInterval(() => {
         el.textContent += text.charAt(i);
         i++;
-        if (i >= text.length) {
-          clearInterval(interval);
-        }
+        if (i >= text.length) clearInterval(interval);
       }, speed);
     }
 
-    // quick AI-terminal style typeout
     typeText(taglineEl, taglineText, 10);
   </script>
 </body>
