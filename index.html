@@ -14,9 +14,7 @@
       --accent-strong: #41b3ff;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     html, body {
       margin: 0;
@@ -47,6 +45,7 @@
       background: radial-gradient(circle at top, #111828 0%, #02040a 55%, #000 100%);
     }
 
+    /* 1" style grid overlay */
     .hud-overlay {
       position: fixed;
       inset: 0;
@@ -63,16 +62,16 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 1;
+      z-index: 2;
       background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.55) 55%, rgba(0,0,0,0.9) 100%);
     }
 
-    /* ---------- NAVBAR (SHARED STYLE) ---------- */
+    /* ---------- NAVBAR (USE THIS ON EVERY PAGE) ---------- */
 
     .nav-shell {
       position: sticky;
       top: 0;
-      z-index: 20;
+      z-index: 30;
       backdrop-filter: blur(20px);
       background: linear-gradient(
         to bottom,
@@ -97,7 +96,7 @@
       align-items: baseline;
       gap: 2px;
       font-size: 15px;
-      letter-spacing: 0.32em; /* tighter than before */
+      letter-spacing: 0.32em;       /* tighter than original */
       text-transform: uppercase;
       font-weight: 520;
       color: var(--text-main);
@@ -105,9 +104,9 @@
     }
 
     .brand span.dot {
-      letter-spacing: 0;       /* so dot hugs the P */
+      letter-spacing: 0;
       font-size: 15px;
-      transform: translateX(-0.12em); /* tuck dot under the P a bit */
+      transform: translateX(-0.12em); /* tuck dot toward the P */
     }
 
     nav ul {
@@ -159,14 +158,14 @@
 
     main {
       position: relative;
-      z-index: 2;
+      z-index: 3; /* above overlays */
     }
 
     .hero {
       min-height: calc(100vh - 80px);
       display: flex;
       align-items: center;
-      justify-content: center;   /* hard-center horizontally */
+      justify-content: center;
       padding: 80px 24px 40px;
     }
 
@@ -174,11 +173,19 @@
       text-align: center;
     }
 
+    .hero-kicker {
+      margin: 0 0 10px;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
     .hero-logo {
-      margin: 0 0 14px;
-      font-size: clamp(42px, 5vw, 56px);
+      margin: 0 0 12px;
+      font-size: clamp(46px, 5.8vw, 64px); /* bigger again */
       font-weight: 550;
-      letter-spacing: 0.35em;      /* tightened hero spacing */
+      letter-spacing: 0.35em;              /* tightened vs original wide */
       text-transform: uppercase;
       color: #fdfefe;
       text-shadow:
@@ -189,14 +196,14 @@
     .hero-logo span.dot {
       letter-spacing: 0;
       display: inline-block;
-      transform: translateX(-0.18em);  /* pull dot closer to P */
+      transform: translateX(-0.18em);      /* pull dot closer */
     }
 
     .hero-subtitle {
-      margin: 0 0 10px;
+      margin: 0 0 8px;
       font-size: 15px;
       color: var(--text-main);
-      opacity: 0.92;
+      opacity: 0.94;
     }
 
     .hero-tagline {
@@ -205,11 +212,12 @@
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--accent);
+      min-height: 1.4em; /* keeps layout stable while typing */
     }
 
     footer {
       position: relative;
-      z-index: 2;
+      z-index: 3;
       text-align: center;
       padding: 14px 24px 18px;
       font-size: 11px;
@@ -221,8 +229,6 @@
       );
       border-top: 1px solid rgba(120, 170, 255, 0.25);
     }
-
-    /* ---------- MOBILE ---------- */
 
     @media (max-width: 720px) {
       .nav-inner {
@@ -239,19 +245,19 @@
       }
 
       .hero-logo {
-        letter-spacing: 0.26em;
+        letter-spacing: 0.27em;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Background video -->
-  <video id="video-bg" autoplay muted playsinline loop></video>
+  <!-- Background / HUD -->
+  <video id="video-bg" autoplay muted playsinline></video>
   <div class="hud-overlay"></div>
   <div class="dark-fade"></div>
 
-  <!-- NAV -->
+  <!-- NAVBAR -->
   <header class="nav-shell">
     <div class="nav-inner">
       <a href="index.html" class="brand">
@@ -275,13 +281,17 @@
   <main>
     <section class="hero">
       <div class="hero-inner">
+        <p class="hero-kicker">American-made unmanned aerial systems.</p>
+
         <h1 class="hero-logo">
           <span>DRONECORP</span><span class="dot">.</span>
         </h1>
-        <p class="hero-subtitle">American-made unmanned aerial systems.</p>
-        <p class="hero-tagline">
-          EMERGING CONCEPTS IN AUTONOMOUS ISR AND TACTICAL ROBOTICS.
+
+        <p class="hero-subtitle">
+          Small-batch, defense-aligned UAS platforms for teams that need sovereign hardware and tight feedback loops.
         </p>
+
+        <p id="tagline" class="hero-tagline"></p>
       </div>
     </section>
   </main>
@@ -294,7 +304,7 @@
     // Year
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Video rotation (re-using what you had)
+    // -------- VIDEO ROTATION (FIXED) --------
     const video = document.getElementById("video-bg");
     const sequences = [
       "assets/drone_desert.mp4",
@@ -317,8 +327,26 @@
       playVideo(current);
     });
 
-    // On first load, handle both / and /index.html nicely
-    playVideo(0);
+    playVideo(0); // start
+
+    // -------- FAST TYPE-OUT TAGLINE (BLUE LINE) --------
+    const taglineEl = document.getElementById("tagline");
+    const taglineText = "EMERGING CONCEPTS IN AUTONOMOUS ISR AND TACTICAL ROBOTICS.";
+
+    function typeText(el, text, speed) {
+      el.textContent = "";
+      let i = 0;
+      const interval = setInterval(() => {
+        el.textContent += text.charAt(i);
+        i++;
+        if (i >= text.length) {
+          clearInterval(interval);
+        }
+      }, speed);
+    }
+
+    // quick AI-terminal style typeout
+    typeText(taglineEl, taglineText, 10);
   </script>
 </body>
 </html>
