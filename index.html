@@ -7,7 +7,6 @@
 
   <style>
     :root {
-      --bg-main: #02040a;
       --text-main: #f5f7ff;
       --text-muted: #9aa5c3;
       --accent: #7fcaff;
@@ -21,10 +20,12 @@
     html, body {
       margin: 0;
       padding: 0;
-      min-height: 100%;
+      height: 100%;
+      width: 100%;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #050a18 0%, #02040a 55%, #000 100%);
       color: var(--text-main);
+      background: #05080c;
+      overflow-x: hidden;
     }
 
     a {
@@ -32,12 +33,45 @@
       text-decoration: none;
     }
 
-    /* ===== NAV / LOGO (shared on all pages) ===== */
+    /* ===== BACKGROUND VIDEO ===== */
+    #bg-video {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      filter: brightness(0.45);
+      background: #000;
+    }
+
+    .darkener {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(
+        rgba(0,0,0,0.35),
+        rgba(0,0,0,0.70)
+      );
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+      background-size: 70px 70px;
+      opacity: 0.7;
+    }
+
+    /* ===== NAV (shared style with other pages) ===== */
     .nav-shell {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       z-index: 100;
       background: linear-gradient(to bottom,
         rgba(5, 8, 12, 0.96),
@@ -93,9 +127,7 @@
     .main-nav a::after {
       content: "";
       position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      left: 0; right: 0; bottom: 0;
       height: 1px;
       transform: scaleX(0);
       transform-origin: center;
@@ -135,68 +167,42 @@
       }
     }
 
-    /* ===== GRID OVERLAY ===== */
-    .grid-overlay {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
-      background-size: 70px 70px;
-      opacity: 0.7;
-    }
-
-    /* ===== HERO ===== */
+    /* ===== HERO (centered) ===== */
     .hero {
       position: relative;
       min-height: 100vh;
+      padding-top: 96px; /* header clearance */
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding-top: 80px; /* header clearance */
-      overflow: hidden;
+      justify-content: center; /* true centering */
+      z-index: 2;
     }
 
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background-image: url("assets/naval_carrier.jpg"); /* update path if needed */
-      background-size: cover;
-      background-position: center;
-      filter: brightness(0.45);
-      z-index: -2;
-    }
-
-    .hero-dark {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top, rgba(0,0,0,0.35), rgba(0,0,0,0.7));
-      z-index: -1;
-    }
-
-    .hero-center {
-      text-align: center;
+    .hero-inner {
       max-width: 800px;
+      width: 100%;
       padding: 0 16px;
+      text-align: center;
+      margin: 0 auto;
     }
 
     .hero-title {
+      margin: 0 0 10px;
       font-size: 52px;
       letter-spacing: 0.7em;
-      font-weight: 600;
-      margin: 0 0 10px;
       text-transform: uppercase;
+      font-weight: 600;
       color: #f5f7ff;
       text-shadow:
         0 0 10px rgba(255,255,255,0.45),
         0 0 22px rgba(127,202,255,0.85);
+      display: inline-flex;
+      align-items: baseline;
     }
 
     .hero-title .brand-dot {
       font-size: 0.6em;
-      margin-left: 0.2em;
+      margin-left: 0.18em;
     }
 
     .hero-subtitle {
@@ -240,6 +246,9 @@
   </style>
 </head>
 <body>
+  <!-- Background video -->
+  <video id="bg-video" autoplay muted playsinline></video>
+  <div class="darkener"></div>
   <div class="grid-overlay"></div>
 
   <!-- NAV -->
@@ -262,10 +271,7 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-dark"></div>
-
-    <div class="hero-center">
+    <div class="hero-inner">
       <h1 class="hero-title">
         DRONECORP<span class="brand-dot">.</span>
       </h1>
@@ -279,6 +285,31 @@
   </section>
 
   <script>
+    // Background video rotation
+    const video = document.getElementById("bg-video");
+    const sequences = [
+      "assets/drone_desert.mp4",
+      "assets/naval_carrier.mp4",
+      "assets/satellite_orbit.mp4",
+      "assets/drone_indoor.mp4"
+    ];
+    let current = 0;
+
+    function playVideo(index) {
+      video.src = sequences[index];
+      video.load();
+      video.play().catch(() => {
+        setTimeout(() => video.play().catch(() => {}), 200);
+      });
+    }
+
+    video.addEventListener("ended", () => {
+      current = (current + 1) % sequences.length;
+      playVideo(current);
+    });
+
+    playVideo(0);
+
     // Year
     document.getElementById("year").textContent = new Date().getFullYear();
 
@@ -288,14 +319,13 @@
     let i = 0;
     const speed = 12;
 
-    function typeTagline() {
+    (function typeTagline() {
       if (i <= taglineText.length) {
         taglineEl.textContent = taglineText.slice(0, i);
         i++;
         setTimeout(typeTagline, speed);
       }
-    }
-    typeTagline();
+    })();
   </script>
 </body>
 </html>
