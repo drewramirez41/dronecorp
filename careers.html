@@ -2,267 +2,313 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>DroneCorp. – Careers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <title>DroneCorp. – Careers</title>
   <style>
     :root {
       --bg-main: #02040a;
-      --panel: #050914;
+      --panel-bg: #050815;
+      --panel-bg-soft: #070d1e;
+      --border-soft: rgba(127, 202, 255, 0.28);
+      --border-strong: rgba(127, 202, 255, 0.65);
       --text-main: #f5f7ff;
       --text-muted: #9aa5c3;
       --accent: #7fcaff;
-      --accent-strong: #41b3ff;
-      --border-soft: rgba(120,170,255,0.4);
+      --accent-strong: #3fb4ff;
+      --nav-height: 64px;
     }
 
-    * { box-sizing: border-box; }
-
-    html, body {
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      min-height: 100%;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #050a18 0%, #02040a 55%, #000 100%);
+    }
+
+    html, body {
+      height: 100%;
+      background: radial-gradient(circle at top, #091427 0, #02040a 55%, #000 100%);
       color: var(--text-main);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    a { color: inherit; text-decoration: none; }
+    body {
+      overflow-x: hidden;
+    }
 
-    /* NAV (same as other pages) */
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* NAV (shared look) */
     .nav-shell {
-      position: fixed; top: 0; left: 0; right: 0;
-      z-index: 100;
+      position: fixed;
+      inset-block-start: 0;
+      inset-inline: 0;
+      height: var(--nav-height);
+      z-index: 20;
+      backdrop-filter: blur(16px);
       background: linear-gradient(to bottom,
-        rgba(5,8,12,0.96),
-        rgba(5,8,12,0.70),
-        transparent);
-      backdrop-filter: blur(8px);
+        rgba(2, 4, 10, 0.96),
+        rgba(2, 4, 10, 0.78),
+        transparent
+      );
+      border-bottom: 1px solid rgba(127, 202, 255, 0.16);
     }
+
     .nav-inner {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 14px 32px 10px;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding-inline: 24px;
     }
-    .brand-mark {
+
+    .brand {
       font-size: 15px;
-      letter-spacing: 0.45em;
-      font-weight: 520;
+      letter-spacing: 0.38em;
       text-transform: uppercase;
-      color: #f5f7ff;
+      font-weight: 520;
       white-space: nowrap;
-      display: inline-flex;
-      align-items: baseline;
     }
     .brand-dot {
       font-size: 0.6em;
-      margin-left: 0.18em;
-      transform: translateY(-0.05em);
-      opacity: 0.85;
+      margin-left: 0.08em;
+      position: relative;
+      bottom: 0.12em;
     }
-    .main-nav {
+
+    .nav-links {
       display: flex;
       gap: 22px;
-      font-size: 13px;
-      letter-spacing: 0.16em;
+      font-size: 12px;
       text-transform: uppercase;
+      letter-spacing: 0.22em;
     }
-    .main-nav a {
-      color: #c6d2f5;
-      padding-bottom: 4px;
+
+    .nav-links a {
+      color: #d8e1ff;
+      opacity: 0.8;
+      padding-block: 4px;
       position: relative;
-      opacity: 0.82;
-      transition: color 0.16s ease, opacity 0.16s ease;
+      transition: opacity 0.16s ease, color 0.16s ease;
     }
-    .main-nav a::after {
+
+    .nav-links a::after {
       content: "";
       position: absolute;
-      left: 0; right: 0; bottom: 0;
+      left: 0;
+      right: 0;
+      bottom: -2px;
       height: 1px;
       transform: scaleX(0);
       transform-origin: center;
       background: linear-gradient(90deg, transparent, var(--accent-strong), transparent);
       transition: transform 0.16s ease;
     }
-    .main-nav a:hover {
-      color: var(--accent);
+
+    .nav-links a:hover {
       opacity: 1;
-    }
-    .main-nav a:hover::after { transform: scaleX(1); }
-    .main-nav a.active {
       color: var(--accent-strong);
+    }
+    .nav-links a:hover::after {
+      transform: scaleX(1);
+    }
+    .nav-links a.active {
       opacity: 1;
+      color: var(--accent-strong);
     }
-    .main-nav a.active::after { transform: scaleX(1); }
-    @media (max-width: 768px) {
-      .nav-inner { padding: 12px 16px 8px; }
-      .main-nav { gap: 12px; font-size: 11px; }
-      .brand-mark { font-size: 13px; letter-spacing: 0.35em; }
+    .nav-links a.active::after {
+      transform: scaleX(1);
     }
 
-    .grid-overlay {
-      position: fixed; inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
-      background-size: 70px 70px;
-      opacity: 0.8;
-    }
-
-    .page-wrap {
+    /* PAGE LAYOUT */
+    main {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 96px 32px 40px;
-      position: relative;
-      z-index: 1;
+      padding: calc(var(--nav-height) + 32px) 24px 40px;
     }
 
-    .kicker {
+    .page-kicker {
       font-size: 11px;
-      letter-spacing: 0.28em;
+      letter-spacing: 0.26em;
       text-transform: uppercase;
       color: var(--accent);
       margin-bottom: 6px;
     }
 
-    h1.page-title {
-      margin: 0 0 8px;
+    h1 {
       font-size: 28px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
       font-weight: 560;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
     }
 
-    .page-lead {
-      margin: 0 0 24px;
+    .page-intro {
       font-size: 14px;
       color: var(--text-muted);
-      max-width: 880px;
-      line-height: 1.6;
+      max-width: 720px;
+      line-height: 1.7;
+      margin-bottom: 28px;
     }
 
-    .layout-grid {
+    .grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.2fr);
-      gap: 26px;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.2fr);
+      gap: 28px;
+      align-items: flex-start;
     }
 
-    /* JOB LIST */
-    .job-list {
-      border-radius: 16px;
-      background: radial-gradient(circle at top left, rgba(120,170,255,0.16), transparent 60%), var(--panel);
+    .panel {
+      background: radial-gradient(circle at top left, rgba(127, 202, 255, 0.18), transparent 60%) , var(--panel-bg);
       border: 1px solid var(--border-soft);
-      box-shadow: 0 22px 40px rgba(0,0,0,0.9);
-      padding: 16px 18px;
+      box-shadow: 0 26px 50px rgba(0, 0, 0, 0.85);
+      border-radius: 14px;
+      padding: 18px 20px 20px;
     }
 
-    .job-header {
+    .panel-title {
       font-size: 12px;
       text-transform: uppercase;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.22em;
       color: var(--text-muted);
       margin-bottom: 8px;
     }
 
-    .job-item {
-      border-top: 1px solid rgba(120,170,255,0.28);
-      padding: 12px 0;
+    .panel-heading {
+      font-size: 18px;
+      font-weight: 540;
+      margin-bottom: 10px;
     }
 
-    .job-summary {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      gap: 18px;
+    .panel-body {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
     }
 
-    .job-title-block {
+    .panel-body strong {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* JOB LIST */
+    .jobs-list {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 12px;
+    }
+
+    .job {
+      border-radius: 12px;
+      background: var(--panel-bg-soft);
+      border: 1px solid rgba(127, 202, 255, 0.2);
+      overflow: hidden;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
+    }
+
+    .job:hover {
+      border-color: var(--border-strong);
+      box-shadow: 0 0 24px rgba(127, 202, 255, 0.24);
+      transform: translateY(-1px);
+    }
+
+    .job-header {
+      width: 100%;
+      border: none;
+      background: transparent;
+      color: inherit;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .job-title-wrap {
+      text-align: left;
     }
 
     .job-title {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 540;
+      margin-bottom: 4px;
     }
 
     .job-meta {
       font-size: 11px;
       color: var(--text-muted);
-    }
-
-    .job-tagline {
-      font-size: 11px;
-      color: var(--accent);
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
       text-transform: uppercase;
       letter-spacing: 0.16em;
     }
 
-    .job-toggle {
+    .pill {
+      border-radius: 999px;
+      border: 1px solid rgba(127, 202, 255, 0.35);
+      padding: 2px 8px;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .job-chevron {
       font-size: 18px;
       color: var(--accent);
-      transition: transform 0.12s ease;
+      transition: transform 0.16s ease;
     }
 
-    .job-body {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-top: 8px;
-      display: none; /* collapsed by default */
-    }
-
-    .job-body ul {
-      margin: 6px 0 0 18px;
-      padding: 0;
-    }
-
-    .job-body li + li {
-      margin-top: 4px;
-    }
-
-    .job-item.open .job-body {
-      display: block;
-    }
-
-    .job-item.open .job-toggle {
+    .job.open .job-chevron {
       transform: rotate(90deg);
     }
 
-    /* APPLICATION PANEL */
-    .apply-panel {
-      border-radius: 16px;
-      background: radial-gradient(circle at top right, rgba(120,170,255,0.16), transparent 60%), var(--panel);
-      border: 1px solid var(--border-soft);
-      box-shadow: 0 22px 40px rgba(0,0,0,0.9);
-      padding: 18px 20px;
+    .job-details {
+      display: none;
+      border-top: 1px solid rgba(127, 202, 255, 0.16);
+      padding: 12px 16px 14px;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
     }
 
-    .apply-title {
-      font-size: 15px;
-      font-weight: 540;
+    .job-details ul {
+      padding-left: 18px;
+      margin-top: 6px;
       margin-bottom: 6px;
     }
 
-    .apply-body {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 12px;
+    .job-details li + li {
+      margin-top: 4px;
+    }
+
+    .job.open .job-details {
+      display: block;
+    }
+
+    .job-apply-tag {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--accent-strong);
+    }
+
+    /* APPLICATION FORM */
+    .form-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
+      margin-top: 10px;
     }
 
     .form-group {
       display: flex;
       flex-direction: column;
       gap: 4px;
-      margin-bottom: 10px;
     }
 
     label {
@@ -272,250 +318,350 @@
       color: var(--text-muted);
     }
 
-    input[type="text"],
-    input[type="email"],
-    select,
-    textarea {
-      background: rgba(5, 10, 22, 0.92);
-      border: 1px solid rgba(120,170,255,0.38);
+    input, select, textarea {
+      background: #050815;
+      border-radius: 6px;
+      border: 1px solid rgba(127, 202, 255, 0.28);
       color: var(--text-main);
-      padding: 7px 9px;
       font-size: 13px;
-      border-radius: 4px;
-      outline: none;
+      padding: 7px 9px;
       font-family: inherit;
+      outline: none;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(154, 165, 195, 0.6);
     }
 
     textarea {
+      min-height: 110px;
       resize: vertical;
-      min-height: 90px;
     }
 
     input:focus,
     select:focus,
     textarea:focus {
-      border-color: var(--accent-strong);
-      box-shadow: 0 0 0 1px rgba(120,170,255,0.4);
+      border-color: var(--border-strong);
+      box-shadow: 0 0 0 1px rgba(127, 202, 255, 0.35);
+      background: #050a1b;
+    }
+
+    .helper {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.5;
     }
 
     .btn-primary {
-      border-radius: 999px;
-      border: 1px solid rgba(120,170,255,0.9);
-      padding: 8px 20px;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.20em;
-      background: radial-gradient(circle at top, rgba(120,170,255,0.75), rgba(5,15,40,1));
-      color: var(--text-main);
-      cursor: pointer;
+      margin-top: 12px;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      transition: background 0.16s ease, transform 0.08s ease, box-shadow 0.16s ease;
+      padding: 9px 22px;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      background: radial-gradient(circle at top, rgba(127, 202, 255, 0.8), rgba(4, 12, 32, 1));
+      color: var(--text-main);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.16s ease, background 0.16s ease;
     }
 
-    .btn-primary::after {
-      content: "→";
+    .btn-primary span {
       font-size: 12px;
     }
 
     .btn-primary:hover {
-      background: radial-gradient(circle at top, rgba(120,170,255,0.9), rgba(5,18,52,1));
-      box-shadow: 0 0 18px rgba(120,170,255,0.55);
       transform: translateY(-1px);
+      box-shadow: 0 0 24px rgba(127, 202, 255, 0.4);
+      background: radial-gradient(circle at top, rgba(127, 202, 255, 0.92), rgba(7, 18, 48, 1));
     }
 
     .btn-primary:active {
       transform: translateY(0);
-      box-shadow: 0 0 8px rgba(120,170,255,0.45);
+      box-shadow: 0 0 10px rgba(127, 202, 255, 0.3);
     }
 
-    .apply-note {
+    footer {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 8px 24px 18px;
       font-size: 11px;
       color: var(--text-muted);
-      margin-top: 6px;
     }
 
-    @media (max-width: 960px) {
-      .page-wrap { padding: 92px 20px 32px; }
-      .layout-grid {
-        grid-template-columns: minmax(0,1fr);
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      main {
+        padding-inline: 16px;
+      }
+      .nav-inner {
+        padding-inline: 16px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-links {
+        display: none;
+      }
+      .brand {
+        font-size: 14px;
+        letter-spacing: 0.3em;
       }
     }
   </style>
 </head>
 <body>
-  <div class="grid-overlay"></div>
+<header class="nav-shell">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      DRONECORP<span class="brand-dot">.</span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="platforms.html">Platforms</a>
+      <a href="focus-areas.html">Focus Areas</a>
+      <a href="programs.html">Programs</a>
+      <a href="partner.html">Partner</a>
+      <a href="careers.html" class="active">Careers</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
 
-  <header class="nav-shell">
-    <div class="nav-inner">
-      <a href="index.html" class="brand-mark">
-        DRONECORP<span class="brand-dot">.</span>
-      </a>
-      <nav class="main-nav">
-        <a href="index.html">Home</a>
-        <a href="platforms.html">Platforms</a>
-        <a href="focus-areas.html">Focus Areas</a>
-        <a href="programs.html">Programs</a>
-        <a href="partner.html">Partner</a>
-        <a href="careers.html" class="active">Careers</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-    </div>
-  </header>
+<main>
+  <div class="page-kicker">Careers</div>
+  <h1>Build DroneCorp. from the zero line</h1>
+  <p class="page-intro">
+    DroneCorp. is an early-stage U.S. unmanned systems effort focused on autonomy-heavy ISR concepts,
+    small-batch manufacturing, and defense-aligned R&amp;D. We are not a scaled prime—we’re building
+    toward that with a very small, high-trust team that wants to wire the first racks, write the first
+    flight code, and sit in the first customer briefings.
+  </p>
 
-  <main class="page-wrap">
-    <div class="kicker">Careers</div>
-    <h1 class="page-title">Build DroneCorp. with us</h1>
-    <p class="page-lead">
-      DroneCorp. is a very early-stage effort exploring U.S.-made unmanned systems and autonomy R&amp;D.
-      These roles are written for people who are comfortable in ambiguous, low-infrastructure environments and
-      who want to help build something from almost zero.
-    </p>
+  <div class="grid">
+    <!-- LEFT: JOBS -->
+    <section class="panel">
+      <div class="panel-title">Open roles</div>
+      <h2 class="panel-heading">Early-stage hiring priorities</h2>
 
-    <section class="layout-grid">
-      <!-- JOBS -->
-      <div class="job-list">
-        <div class="job-header">Open roles</div>
+      <div class="jobs-list">
 
-        <!-- Role 1 -->
-        <article class="job-item" data-role="growth">
-          <div class="job-summary">
-            <div class="job-title-block">
-              <div class="job-title">Head of Programs &amp; Growth</div>
-              <div class="job-meta">Remote / U.S.-based · Defense &amp; dual-use</div>
-              <div class="job-tagline">Scaled defense work before · knows what “good” looks like</div>
+        <!-- JOB 1 -->
+        <article class="job">
+          <button class="job-header" data-role="Founding Defense Programs Lead">
+            <div class="job-title-wrap">
+              <div class="job-title">Founding Defense Programs &amp; Manufacturing Lead</div>
+              <div class="job-meta">
+                <span class="pill">Defense | Capture</span>
+                <span>Hybrid · US-based</span>
+              </div>
             </div>
-            <div class="job-toggle">›</div>
-          </div>
-          <div class="job-body">
+            <div class="job-chevron">›</div>
+          </button>
+          <div class="job-details">
             <p>
-              You’ve helped take at least one defense or dual-use startup from “a few prototypes” to meaningful
-              programs with primes or government customers. You understand BD, capture, and execution, but you’re
-              happy to work in the weeds with engineers and founders.
+              You’ve helped take at least one defense or dual-use hardware company from “interesting deck”
+              to real programs of record, or you’ve built a manufacturing line that successfully
+              delivered into defense supply chains.
             </p>
             <ul>
-              <li>Shape early opportunity pipeline and help decide which programs we should chase or decline.</li>
-              <li>Translate messy customer problems into clear technical work packages and timelines.</li>
-              <li>Build lightweight program-management habits—rhythms, reporting, basic tools.</li>
-              <li>Act as a calm adult in the room when we’re dealing with new primes or government sponsors.</li>
+              <li>Own the path from concept platforms to funded pilots, OTAs, and early production lots.</li>
+              <li>Design lean manufacturing and QA flows for small-batch ISR and autonomy-heavy platforms.</li>
+              <li>Stand up basic compliance posture (ITAR awareness, facility controls, vendor hygiene).</li>
+              <li>Translate customer problem sets into focused internal roadmaps and demo plans.</li>
+            </ul>
+            <p class="job-apply-tag">
+              This is the closest thing DroneCorp. has to a co-founder track. You’ll be shaping what the
+              company actually becomes.
+            </p>
+          </div>
+        </article>
+
+        <!-- JOB 2 -->
+        <article class="job">
+          <button class="job-header" data-role="Autonomy Systems Engineer">
+            <div class="job-title-wrap">
+              <div class="job-title">Senior Autonomy &amp; Systems Engineer</div>
+              <div class="job-meta">
+                <span class="pill">R&amp;D</span>
+                <span>Remote-friendly (US)</span>
+              </div>
+            </div>
+            <div class="job-chevron">›</div>
+          </button>
+          <div class="job-details">
+            <p>
+              You like integrating things: perception stacks, control code, radios, payloads, and ground tools
+              into actual flying, rolling, or swimming hardware.
+            </p>
+            <ul>
+              <li>Own autonomy and edge-processing architectures on early concept platforms.</li>
+              <li>Prototype, integrate, and flight-test sensor packages and autonomy behaviors.</li>
+              <li>Work closely with manufacturing to keep designs realistic, testable, and supportable.</li>
+              <li>Help write the technical stories for proposals, whitepapers, and demo briefs.</li>
             </ul>
           </div>
         </article>
 
-        <!-- Role 2 -->
-        <article class="job-item" data-role="systems">
-          <div class="job-summary">
-            <div class="job-title-block">
-              <div class="job-title">Founding Systems &amp; Flight Engineer</div>
-              <div class="job-meta">Hands-on · Air, maritime, &amp; interior UAS</div>
-              <div class="job-tagline">Prototype-heavy · full-stack hardware / software</div>
+        <!-- JOB 3 -->
+        <article class="job">
+          <button class="job-header" data-role="Prototype Operations Lead">
+            <div class="job-title-wrap">
+              <div class="job-title">Prototype Operations &amp; Flight Test Lead</div>
+              <div class="job-meta">
+                <span class="pill">Hands-on</span>
+                <span>On-site leaning · Arizona / Southwest</span>
+              </div>
             </div>
-            <div class="job-toggle">›</div>
-          </div>
-          <div class="job-body">
+            <div class="job-chevron">›</div>
+          </button>
+          <div class="job-details">
             <p>
-              This is the “do everything technical” role alongside the founder—airframes, payloads, integration,
-              bench testing, and early flight work. You are comfortable bouncing between CAD, wiring harnesses,
-              ROS-style stacks, and field tests.
+              This is the person who can wire the bench, assemble the airframes, run the checklists, and
+              drag a generator into the desert at 0600 without drama.
             </p>
             <ul>
-              <li>Own small-batch builds of concept platforms, from parts ordering to bench checkout.</li>
-              <li>Work with autonomy and perception code, even if you’re not a research scientist.</li>
-              <li>Instrument prototypes for data collection and flight-test reporting.</li>
-              <li>Help define what our first “real” engineering team should look like.</li>
+              <li>Stand up lab and field test infrastructure for small UAS and related systems.</li>
+              <li>Own build logs, configuration control, and basic reliability tracking.</li>
+              <li>Coordinate range time, safety processes, and instrumentation for flight tests.</li>
+              <li>Provide grounded feedback into design decisions from a maintainer/operator perspective.</li>
             </ul>
           </div>
         </article>
 
-        <!-- Role 3 (fun startup one) -->
-        <article class="job-item" data-role="vibes">
-          <div class="job-summary">
-            <div class="job-title-block">
-              <div class="job-title">Studio &amp; Vibe Operations Lead</div>
-              <div class="job-meta">Arizona-based · part-time / flexible</div>
-              <div class="job-tagline">Snacks, soundtrack, back-of-house chaos wrangler</div>
+        <!-- JOB 4 (PLAYFUL) -->
+        <article class="job">
+          <button class="job-header" data-role="Kitchen & Vibe Lead">
+            <div class="job-title-wrap">
+              <div class="job-title">Studio Kitchen &amp; Vibe Operations Lead</div>
+              <div class="job-meta">
+                <span class="pill">Culture</span>
+                <span>On-site · Tucson area (future)</span>
+              </div>
             </div>
-            <div class="job-toggle">›</div>
-          </div>
-          <div class="job-body">
+            <div class="job-chevron">›</div>
+          </button>
+          <div class="job-details">
             <p>
-              Lightweight, fun role for someone who treats a workshop like a backstage kitchen. You keep the
-              lights on, gear where it belongs, and morale high. Think studio manager + kitchen lead + “is everyone
-              drinking water?” checker.
+              Internal title is “Chief Vibe Officer.” You’ve run a kitchen, café, or back-of-house operation,
+              and you like building spaces where people actually want to spend long days shipping hard things.
             </p>
             <ul>
-              <li>Stock and run a tiny kitchen / snack bar for long build and test days.</li>
-              <li>Help keep tools, parts, and work areas sane without turning the place into a bureaucracy.</li>
-              <li>Coordinate little things that make the lab feel like a place people want to be.</li>
-              <li>Pitch in on shipping, receiving, and event days when we’re hosting visitors.</li>
+              <li>Design and run a small in-house kitchen / snack program for test days and late nights.</li>
+              <li>Keep the shop and studio calm, stocked, and organized—tools, coffee, and music dialed in.</li>
+              <li>Coordinate small events, visiting partners, and demo-day logistics.</li>
+              <li>Be the unofficial morale barometer and reality check for the team.</li>
             </ul>
+            <p class="job-apply-tag">
+              Yes, this is a real role. We take food, environment, and morale seriously.
+            </p>
           </div>
         </article>
       </div>
+    </section>
 
-      <!-- APPLICATION -->
-      <aside class="apply-panel">
-        <div class="apply-title">Apply or introduce yourself</div>
-        <p class="apply-body">
-          There is no formal HR stack here yet. If one of these roles feels like you—or you think you’re adjacent
-          and should be in the conversation—send a short note. Links to a resume, portfolio, or profile are more
-          useful than long cover letters.
+    <!-- RIGHT: APPLICATION -->
+    <section class="panel">
+      <div class="panel-title">Apply</div>
+      <h2 class="panel-heading">Send a short signal, not a novel</h2>
+      <div class="panel-body">
+        <p>
+          Use this form to drop a concise introduction. LinkedIn, portfolio links, and a brief note on what
+          you’ve built or shipped matter more than a perfectly formatted résumé.
+        </p>
+        <p style="margin-top:8px;">
+          Most engagements will start as <strong>high-trust, low-bureaucracy conversations</strong>. We’ll be
+          direct about compensation, timing, and expectations on the first call.
+        </p>
+      </div>
+
+      <form
+        action="https://formsubmit.co/admin@dronecorp.us"
+        method="POST"
+        class="form-grid"
+      >
+        <!-- FormSubmit settings -->
+        <input type="hidden" name="_subject" value="DroneCorp Careers Submission" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_captcha" value="false" />
+
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input id="name" name="Name" type="text" required placeholder="Full name">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" name="Email" type="email" required placeholder="you@domain.com">
+        </div>
+
+        <div class="form-group">
+          <label for="role">Role of interest</label>
+          <select id="role" name="Role" required>
+            <option value="" disabled selected>Select one</option>
+            <option>Founding Defense Programs & Manufacturing Lead</option>
+            <option>Senior Autonomy & Systems Engineer</option>
+            <option>Prototype Operations & Flight Test Lead</option>
+            <option>Studio Kitchen & Vibe Operations Lead</option>
+            <option>Other / future role</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="links">Links</label>
+          <input
+            id="links"
+            name="Links"
+            type="text"
+            placeholder="LinkedIn, portfolio, GitHub, previous company, etc."
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="note">Short note</label>
+          <textarea
+            id="note"
+            name="Note"
+            placeholder="In 5–8 sentences, tell us what you’ve actually built or led that’s relevant."
+            required
+          ></textarea>
+        </div>
+
+        <p class="helper">
+          Please do not include classified, export-controlled, or otherwise sensitive information. High-level,
+          unclassified descriptions of work are sufficient.
         </p>
 
-        <form action="https://formsubmit.co/admin@dronecorp.us" method="POST">
-          <input type="hidden" name="_subject" value="DroneCorp. Careers Application">
-          <input type="hidden" name="_template" value="table">
-
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input id="name" name="Name" type="text" required />
-          </div>
-
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input id="email" name="Email" type="email" required />
-          </div>
-
-          <div class="form-group">
-            <label for="role">Role of interest</label>
-            <select id="role" name="Role" required>
-              <option value="" disabled selected>Select one</option>
-              <option value="Head of Programs & Growth">Head of Programs &amp; Growth</option>
-              <option value="Founding Systems & Flight Engineer">Founding Systems &amp; Flight Engineer</option>
-              <option value="Studio & Vibe Operations Lead">Studio &amp; Vibe Operations Lead</option>
-              <option value="Something else adjacent">Something else adjacent</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="links">Links</label>
-            <input id="links" name="Links" type="text" placeholder="Resume / GitHub / LinkedIn / portfolio" />
-          </div>
-
-          <div class="form-group">
-            <label for="note">Short note</label>
-            <textarea id="note" name="Note" placeholder="A few sentences on what you’d like to build here."></textarea>
-          </div>
-
-          <button type="submit" class="btn-primary">Send application</button>
-          <p class="apply-note">
-            DroneCorp. is an early-stage effort. Some roles may begin as contract, advisory, or part-time engagements
-            while real programs and revenue are stood up.
-          </p>
-        </form>
-      </aside>
+        <button type="submit" class="btn-primary">
+          <span>Send signal</span>
+        </button>
+      </form>
     </section>
-  </main>
+  </div>
+</main>
 
-  <script>
-    // accordion behavior – all roles start collapsed
-    document.querySelectorAll(".job-item").forEach(item => {
-      const summary = item.querySelector(".job-summary");
-      summary.addEventListener("click", () => {
-        item.classList.toggle("open");
-      });
+<footer>
+  © <span id="year"></span> DroneCorp. All rights reserved.
+</footer>
+
+<script>
+  // Collapse / expand jobs (default collapsed)
+  document.querySelectorAll('.job-header').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const job = btn.closest('.job');
+      job.classList.toggle('open');
     });
-  </script>
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
