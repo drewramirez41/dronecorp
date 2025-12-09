@@ -29,7 +29,7 @@
 
     a { color: inherit; text-decoration: none; }
 
-    /* NAV */
+    /* NAV (same as other pages) */
     .nav-shell {
       position: fixed; top: 0; left: 0; right: 0;
       z-index: 100;
@@ -208,6 +208,7 @@
     .job-toggle {
       font-size: 18px;
       color: var(--accent);
+      transition: transform 0.12s ease;
     }
 
     .job-body {
@@ -427,7 +428,7 @@
           </div>
         </article>
 
-        <!-- Role 3 (fun one) -->
+        <!-- Role 3 (fun startup one) -->
         <article class="job-item" data-role="vibes">
           <div class="job-summary">
             <div class="job-title-block">
@@ -463,7 +464,6 @@
         </p>
 
         <form action="https://formsubmit.co/admin@dronecorp.us" method="POST">
-          <!-- Prevent FormSubmit from showing their own page too much; optional -->
           <input type="hidden" name="_subject" value="DroneCorp. Careers Application">
           <input type="hidden" name="_template" value="table">
 
@@ -479,7 +479,7 @@
 
           <div class="form-group">
             <label for="role">Role of interest</label>
-            <select id="role" name="Role">
+            <select id="role" name="Role" required>
               <option value="" disabled selected>Select one</option>
               <option value="Head of Programs & Growth">Head of Programs &amp; Growth</option>
               <option value="Founding Systems & Flight Engineer">Founding Systems &amp; Flight Engineer</option>
@@ -501,7 +501,7 @@
           <button type="submit" class="btn-primary">Send application</button>
           <p class="apply-note">
             DroneCorp. is an early-stage effort. Some roles may begin as contract, advisory, or part-time engagements
-            while we stand up real programs and revenue.
+            while real programs and revenue are stood up.
           </p>
         </form>
       </aside>
@@ -509,7 +509,7 @@
   </main>
 
   <script>
-    // simple accordion behaviour
+    // accordion behavior – all roles start collapsed
     document.querySelectorAll(".job-item").forEach(item => {
       const summary = item.querySelector(".job-summary");
       summary.addEventListener("click", () => {
