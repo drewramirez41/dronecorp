@@ -2,15 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>DroneCorp. – Programs &amp; Engagements</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DroneCorp. – Programs</title>
+
   <style>
     :root {
       --bg-main: #02040a;
-      --bg-panel: #050914;
-      --bg-panel-soft: #050915;
-      --border-soft: rgba(120,170,255,0.4);
-      --border-hard: rgba(120,170,255,0.8);
+      --panel: #050914;
       --text-main: #f5f7ff;
       --text-muted: #9aa5c3;
       --accent: #7fcaff;
@@ -23,318 +21,201 @@
       margin: 0;
       padding: 0;
       min-height: 100%;
-      background: radial-gradient(circle at top, #071021 0%, #02040a 55%, #000 100%);
-      color: var(--text-main);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #050a18 0%, #02040a 55%, #000 100%);
+      color: var(--text-main);
     }
 
-    /* SHARED NAVBAR (same across pages) */
+    a { color: inherit; text-decoration: none; }
+
+    /* NAV */
     .nav-shell {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 20;
-      background: linear-gradient(
-        to bottom,
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: linear-gradient(to bottom,
         rgba(5,8,12,0.96),
-        rgba(5,8,12,0.75),
-        rgba(5,8,12,0.4),
-        transparent
-      );
-      border-bottom: 1px solid rgba(127,202,255,0.22);
-      backdrop-filter: blur(10px);
+        rgba(5,8,12,0.70),
+        transparent);
+      backdrop-filter: blur(8px);
     }
-
     .nav-inner {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 14px 24px 10px;
+      padding: 14px 32px 10px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
     }
-
     .brand-mark {
-      font-weight: 600;
-      letter-spacing: 0.45em;
       font-size: 15px;
+      letter-spacing: 0.45em;
+      font-weight: 520;
       text-transform: uppercase;
+      color: #f5f7ff;
       white-space: nowrap;
+      display: inline-flex;
+      align-items: baseline;
     }
-
-    .brand-mark span {
-      margin-left: 0.25em;
-      opacity: 0.9;
+    .brand-dot {
+      font-size: 0.6em;
+      margin-left: 0.18em;
+      transform: translateY(-0.05em);
+      opacity: 0.85;
     }
-
-    .nav-links {
-      margin-left: auto;
+    .main-nav {
       display: flex;
       gap: 22px;
       font-size: 13px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
     }
-
-    .nav-links a {
-      color: #dbe4ff;
-      text-decoration: none;
+    .main-nav a {
+      color: #c6d2f5;
       padding-bottom: 4px;
       position: relative;
-      opacity: 0.8;
-      transition: opacity 0.18s ease;
+      opacity: 0.82;
+      transition: color 0.16s ease, opacity 0.16s ease;
     }
-
-    .nav-links a::after {
+    .main-nav a::after {
       content: "";
       position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      left: 0; right: 0; bottom: 0;
       height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
       transform: scaleX(0);
       transform-origin: center;
-      transition: transform 0.18s ease;
+      background: linear-gradient(90deg, transparent, var(--accent-strong), transparent);
+      transition: transform 0.16s ease;
     }
-
-    .nav-links a:hover {
-      opacity: 1;
-    }
-
-    .nav-links a:hover::after,
-    .nav-links a.active::after {
-      transform: scaleX(1);
-    }
-
-    .nav-links a.active {
-      opacity: 1;
+    .main-nav a:hover {
       color: var(--accent);
+      opacity: 1;
+    }
+    .main-nav a:hover::after { transform: scaleX(1); }
+    .main-nav a.active {
+      color: var(--accent-strong);
+      opacity: 1;
+    }
+    .main-nav a.active::after { transform: scaleX(1); }
+    @media (max-width: 768px) {
+      .nav-inner { padding: 12px 16px 8px; }
+      .main-nav { gap: 12px; font-size: 11px; }
+      .brand-mark { font-size: 13px; letter-spacing: 0.35em; }
     }
 
-    .nav-burger {
-      display: none;
-      margin-left: auto;
-      width: 24px;
-      height: 18px;
-      flex-direction: column;
-      justify-content: space-between;
-      cursor: pointer;
-    }
-
-    .nav-burger span {
-      height: 2px;
-      width: 100%;
-      background: var(--text-main);
-    }
-
-    @media (max-width: 720px) {
-      .nav-inner { padding-inline: 16px; }
-      .nav-links { display: none; }
-      .nav-burger { display: flex; }
-      .nav-shell.open .nav-links {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: 52px;
-        left: 0;
-        right: 0;
-        padding: 10px 18px 14px;
-        background: rgba(5,8,12,0.98);
-        border-bottom: 1px solid rgba(127,202,255,0.25);
-      }
-    }
-
-    /* GRID OVERLAY */
     .grid-overlay {
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: -1;
+      z-index: 0;
       background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 80px 80px;
-      opacity: 0.9;
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 70px 70px;
+      opacity: 0.8;
     }
 
-    main {
+    .page-wrap {
       max-width: 1200px;
-      margin: 96px auto 48px;
-      padding: 0 24px 40px;
+      margin: 0 auto;
+      padding: 96px 32px 40px;
+      position: relative;
+      z-index: 1;
     }
 
-    .page-kicker {
+    .kicker {
       font-size: 11px;
-      letter-spacing: 0.26em;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
-    .page-title {
+    h1.page-title {
+      margin: 0 0 8px;
       font-size: 28px;
-      font-weight: 560;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      margin: 0 0 6px;
+      font-weight: 560;
     }
 
-    .page-subtitle {
-      margin: 0 0 24px;
+    .page-lead {
+      margin: 0 0 28px;
       font-size: 14px;
       color: var(--text-muted);
-      max-width: 780px;
+      max-width: 880px;
       line-height: 1.6;
     }
 
-    /* PIPELINE STRIP */
-    .pipeline-strip {
-      margin: 10px 0 32px;
-      padding: 14px 18px;
-      border-radius: 999px;
-      border: 1px solid rgba(120,170,255,0.35);
-      background:
-        radial-gradient(circle at top left, rgba(120,170,255,0.16), transparent 65%),
-        #050915;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 10px;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .pipeline-label {
-      text-transform: uppercase;
-      letter-spacing: 0.22em;
-      font-size: 10px;
-      color: var(--accent);
-      margin-right: 4px;
-    }
-
-    .pipeline-stage {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .bullet {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent-strong);
-      box-shadow: 0 0 8px rgba(127,202,255,0.8);
-    }
-
-    .pipeline-arrow {
-      margin: 0 8px;
-      opacity: 0.7;
-    }
-
-    /* PROGRAM CARDS GRID */
     .program-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 18px;
-      margin-top: 8px;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 18px 20px;
+      margin-bottom: 32px;
     }
 
     .program-card {
+      background: radial-gradient(circle at top left, rgba(120,170,255,0.18), transparent 60%), var(--panel);
       border-radius: 16px;
-      border: 1px solid var(--border-soft);
-      background:
-        radial-gradient(circle at top left, rgba(120,170,255,0.16), transparent 60%),
-        var(--bg-panel);
-      box-shadow: 0 26px 40px rgba(0,0,0,0.9);
-      padding: 18px 20px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      border: 1px solid rgba(120,170,255,0.38);
+      padding: 18px 18px 16px;
+      box-shadow: 0 22px 40px rgba(0,0,0,0.9);
+      transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease;
     }
 
     .program-card:hover {
       transform: translateY(-3px);
-      border-color: var(--border-hard);
-      box-shadow: 0 26px 44px rgba(0,0,0,0.96);
-    }
-
-    .program-kicker {
-      font-size: 11px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--text-muted);
+      border-color: rgba(120,170,255,0.9);
+      box-shadow: 0 26px 48px rgba(0,0,0,0.96);
     }
 
     .program-title {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 540;
+      margin-bottom: 6px;
     }
 
-    .program-copy {
+    .program-tagline {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .program-body {
       font-size: 13px;
       color: var(--text-muted);
-      line-height: 1.7;
-    }
-
-    .meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-      margin-top: 4px;
-    }
-
-    .pill {
-      border-radius: 999px;
-      border: 1px solid rgba(127,202,255,0.55);
-      padding: 3px 9px;
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--accent);
-      white-space: nowrap;
-    }
-
-    .note {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 18px;
-      max-width: 720px;
       line-height: 1.6;
     }
 
-    footer {
-      max-width: 1200px;
-      margin: 0 auto 22px;
-      padding: 0 24px;
+    .timeline {
+      margin-top: 10px;
       font-size: 11px;
       color: var(--text-muted);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
     }
 
-    @media (max-width: 900px) {
-      main {
-        margin-top: 88px;
-        padding-inline: 16px;
-      }
+    @media (max-width: 1080px) {
       .program-grid {
-        grid-template-columns: minmax(0, 1fr);
+        grid-template-columns: minmax(0,1fr);
       }
-      .pipeline-strip {
-        border-radius: 18px;
-      }
+    }
+
+    @media (max-width: 960px) {
+      .page-wrap { padding: 92px 20px 32px; }
     }
   </style>
 </head>
 <body>
   <div class="grid-overlay"></div>
 
-  <!-- NAVBAR -->
-  <header class="nav-shell" id="navShell">
+  <header class="nav-shell">
     <div class="nav-inner">
-      <div class="brand-mark">DRONECORP<span>.</span></div>
-
-      <nav class="nav-links">
+      <a href="index.html" class="brand-mark">
+        DRONECORP<span class="brand-dot">.</span>
+      </a>
+      <nav class="main-nav">
         <a href="index.html">Home</a>
         <a href="platforms.html">Platforms</a>
         <a href="focus-areas.html">Focus Areas</a>
@@ -343,124 +224,51 @@
         <a href="careers.html">Careers</a>
         <a href="contact.html">Contact</a>
       </nav>
-
-      <div class="nav-burger" id="navBurger"><span></span><span></span><span></span></div>
     </div>
   </header>
 
-  <main>
-    <div class="page-kicker">Program trajectory</div>
-    <h1 class="page-title">Engagement models &amp; pathways</h1>
-    <p class="page-subtitle">
-      DroneCorp. structures work so that concepts can move from lab experimentation to repeatable capability without
-      bespoke infrastructure. Most efforts start as small, technically-focused projects and expand only when the
-      underlying architecture is ready to support scale.
+  <main class="page-wrap">
+    <div class="kicker">Engagement model</div>
+    <h1 class="page-title">Programs &amp; paths</h1>
+    <p class="page-lead">
+      DroneCorp. operates as an R&amp;D-centric effort. Programs below describe typical ways we engage with primes,
+      government sponsors, and technology partners—from early conversations through prototype deployments.
     </p>
 
-    <!-- PIPELINE STRIP -->
-    <section class="pipeline-strip">
-      <span class="pipeline-label">Typical path</span>
-
-      <span class="pipeline-stage">
-        <span class="bullet"></span> Concept studies
-      </span>
-      <span class="pipeline-arrow">→</span>
-      <span class="pipeline-stage">
-        <span class="bullet"></span> Lab &amp; field experiments
-      </span>
-      <span class="pipeline-arrow">→</span>
-      <span class="pipeline-stage">
-        <span class="bullet"></span> Limited-scope pilots
-      </span>
-      <span class="pipeline-arrow">→</span>
-      <span class="pipeline-stage">
-        <span class="bullet"></span> Transition-ready capability paths
-      </span>
-    </section>
-
-    <!-- PROGRAM CARDS -->
     <section class="program-grid">
-      <!-- Card 1 -->
       <article class="program-card">
-        <div class="program-kicker">Applied autonomy experiments</div>
-        <h2 class="program-title">Edge autonomy &amp; perception trials</h2>
-        <p class="program-copy">
-          Small, tightly-scoped efforts focused on autonomy frameworks, onboard perception, and navigation assists.
-          Typical work includes algorithm bring-up on representative hardware, closed-course testing, and data
-          collection to inform future pilots.
+        <div class="program-title">Technical dialogue sessions</div>
+        <div class="program-tagline">0–90 days · discovery</div>
+        <p class="program-body">
+          Short, structured conversations focused on problem framing, constraints, and existing systems. Intended
+          for primes and government teams who want to test fit with ongoing efforts without committing to a lab
+          or integration sprint.
         </p>
-        <div class="meta-row">
-          <span class="pill">R&amp;D</span>
-          <span class="pill">Edge AI</span>
-          <span class="pill">Indoor &amp; close-range ISR</span>
-        </div>
+        <p class="timeline">Outputs: high-level briefs, integration sketches, risk map.</p>
       </article>
 
-      <!-- Card 2 -->
       <article class="program-card">
-        <div class="program-kicker">Interior &amp; maritime pilots</div>
-        <h2 class="program-title">Confined-space &amp; littoral ISR pilots</h2>
-        <p class="program-copy">
-          Early deployments of interior nano-UAS and surface ISR skiffs in controlled environments. Efforts emphasize
-          operator workflows, safety envelopes, and integration with existing command-and-control and video systems.
+        <div class="program-title">Concept co-design sprints</div>
+        <div class="program-tagline">3–6 months · lab work</div>
+        <p class="program-body">
+          Joint sprint cycles where teams refine a concept platform, autonomy stack, or integration pattern. Work
+          typically includes requirements refinement, architecture options, and early hardware/software prototypes
+          that can graduate into a sponsored effort.
         </p>
-        <div class="meta-row">
-          <span class="pill">Pilot</span>
-          <span class="pill">Interior recon</span>
-          <span class="pill">Maritime ISR</span>
-        </div>
+        <p class="timeline">Outputs: prototype, test plan, manufacturing notes.</p>
       </article>
 
-      <!-- Card 3 -->
       <article class="program-card">
-        <div class="program-kicker">Integration &amp; capability drops</div>
-        <h2 class="program-title">Clean handoffs into existing stacks</h2>
-        <p class="program-copy">
-          Work centered on packaging autonomy, sensing, and networking capabilities into discrete drops that can be
-          consumed by larger programs. Focus is on interfaces, observability, documentation, and sustaining engineering
-          rather than custom front-ends.
+        <div class="program-title">Prototype &amp; field experiments</div>
+        <div class="program-tagline">6–18 months · deployment</div>
+        <p class="program-body">
+          Applied trials of unmanned concepts in controlled field environments. Emphasis on instrumentation,
+          data products, and documentation that sponsors can carry forward into formal acquisition or larger
+          scaled programs with existing integrators.
         </p>
-        <div class="meta-row">
-          <span class="pill">Integration</span>
-          <span class="pill">APIs &amp; data products</span>
-          <span class="pill">U.S. supply chain</span>
-        </div>
-      </article>
-
-      <!-- Card 4 -->
-      <article class="program-card">
-        <div class="program-kicker">Partnered programs</div>
-        <h2 class="program-title">Teaming with primes &amp; integrators</h2>
-        <p class="program-copy">
-          Cooperative efforts where DroneCorp. supplies focused autonomy or ISR components into a broader system
-          architecture. Typical engagements involve shared roadmaps, interface control documents, and coordinated
-          experiments rather than one-off demonstrations.
-        </p>
-        <div class="meta-row">
-          <span class="pill">Teaming</span>
-          <span class="pill">Subcontractor role</span>
-          <span class="pill">Long-horizon R&amp;D</span>
-        </div>
+        <p class="timeline">Outputs: flight reports, data products, handoff package.</p>
       </article>
     </section>
-
-    <p class="note">
-      Program descriptions are illustrative and do not imply current contract awards. Specific efforts, sponsors, and
-      operational details are discussed only under appropriate agreements.
-    </p>
   </main>
-
-  <footer>
-    © 2025 DroneCorp. Conceptual material for discussion; not all capabilities shown are available or fielded.
-  </footer>
-
-  <script>
-    const navShell = document.getElementById("navShell");
-    const navBurger = document.getElementById("navBurger");
-    navBurger.addEventListener("click", () => {
-      navShell.classList.toggle("open");
-    });
-  </script>
 </body>
 </html>
-
