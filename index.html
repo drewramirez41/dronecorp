@@ -42,22 +42,64 @@
             </div>
         </section>
 
-        <!-- “AI style” conceptual copy below hero -->
+        <!-- Conceptual “AI copy” section -->
         <section class="section hero-copy">
             <div class="hero-copy-inner">
                 <div class="hero-copy-label">Conceptual overview</div>
                 <p id="ai-copy"></p>
             </div>
         </section>
+
+        <!-- Quick focus grid -->
+        <section class="section">
+            <div class="section-narrow">
+                <div class="section-title-kicker">Scope</div>
+                <h2 class="section-title">What DroneCorp. is exploring</h2>
+                <p class="section-body">
+                    This site describes where the work is heading, not a catalog of signed programs. The emphasis is on
+                    small, sharp platforms with honest constraints, built for teams that care about control loops more
+                    than PowerPoints.
+                </p>
+
+                <div class="card-grid">
+                    <article class="card">
+                        <div class="card-kicker">ISR Platforms</div>
+                        <h3 class="card-title">Short-range autonomous ISR</h3>
+                        <p class="card-body">
+                            Compact multirotors optimized for dense urban, maritime, and interior runs. Focus on low-friction deployment,
+                            strong telemetry, and recoverable logs instead of fragile one-off demos.
+                        </p>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-kicker">Manufacturing</div>
+                        <h3 class="card-title">Microfoundry mindset</h3>
+                        <p class="card-body">
+                            U.S.-based builds, tight batches, and iterative hardware revisions. The goal is a steady
+                            cadence of testable hardware, not a single “big” production line that never changes.
+                        </p>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-kicker">Edge autonomy</div>
+                        <h3 class="card-title">Onboard decision-making</h3>
+                        <p class="card-body">
+                            Experimentation with onboard perception, guidance, and simple autonomy stacks that survive
+                            RF-hostile, GPS-denied environments without needing a rack of cloud services to function.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer class="footer">
-        © 2025 DroneCorp. Conceptual material for discussion; not an offer.
+        © 2025 DroneCorp. Conceptual material for discussion; not an offer or guarantee of capabilities.
     </footer>
 </div>
 
 <script>
-/* Ensure hero video keeps playing even after navigation / reload */
+/* keep hero video running even on back/forward nav */
 document.addEventListener('DOMContentLoaded', function () {
     const video = document.querySelector('.hero-video');
     const safePlay = () => {
@@ -71,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('pageshow', safePlay);
 });
 
-/* Typeout for blue tagline + conceptual paragraph */
+/* Type-out tagline and paragraph */
 document.addEventListener('DOMContentLoaded', function () {
     const taglineEl = document.getElementById('hero-tagline');
     const copyEl = document.getElementById('ai-copy');
@@ -92,7 +134,6 @@ document.addEventListener('DOMContentLoaded', function () {
             taglineIndex++;
             setTimeout(typeTagline, 22);
         } else {
-            // after tagline finishes, start the paragraph typing
             typeCopy();
         }
     }
