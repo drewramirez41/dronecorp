@@ -1,5 +1,5 @@
 /* =========================
-   GLOBAL RESET & BASE
+   RESET & BASE
    ========================= */
 *,
 *::before,
@@ -13,14 +13,19 @@ html, body {
     height: 100%;
 }
 
+html {
+    /* keep scrollbar width stable so nav doesn't "jump" */
+    scrollbar-gutter: stable;
+}
+
 body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
     background: #020412;
     color: #e5ecff;
     line-height: 1.6;
+    overflow-y: scroll;
 }
 
-/* Wrapper for each page */
 .page {
     min-height: 100vh;
     display: flex;
@@ -33,18 +38,18 @@ body {
    ========================= */
 .navbar {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    inset: 0 0 auto 0;
     height: 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 40px;
-    background: linear-gradient(to bottom,
+    background: linear-gradient(
+        to bottom,
         rgba(2,4,18,0.98),
         rgba(2,4,18,0.9),
-        rgba(2,4,18,0.75));
+        rgba(2,4,18,0.75)
+    );
     border-bottom: 1px solid rgba(135,155,255,0.2);
     backdrop-filter: blur(16px);
     z-index: 100;
@@ -52,7 +57,7 @@ body {
 
 .navbar-brand {
     font-size: 20px;
-    letter-spacing: 0.22em; /* tighter */
+    letter-spacing: 0.22em; /* tightened */
     text-transform: uppercase;
     color: #ffffff;
     font-weight: 600;
@@ -90,18 +95,13 @@ body {
     border-color: #2f8dff;
 }
 
-/* simple burger for very small screens if we want later */
-.nav-toggle {
-    display: none;
-}
-
 /* =========================
    MAIN LAYOUT
    ========================= */
 
 .main {
     flex: 1;
-    padding-top: 80px; /* nav height + spacing */
+    padding-top: 80px; /* nav */
 }
 
 .section {
@@ -113,7 +113,7 @@ body {
     margin: 0 auto;
 }
 
-/* Typography */
+/* Titles / copy */
 .section-title-kicker {
     font-size: 12px;
     letter-spacing: 0.26em;
@@ -140,318 +140,3 @@ body {
    ========================= */
 .hero {
     position: relative;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 24px;
-    overflow: hidden;
-}
-
-.hero-video {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.45;
-}
-
-.hero-overlay {
-    position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(circle at top, rgba(47,141,255,0.3) 0, transparent 45%),
-        linear-gradient(to bottom, rgba(2,4,18,0.9), rgba(2,4,18,0.97));
-}
-
-.hero-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-        linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
-    background-size: 80px 80px;
-    opacity: 0.25;
-}
-
-.hero-inner {
-    position: relative;
-    max-width: 900px;
-    text-align: center;
-    z-index: 2;
-    margin-top: -40px;
-}
-
-.hero-kicker {
-    font-size: 13px;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: #4fa6ff;
-    margin-bottom: 16px;
-}
-
-.hero-title {
-    font-size: 46px;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: #ffffff;
-    text-shadow: 0 0 24px rgba(255,255,255,0.9);
-    margin-bottom: 20px;
-}
-
-.hero-subtitle {
-    font-size: 18px;
-    color: #d2ddff;
-    margin-bottom: 18px;
-}
-
-.hero-tagline {
-    font-size: 13px;
-    letter-spacing: 0.26em;
-    text-transform: uppercase;
-    color: #5eb1ff;
-}
-
-/* AI / “generated” copy under hero */
-.hero-copy {
-    background: radial-gradient(circle at top, rgba(47,141,255,0.15), rgba(2,4,18,1));
-}
-
-.hero-copy-inner {
-    max-width: 960px;
-    margin: 0 auto;
-    font-size: 15px;
-    color: #c3cffc;
-}
-
-.hero-copy-label {
-    font-size: 11px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: #6ea9ff;
-    margin-bottom: 8px;
-}
-
-#ai-copy {
-    min-height: 3.2em; /* keep box stable while typing */
-    border-left: 2px solid rgba(111,170,255,0.7);
-    padding-left: 14px;
-}
-
-/* =========================
-   CARDS / GRID
-   ========================= */
-.card-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 24px;
-    margin-top: 32px;
-}
-
-.card {
-    border-radius: 18px;
-    padding: 22px 20px;
-    background: radial-gradient(circle at top, rgba(47,141,255,0.32), rgba(4,7,25,0.98));
-    border: 1px solid rgba(135,155,255,0.28);
-}
-
-.card-title {
-    font-size: 16px;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: #ffffff;
-    margin-bottom: 10px;
-}
-
-.card-body {
-    font-size: 14px;
-    color: #c1cffb;
-}
-
-/* =========================
-   CAREERS / CONTACT FORMS
-   ========================= */
-.careers-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.1fr);
-    gap: 32px;
-    align-items: flex-start;
-    margin-top: 28px;
-}
-
-.apply-panel {
-    border-radius: 20px;
-    padding: 22px 20px 24px;
-    background: radial-gradient(circle at top left, rgba(47,141,255,0.45), rgba(4,7,25,1));
-    border: 1px solid rgba(135,155,255,0.34);
-}
-
-.apply-title {
-    font-size: 15px;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    margin-bottom: 12px;
-    color: #ffffff;
-}
-
-.apply-field {
-    margin-bottom: 14px;
-}
-
-.apply-label {
-    display: block;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: #8fa2ff;
-    margin-bottom: 6px;
-}
-
-.apply-input,
-.apply-textarea {
-    width: 100%;
-    border-radius: 10px;
-    border: 1px solid rgba(143,162,255,0.55);
-    background: rgba(4,7,25,0.9);
-    color: #ffffff;
-    padding: 9px 10px;
-    font-size: 14px;
-}
-
-.apply-input::placeholder,
-.apply-textarea::placeholder {
-    color: rgba(168,183,255,0.7);
-}
-
-.apply-textarea {
-    resize: vertical;
-    min-height: 90px;
-}
-
-.btn-primary {
-    display: inline-block;
-    padding: 10px 18px;
-    border-radius: 999px;
-    border: 1px solid #2f8dff;
-    background: linear-gradient(135deg, #2f8dff, #5fd4ff);
-    color: #020412;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    cursor: pointer;
-}
-
-/* =========================
-   FOOTER
-   ========================= */
-.footer {
-    padding: 24px;
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #7a86c9;
-    border-top: 1px solid rgba(135,155,255,0.16);
-    text-align: center;
-}
-
-/* =========================
-   RESPONSIVE
-   ========================= */
-
-/* medium screens */
-@media (max-width: 1024px) {
-    .card-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .careers-layout {
-        grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.3fr);
-    }
-}
-
-/* tablets / small laptops */
-@media (max-width: 768px) {
-
-    .navbar {
-        padding: 0 18px;
-    }
-
-    .navbar-brand {
-        font-size: 18px;
-        letter-spacing: 0.19em;
-    }
-
-    .nav-links {
-        gap: 16px;
-        font-size: 11px;
-        letter-spacing: 0.16em;
-    }
-
-    .hero-inner {
-        margin-top: -10px;
-    }
-
-    .hero-title {
-        font-size: 32px;
-        letter-spacing: 0.18em;
-    }
-
-    .hero-subtitle {
-        font-size: 15px;
-    }
-
-    .hero-tagline {
-        font-size: 11px;
-        letter-spacing: 0.22em;
-    }
-
-    .section {
-        padding: 64px 18px;
-    }
-
-    .section-title {
-        font-size: 24px;
-    }
-
-    .section-body {
-        font-size: 15px;
-    }
-
-    .card-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .careers-layout {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* phones */
-@media (max-width: 480px) {
-
-    .navbar {
-        height: 60px;
-        padding: 0 14px;
-    }
-
-    .navbar-brand {
-        font-size: 16px;
-        letter-spacing: 0.16em;
-    }
-
-    .nav-links {
-        gap: 12px;
-        font-size: 9px;
-        letter-spacing: 0.14em;
-    }
-
-    .hero-title {
-        font-size: 26px;
-    }
-
-    .section {
-        padding: 56px 16px;
-    }
-}
