@@ -1,100 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DroneCorp – Focus Areas</title>
-    <link rel="stylesheet" href="assets/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DroneCorp. – Focus Areas</title>
+
+  <style>
+    :root {
+      --bg-main:#02040a;
+      --panel:#050a16;
+      --border-soft:rgba(120,170,255,0.35);
+      --text-main:#f5f7ff;
+      --text-muted:#9aa5c3;
+      --accent:#7fcaff;
+      --accent-strong:#41b3ff;
+    }
+    *{box-sizing:border-box;}
+
+    html,body{
+      margin:0;padding:0;
+      min-height:100%;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#040815 0%,#02040a 55%,#000 100%);
+      color:var(--text-main);
+    }
+    a{color:inherit;text-decoration:none;}
+
+    /* NAV copied */
+    .nav-shell{
+      position:sticky;top:0;z-index:30;
+      backdrop-filter:blur(18px);
+      background:linear-gradient(to bottom,rgba(2,4,10,0.96),rgba(2,4,10,0.85),transparent);
+      border-bottom:1px solid rgba(120,170,255,0.25);
+    }
+    .nav-inner{
+      max-width:1200px;margin:0 auto;
+      padding:14px 24px 10px;
+      display:flex;align-items:center;justify-content:space-between;
+    }
+    .brand{
+      display:inline-flex;align-items:baseline;gap:2px;
+      font-size:15px;letter-spacing:0.32em;
+      text-transform:uppercase;font-weight:520;
+      color:var(--text-main);white-space:nowrap;
+    }
+    .brand .dot{letter-spacing:0;transform:translateX(-0.12em);}
+    nav ul{
+      list-style:none;display:flex;gap:22px;
+      margin:0;padding:0;
+      font-size:13px;letter-spacing:0.16em;text-transform:uppercase;
+    }
+    nav a{
+      color:var(--text-muted);
+      position:relative;padding-bottom:4px;
+      transition:color .18s ease;
+    }
+    nav a::after{
+      content:"";position:absolute;left:0;right:0;bottom:0;
+      height:1px;transform:scaleX(0);transform-origin:center;
+      background:linear-gradient(90deg,transparent,var(--accent-strong),transparent);
+      transition:transform .18s ease;
+    }
+    nav a:hover{color:var(--accent);}
+    nav a:hover::after,
+    nav a.active::after{transform:scaleX(1);}
+    nav a.active{color:var(--accent-strong);}
+
+    .page-shell{
+      max-width:1200px;margin:32px auto 40px;
+      padding:0 24px 40px;
+    }
+    .page-kicker{
+      font-size:11px;letter-spacing:0.26em;text-transform:uppercase;
+      color:var(--accent);margin-bottom:4px;
+    }
+    h1{
+      margin:0 0 6px;font-size:26px;font-weight:560;
+      letter-spacing:0.08em;text-transform:uppercase;
+    }
+    .page-subtitle{
+      margin:0 0 26px;font-size:14px;color:var(--text-muted);
+      max-width:760px;line-height:1.6;
+    }
+
+    .focus-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:18px;
+      margin-bottom:26px;
+    }
+    .focus-card{
+      border:1px solid var(--border-soft);
+      background:radial-gradient(circle at top left,rgba(120,170,255,0.16),transparent 60%),var(--panel);
+      padding:18px 18px 16px;
+      box-shadow:0 22px 36px rgba(0,0,0,0.88);
+    }
+    .focus-kicker{
+      font-size:10px;letter-spacing:0.22em;text-transform:uppercase;
+      color:var(--text-muted);margin-bottom:4px;
+    }
+    .focus-card h2{
+      margin:0 0 10px;font-size:15px;
+    }
+    .focus-card p{
+      margin:0 0 10px;font-size:13px;color:var(--text-muted);line-height:1.6;
+    }
+    .pill-row{
+      display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;
+    }
+    .pill{
+      border-radius:999px;border:1px solid rgba(120,170,255,0.4);
+      padding:3px 9px 3px;font-size:10px;
+      letter-spacing:0.16em;text-transform:uppercase;color:var(--text-muted);
+    }
+
+    .note{
+      font-size:12px;color:var(--text-muted);max-width:780px;line-height:1.6;
+    }
+
+    footer{
+      border-top:1px solid rgba(120,170,255,0.2);
+      font-size:11px;color:var(--text-muted);
+      text-align:center;padding:10px 24px 16px;margin-top:30px;
+    }
+
+    @media(max-width:1000px){.focus-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+    @media(max-width:720px){
+      .page-shell{padding-inline:16px;}
+      .focus-grid{grid-template-columns:1fr;}
+    }
+  </style>
 </head>
 <body>
-<div class="page">
-    <header class="navbar">
-        <div class="navbar-brand">DRONECORP<span class="navbar-dot">.</span></div>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="platforms.html">Platforms</a></li>
-                <li><a href="focus-areas.html" class="active">Focus Areas</a></li>
-                <li><a href="programs.html">Programs</a></li>
-                <li><a href="partner.html">Partner</a></li>
-                <li><a href="careers.html">Careers</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+<header class="nav-shell">
+  <div class="nav-inner">
+    <a href="index.html" class="brand"><span>DRONECORP</span><span class="dot">.</span></a>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="platforms.html">Platforms</a></li>
+        <li><a href="focus-areas.html" class="active">Focus Areas</a></li>
+        <li><a href="programs.html">Programs</a></li>
+        <li><a href="partner.html">Partner</a></li>
+        <li><a href="careers.html">Careers</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
 
-    <main class="main">
-        <section class="section">
-            <div class="section-narrow">
-                <div class="section-title-kicker">Focus areas</div>
-                <h1 class="section-title">Where the work is pointed</h1>
-                <p class="section-body">
-                    DroneCorp. is deliberately narrow. The emphasis is on autonomy-heavy ISR, honest telemetry, and
-                    manufacturing approaches that fit small teams and constrained budgets.
-                </p>
+<main class="page-shell">
+  <div class="page-kicker">Research vectors</div>
+  <h1>Focus areas</h1>
+  <p class="page-subtitle">
+    Work is biased toward autonomy-heavy ISR concepts, resilient comms, and architectures that plug cleanly into
+    existing mission-planning and analytics ecosystems. The goal is to de-risk integration, not add another silo.
+  </p>
 
-                <div class="card-grid">
-                    <article class="card">
-                        <div class="card-kicker">Autonomy</div>
-                        <h2 class="card-title">Perception & guidance</h2>
-                        <p class="card-body">
-                            Lightweight autonomy stacks that hold up in real environments: cluttered maritime decks,
-                            urban alleys, indoor spaces, and ranges where RF conditions are not ideal.
-                        </p>
-                    </article>
+  <section class="focus-grid">
+    <article class="focus-card">
+      <div class="focus-kicker">Autonomy &amp; edge AI</div>
+      <h2>Onboard perception and navigation</h2>
+      <p>
+        Exploration of low-SWaP edge processing stacks for perception, navigation assists, and operator-in-the-loop
+        decision support. Focused on explainable behavior and deterministic fallbacks rather than opaque black-box
+        autonomy.
+      </p>
+      <div class="pill-row">
+        <span class="pill">Edge compute</span>
+        <span class="pill">Perception</span>
+        <span class="pill">Assisted nav</span>
+      </div>
+    </article>
 
-                    <article class="card">
-                        <div class="card-kicker">Edge compute</div>
-                        <h2 class="card-title">Onboard processing</h2>
-                        <p class="card-body">
-                            Experimentation with single-board computers, IMUs, cameras, and RF front-ends that
-                            can run useful logic locally, not only by calling out to cloud services.
-                        </p>
-                    </article>
+    <article class="focus-card">
+      <div class="focus-kicker">Interior &amp; confined-space ISR</div>
+      <h2>Sub-terranean and structure recon</h2>
+      <p>
+        Concepts for navigating cluttered, GPS-denied interiors: industrial plants, ships, and underground spaces.
+        Emphasis on mapping, low-light sensing, and safe maneuvering around humans and infrastructure.
+      </p>
+      <div class="pill-row">
+        <span class="pill">GPS-denied</span>
+        <span class="pill">Low light</span>
+        <span class="pill">Digital twin</span>
+      </div>
+    </article>
 
-                    <article class="card">
-                        <div class="card-kicker">Manufacturing</div>
-                        <h2 class="card-title">Small-batch hardware</h2>
-                        <p class="card-body">
-                            US-based fabrication, assembly, and test flows that are realistic for a small team:
-                            3D-printed fixtures, COTS-heavy builds, and repeatable procedures instead of bespoke one-offs.
-                        </p>
-                    </article>
+    <article class="focus-card">
+      <div class="focus-kicker">Maritime &amp; littoral ISR</div>
+      <h2>Carrier-adjacent and pier-side awareness</h2>
+      <p>
+        Surface and low-altitude sensing concepts intended to sit alongside existing naval assets. Integration with
+        AIS, radar, and command displays comes first; visuals and dashboards follow.
+      </p>
+      <div class="pill-row">
+        <span class="pill">Maritime</span>
+        <span class="pill">Perimeter</span>
+        <span class="pill">C2 hooks</span>
+      </div>
+    </article>
 
-                    <article class="card">
-                        <div class="card-kicker">Telemetry</div>
-                        <h2 class="card-title">Logs over marketing</h2>
-                        <p class="card-body">
-                            Emphasis on robust logs, repeatable test runs, and introspection tools. If a flight goes bad,
-                            the stack should make it obvious why—not bury it.
-                        </p>
-                    </article>
+    <article class="focus-card">
+      <div class="focus-kicker">Networking</div>
+      <h2>Swarm, mesh, and backhaul</h2>
+      <p>
+        Research into small, resilient networks that allow multiple vehicles to cooperate without brittle dependence
+        on a single link. Preference for open, inspectable interfaces over proprietary lock-in.
+      </p>
+      <div class="pill-row">
+        <span class="pill">Mesh</span>
+        <span class="pill">Swarm</span>
+        <span class="pill">Open API</span>
+      </div>
+    </article>
 
-                    <article class="card">
-                        <div class="card-kicker">Safety & constraints</div>
-                        <h2 class="card-title">Bounded experimentation</h2>
-                        <p class="card-body">
-                            Test and development flows that respect airspace, export, and safety constraints from day
-                            one, not bolted on later under pressure.
-                        </p>
-                    </article>
+    <article class="focus-card">
+      <div class="focus-kicker">Manufacturing</div>
+      <h2>U.S.-centric supply &amp; repeatability</h2>
+      <p>
+        Process development for small-batch builds that can scale when programs require it. Priority on traceable
+        sourcing, maintainability, and repeatable test regimes.
+      </p>
+      <div class="pill-row">
+        <span class="pill">U.S. supply chain</span>
+        <span class="pill">QA</span>
+        <span class="pill">Test harness</span>
+      </div>
+    </article>
 
-                    <article class="card">
-                        <div class="card-kicker">Operator experience</div>
-                        <h2 class="card-title">Working with teams</h2>
-                        <p class="card-body">
-                            Tooling, checklists, and UI that reflect how operators actually work—preflight routines,
-                            handoffs, and debriefs—instead of only optimizing slide decks.
-                        </p>
-                    </article>
-                </div>
-            </div>
-        </section>
-    </main>
+    <article class="focus-card">
+      <div class="focus-kicker">Integration</div>
+      <h2>C2, analytics, and mission tools</h2>
+      <p>
+        Everything is designed to be a good neighbor in existing stacks: STANAG-style feeds, clean APIs, and
+        sensible data products that analysts can actually use.
+      </p>
+      <div class="pill-row">
+        <span class="pill">C2 integration</span>
+        <span class="pill">Data products</span>
+        <span class="pill">Interop</span>
+      </div>
+    </article>
+  </section>
 
-    <footer class="footer">
-        © 2025 DroneCorp. Conceptual material for discussion; not all capabilities are available or fielded.
-    </footer>
-</div>
+  <p class="note">
+    All work shown is early-stage and subject to change. Detailed roadmaps, integration notes, and test data are
+    available to qualified partners under appropriate agreements.
+  </p>
+</main>
+
+<footer>
+  © <span id="year"></span> DroneCorp. Conceptual material for discussion; not all capabilities shown are available or fielded.
+</footer>
+<script>document.getElementById("year").textContent=new Date().getFullYear();</script>
 </body>
 </html>
