@@ -14,7 +14,7 @@ html, body {
 }
 
 html {
-    /* keep scrollbar width stable so nav doesn't "jump" */
+    /* keeps scrollbar width stable so header doesn't jump */
     scrollbar-gutter: stable;
 }
 
@@ -101,7 +101,7 @@ body {
 
 .main {
     flex: 1;
-    padding-top: 80px; /* nav */
+    padding-top: 80px; /* clear navbar */
 }
 
 .section {
@@ -114,6 +114,7 @@ body {
 }
 
 /* Titles / copy */
+
 .section-title-kicker {
     font-size: 12px;
     letter-spacing: 0.26em;
@@ -135,8 +136,14 @@ body {
     color: #d2ddff;
 }
 
+.section-subtitle {
+    font-size: 18px;
+    color: #c9d4ff;
+    margin-bottom: 18px;
+}
+
 /* =========================
-   HERO (HOME)
+   HERO – HOME
    ========================= */
 .hero {
     position: relative;
@@ -213,10 +220,10 @@ body {
     letter-spacing: 0.26em;
     text-transform: uppercase;
     color: #5eb1ff;
-    min-height: 1.4em; /* keep space while typing */
+    min-height: 1.4em;
 }
 
-/* “Conceptual overview” text under hero */
+/* Conceptual overview text */
 .hero-copy {
     background: radial-gradient(circle at top, rgba(47,141,255,0.13), rgba(2,4,18,1));
 }
@@ -244,7 +251,7 @@ body {
 }
 
 /* =========================
-   CARDS / GRID
+   GENERIC CARDS / GRID
    ========================= */
 .card-grid {
     display: grid;
@@ -268,6 +275,14 @@ body {
     margin-bottom: 10px;
 }
 
+.card-kicker {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #6ea9ff;
+    margin-bottom: 4px;
+}
+
 .card-body {
     font-size: 14px;
     color: #c1cffb;
@@ -284,7 +299,7 @@ body {
     margin-top: 28px;
 }
 
-/* left column: roles list */
+/* left column: roles */
 .role-grid {
     display: flex;
     flex-direction: column;
@@ -374,7 +389,7 @@ body {
     margin-bottom: 4px;
 }
 
-/* right column: apply box */
+/* right column: apply panel */
 .apply-panel {
     border-radius: 20px;
     padding: 22px 20px 24px;
@@ -499,7 +514,7 @@ body {
     font-weight: 600;
 }
 
-/* shared button */
+/* Buttons */
 .btn-primary {
     display: inline-block;
     padding: 10px 18px;
@@ -512,6 +527,12 @@ body {
     letter-spacing: 0.16em;
     text-transform: uppercase;
     cursor: pointer;
+}
+
+/* Simple muted text */
+.muted {
+    font-size: 13px;
+    color: #a1aadc;
 }
 
 /* =========================
@@ -531,7 +552,6 @@ body {
    RESPONSIVE
    ========================= */
 
-/* Medium screens */
 @media (max-width: 1024px) {
     .card-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -542,9 +562,7 @@ body {
     }
 }
 
-/* Tablets / small laptops */
 @media (max-width: 768px) {
-
     .navbar {
         padding: 0 18px;
     }
@@ -611,9 +629,7 @@ body {
     }
 }
 
-/* Phones */
 @media (max-width: 480px) {
-
     .navbar {
         height: 60px;
         padding: 0 14px;
