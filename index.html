@@ -74,7 +74,7 @@
 
     .nav-brand-word {
       font-size: 14px;
-      letter-spacing: 0.2em; /* tighter spacing */
+      letter-spacing: 0.18em; /* tighter */
       font-weight: 520;
       text-transform: uppercase;
       color: var(--text-main);
@@ -82,7 +82,7 @@
 
     .nav-brand-dot {
       font-size: 12px;
-      transform: translate(-0.08em, 0.18em); /* tuck dot closer & slightly down */
+      transform: translate(-0.12em, 0.18em); /* closer to P */
       color: var(--text-main);
     }
 
@@ -191,33 +191,34 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
       padding: 96px 16px 40px; /* top padding clears nav */
     }
 
     .hero-inner {
       max-width: 880px;
       margin: 0 auto;
+      text-align: center;
     }
 
     .hero-title {
       font-size: clamp(40px, 5vw, 60px);
       font-weight: 600;
-      letter-spacing: 0.26em; /* tighter than before */
+      letter-spacing: 0.18em; /* tighter spacing */
       text-transform: uppercase;
-      margin: 0 0 18px;
+      margin: 0 auto 18px;     /* explicit centering */
       color: #fdfefe;
       text-shadow:
         0 0 14px rgba(255,255,255,0.65),
         0 0 36px rgba(127,202,255,0.65);
       display: inline-flex;
       align-items: baseline;
+      justify-content: center;
       gap: 0.05em;
     }
 
     .hero-dot {
       font-size: 0.8em;
-      transform: translate(-0.12em, 0.25em);
+      transform: translate(-0.16em, 0.25em); /* tucked right under the P */
       color: #fdfefe;
     }
 
@@ -259,10 +260,6 @@
       nav ul {
         gap: 16px;
         font-size: 12px;
-      }
-
-      .hero-title {
-        letter-spacing: 0.22em;
       }
     }
 
@@ -312,7 +309,7 @@
 
       <nav>
         <ul>
-          <!-- IMPORTANT: home is "/" so you always hit the root where video behaves correctly -->
+          <!-- Home -> root so video behaves correctly -->
           <li><a href="/" class="active">Home</a></li>
           <li><a href="platforms.html">Platforms</a></li>
           <li><a href="focus-areas.html">Focus Areas</a></li>
