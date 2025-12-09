@@ -1,79 +1,366 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DroneCorp – Platforms</title>
-    <link rel="stylesheet" href="assets/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DroneCorp. – Platforms</title>
+
+  <style>
+    :root {
+      --bg-main: #02040a;
+      --panel: #050a16;
+      --panel-soft: #050b19;
+      --border-soft: rgba(120,170,255,0.35);
+      --text-main: #f5f7ff;
+      --text-muted: #9aa5c3;
+      --accent: #7fcaff;
+      --accent-strong: #41b3ff;
+    }
+    * { box-sizing:border-box; }
+
+    html, body {
+      margin:0; padding:0;
+      min-height:100%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background: radial-gradient(circle at top, #040815 0%, #02040a 55%, #000 100%);
+      color: var(--text-main);
+    }
+
+    a { color: inherit; text-decoration:none; }
+
+    /* NAV – same as index */
+    .nav-shell {
+      position: sticky;
+      top:0;
+      z-index:30;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(to bottom, rgba(2,4,10,0.96), rgba(2,4,10,0.85), transparent);
+      border-bottom:1px solid rgba(120,170,255,0.25);
+    }
+    .nav-inner {
+      max-width:1200px;
+      margin:0 auto;
+      padding:14px 24px 10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .brand {
+      display:inline-flex;
+      align-items:baseline;
+      gap:2px;
+      font-size:15px;
+      letter-spacing:0.32em;
+      text-transform:uppercase;
+      font-weight:520;
+      color:var(--text-main);
+      white-space:nowrap;
+    }
+    .brand .dot { letter-spacing:0; transform:translateX(-0.12em); }
+
+    nav ul {
+      list-style:none;
+      display:flex;
+      gap:22px;
+      margin:0;
+      padding:0;
+      font-size:13px;
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+    }
+    nav a {
+      color:#9aa5c3;
+      position:relative;
+      padding-bottom:4px;
+      transition:color .18s ease;
+    }
+    nav a::after{
+      content:"";
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height:1px;
+      transform:scaleX(0);
+      transform-origin:center;
+      background:linear-gradient(90deg,transparent,var(--accent-strong),transparent);
+      transition:transform .18s ease;
+    }
+    nav a:hover{ color:var(--accent); }
+    nav a:hover::after,
+    nav a.active::after{ transform:scaleX(1); }
+    nav a.active{ color:var(--accent-strong); }
+
+    .page-shell{
+      max-width:1200px;
+      margin:32px auto 40px;
+      padding:0 24px 40px;
+    }
+
+    .page-kicker{
+      font-size:11px;
+      letter-spacing:0.26em;
+      text-transform:uppercase;
+      color:var(--accent);
+      margin-bottom:4px;
+    }
+    h1.page-title{
+      margin:0 0 6px;
+      font-size:26px;
+      font-weight:560;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+    }
+    .page-subtitle{
+      margin:0 0 28px;
+      font-size:14px;
+      color:var(--text-muted);
+      max-width:760px;
+      line-height:1.6;
+    }
+
+    .design-panel{
+      border:1px solid var(--border-soft);
+      background: radial-gradient(circle at top left, rgba(120,170,255,0.16), transparent 60%), var(--panel);
+      padding:22px 24px 20px;
+      box-shadow:0 26px 40px rgba(0,0,0,0.85);
+      margin-bottom:28px;
+    }
+    .panel-label{
+      font-size:11px;
+      letter-spacing:0.22em;
+      text-transform:uppercase;
+      color:var(--text-muted);
+      margin-bottom:8px;
+    }
+    .design-panel h2{
+      margin:0 0 10px;
+      font-size:17px;
+    }
+    .design-panel p{
+      margin:0 0 12px;
+      font-size:13px;
+      line-height:1.6;
+      color:var(--text-muted);
+    }
+
+    .chip-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .chip{
+      border:1px solid var(--border-soft);
+      border-radius:40px;
+      padding:5px 13px 4px;
+      font-size:10px;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+      color:var(--accent);
+      background: radial-gradient(circle at top, rgba(120,170,255,0.23), transparent 70%);
+    }
+
+    .section-title{
+      margin:0 0 6px;
+      font-size:18px;
+      font-weight:540;
+    }
+    .section-sub{
+      margin:0 0 18px;
+      font-size:13px;
+      color:var(--text-muted);
+      max-width:780px;
+      line-height:1.6;
+    }
+
+    .platform-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:16px 18px;
+    }
+    .platform-card{
+      border:1px solid rgba(120,170,255,0.32);
+      background: radial-gradient(circle at top left, rgba(120,170,255,0.16), transparent 60%), var(--panel-soft);
+      padding:14px 16px 14px;
+      box-shadow:0 18px 32px rgba(0,0,0,0.9);
+    }
+    .platform-label{
+      font-size:10px;
+      letter-spacing:0.22em;
+      text-transform:uppercase;
+      color:var(--text-muted);
+      margin-bottom:4px;
+    }
+    .platform-card h3{
+      margin:0 0 8px;
+      font-size:14px;
+    }
+    .platform-card p{
+      margin:0 0 10px;
+      font-size:13px;
+      color:var(--text-muted);
+      line-height:1.6;
+    }
+    .tag-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .tag{
+      border-radius:999px;
+      border:1px solid rgba(120,170,255,0.4);
+      font-size:10px;
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+      padding:3px 9px 3px;
+      color:var(--text-muted);
+    }
+
+    footer{
+      border-top:1px solid rgba(120,170,255,0.2);
+      font-size:11px;
+      color:var(--text-muted);
+      text-align:center;
+      padding:10px 24px 16px;
+      margin-top:30px;
+    }
+
+    @media(max-width:900px){
+      .page-shell{padding-inline:16px;}
+      .platform-grid{grid-template-columns:1fr;}
+      .design-panel{padding-inline:18px;}
+    }
+  </style>
 </head>
 <body>
-<div class="page">
-    <header class="navbar">
-        <div class="navbar-brand">DRONECORP<span class="navbar-dot">.</span></div>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="platforms.html" class="active">Platforms</a></li>
-                <li><a href="focus-areas.html">Focus Areas</a></li>
-                <li><a href="programs.html">Programs</a></li>
-                <li><a href="partner.html">Partner</a></li>
-                <li><a href="careers.html">Careers</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+<header class="nav-shell">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <span>DRONECORP</span><span class="dot">.</span>
+    </a>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="platforms.html" class="active">Platforms</a></li>
+        <li><a href="focus-areas.html">Focus Areas</a></li>
+        <li><a href="programs.html">Programs</a></li>
+        <li><a href="partner.html">Partner</a></li>
+        <li><a href="careers.html">Careers</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
 
-    <main class="main">
-        <section class="section">
-            <div class="section-narrow">
-                <div class="section-title-kicker">Platforms</div>
-                <h1 class="section-title">ISR racks, not show pieces</h1>
-                <p class="section-body">
-                    The intent is to build tight families of ISR platforms that share components, logs, and behaviors.
-                    Names, sizes, and configurations may change; the underlying idea—sovereign, repeatable hardware—does not.
-                </p>
+<main class="page-shell">
+  <div class="page-kicker">Multi-domain unmanned systems</div>
+  <h1 class="page-title">Concept platforms under evaluation</h1>
+  <p class="page-subtitle">
+    DroneCorp. explores modular air, maritime, and interior-recon architectures designed to interface with
+    existing command-and-control ecosystems. Current work is focused on design studies, prototyping pathways,
+    and integration concepts rather than fielded product.
+  </p>
 
-                <div class="card-grid">
-                    <article class="card">
-                        <div class="card-kicker">SR–01</div>
-                        <h2 class="card-title">Short-range ISR quad</h2>
-                        <p class="card-body">
-                            Compact multirotor tuned for line-of-sight and near-beyond-line-of-sight work. Designed
-                            to launch quickly, survive rough recoveries, and hand back useful telemetry instead of
-                            pretty footage alone.
-                        </p>
-                    </article>
+  <section class="design-panel">
+    <div class="panel-label">Design focus</div>
+    <h2>Applied unmanned systems R&amp;D</h2>
+    <p>
+      Platforms described on this page are early-stage concepts. They are intended to explore autonomy frameworks,
+      payload integration patterns, and edge-processing architectures across air, surface, and confined interior
+      environments.
+    </p>
+    <p>
+      Each concept is designed around a U.S.-centric supply chain with an emphasis on reliability, maintainability,
+      and clean interfaces to existing C2, mapping, and analytics toolchains. Technical roadmaps, detailed
+      specifications, and performance envelopes are available for teaming partners and qualified programs under
+      separate discussion.
+    </p>
 
-                    <article class="card">
-                        <div class="card-kicker">IN–01</div>
-                        <h2 class="card-title">Interior & shipboard recon</h2>
-                        <p class="card-body">
-                            Prop-guarded, sensor-heavy variants biased toward interior, ship, and industrial spaces.
-                            Trade some endurance for reliability in GPS-denied, RF-hostile environments.
-                        </p>
-                    </article>
+    <div class="chip-row">
+      <div class="chip">Concept</div>
+      <div class="chip">R&amp;D emphasis</div>
+      <div class="chip">U.S. supply chain</div>
+    </div>
+  </section>
 
-                    <article class="card">
-                        <div class="card-kicker">SW–RACK</div>
-                        <h2 class="card-title">Swarm & rack concepts</h2>
-                        <p class="card-body">
-                            Exploratory work around dense racks of small air vehicles—simple, disposable units that
-                            matter more as a group than as individuals. Focus on launch/recover mechanics and telemetry.
-                        </p>
-                    </article>
-                </div>
+  <section>
+    <h2 class="section-title">Platform families</h2>
+    <p class="section-sub">
+      Illustrative concepts spanning close-range ISR, interior recon, maritime perimeter awareness, and distributed
+      swarm constructs. Naming, payloads, and deployment envelopes are representative and subject to change as work
+      progresses.
+    </p>
 
-                <p class="muted" style="margin-top:24px;">
-                    All platform descriptions are conceptual and may change. Nothing here should be read as a
-                    production configuration or a commitment to field specific capabilities.
-                </p>
-            </div>
-        </section>
-    </main>
+    <div class="platform-grid">
+      <article class="platform-card">
+        <div class="platform-label">Air – close-range ISR</div>
+        <h3>Tactical ISR quadrotor</h3>
+        <p>
+          Compact multi-sensor airframe concept for close-range reconnaissance, overwatch, and perimeter awareness in
+          contested environments. Envisions onboard perception and navigation assists to reduce operator workload while
+          maintaining human-in-the-loop authority.
+        </p>
+        <div class="tag-row">
+          <span class="tag">VTOL</span>
+          <span class="tag">ISR</span>
+          <span class="tag">Low signature</span>
+          <span class="tag">Edge AI</span>
+        </div>
+      </article>
 
-    <footer class="footer">
-        © 2025 DroneCorp. Conceptual material for discussion; not all capabilities are available or fielded.
-    </footer>
-</div>
+      <article class="platform-card">
+        <div class="platform-label">Swarm &amp; teaming</div>
+        <h3>Distributed swarm constructs</h3>
+        <p>
+          Early-stage autonomy and coordination research aimed at dispersed, low-cost vehicles operating as a
+          cooperative mesh. Focus on resilient comms, graceful degradation, and integration with existing
+          mission-planning tools rather than bespoke stovepipes.
+        </p>
+        <div class="tag-row">
+          <span class="tag">Swarm</span>
+          <span class="tag">Mesh networking</span>
+          <span class="tag">Open API</span>
+        </div>
+      </article>
+
+      <article class="platform-card">
+        <div class="platform-label">Interior recon</div>
+        <h3>Confined-space nano-UAS</h3>
+        <p>
+          Concept vehicle sized for interior and sub-terranean reconnaissance with emphasis on obstacle-dense
+          navigation, low-light sensing, and minimal signature. Intended as a modular payload host for mapping, routing,
+          and digital-twin generation in complex spaces.
+        </p>
+        <div class="tag-row">
+          <span class="tag">Interior</span>
+          <span class="tag">Mapping</span>
+          <span class="tag">Low light</span>
+        </div>
+      </article>
+
+      <article class="platform-card">
+        <div class="platform-label">Maritime &amp; littoral ISR</div>
+        <h3>Carrier-adjacent surface ISR skiff</h3>
+        <p>
+          Small unmanned surface concept intended for pier-side and littoral perimeter awareness. Envisions modular
+          sensor masts, AIS awareness, and tight integration with existing naval C2 picture rather than bespoke
+          visualization stacks.
+        </p>
+        <div class="tag-row">
+          <span class="tag">Maritime</span>
+          <span class="tag">Perimeter ISR</span>
+          <span class="tag">C2 integration</span>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer>
+  © <span id="year"></span> DroneCorp. Conceptual material for discussion; not all capabilities shown are available or fielded.
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
