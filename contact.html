@@ -27,51 +27,92 @@
         <section class="section">
             <div class="section-narrow">
                 <div class="section-title-kicker">Contact</div>
-                <h1 class="section-title">Get in touch</h1>
+                <h1 class="section-title">Reach DroneCorp.</h1>
                 <p class="section-body">
-                    For program discussions, early trials, or general questions, use the form below. Please avoid
-                    including classified or sensitive operational details.
+                    Use this channel for early technical discussions, teaming conversations, or concept validation.
+                    Submissions route to a small engineering-led intake queue. There is no marketing list or automated
+                    sales workflow behind this form.
                 </p>
 
-                <div class="careers-layout" style="margin-top:24px;">
-                    <div>
-                        <form action="thanks.html" method="get">
+                <div class="contact-layout">
+                    <!-- Intake posture panel -->
+                    <aside class="contact-panel contact-panel-alt">
+                        <h2>Intake posture</h2>
+                        <p class="section-body" style="font-size:14px; margin-top:8px;">
+                            DroneCorp. is an autonomy-focused unmanned systems effort exploring modular ISR platforms
+                            and enabling technologies. We are currently biased toward engineering discussions over
+                            transactional sales calls.
+                        </p>
+
+                        <div class="badge-row">
+                            <span class="badge">R&amp;D-centric intake</span>
+                            <span class="badge">No mass mailing</span>
+                            <span class="badge">U.S.-based</span>
+                        </div>
+
+                        <ul class="contact-list">
+                            <li>Autonomy, edge processing, and onboard AI concepts.</li>
+                            <li>Interior, maritime, and close-range ISR use cases.</li>
+                            <li>Integration with existing C2, mapping, and analytics ecosystems.</li>
+                            <li>Early-stage teaming, prototyping, and subcontractor discussions.</li>
+                        </ul>
+
+                        <p class="contact-note">
+                            <span class="contact-note-critical">Unclassified information only.</span>
+                            Please avoid locations, mission identifiers, export-controlled details, or sensitive
+                            operational data. High-level context and constraints are sufficient.
+                        </p>
+                    </aside>
+
+                    <!-- Secure intake form -->
+                    <section class="contact-panel">
+                        <h2>Secure intake form</h2>
+
+                        <form action="thanks.html" method="get" style="margin-top:10px;">
                             <div class="apply-field">
                                 <label class="apply-label" for="cname">Name</label>
-                                <input class="apply-input" id="cname" name="cname" required>
+                                <input class="apply-input" id="cname" name="cname" required placeholder="Full name">
                             </div>
-                            <div class="apply-field">
-                                <label class="apply-label" for="cemail">Email</label>
-                                <input type="email" class="apply-input" id="cemail" name="cemail" required>
-                            </div>
+
                             <div class="apply-field">
                                 <label class="apply-label" for="corg">Organization</label>
-                                <input class="apply-input" id="corg" name="corg">
+                                <input class="apply-input" id="corg" name="corg" placeholder="Company / unit (optional)">
                             </div>
+
+                            <div class="apply-field">
+                                <label class="apply-label" for="cemail">Email</label>
+                                <input type="email" class="apply-input" id="cemail" name="cemail"
+                                       placeholder="work.email@example.com" required>
+                            </div>
+
+                            <div class="apply-field">
+                                <label class="apply-label" for="ctopic">Topic</label>
+                                <select id="ctopic" name="ctopic" class="apply-select">
+                                    <option value="">Select one</option>
+                                    <option>Prototype evaluation</option>
+                                    <option>Mission trial / pilot</option>
+                                    <option>Integration discussion</option>
+                                    <option>Co-development / custom work</option>
+                                    <option>General question</option>
+                                </select>
+                            </div>
+
                             <div class="apply-field">
                                 <label class="apply-label" for="cmsg">Message</label>
                                 <textarea class="apply-textarea" id="cmsg" name="cmsg"
-                                          placeholder="A brief description of what you’d like to discuss."></textarea>
+                                          placeholder="Brief, unclassified description of what you’re exploring and how we might help."></textarea>
                             </div>
-                            <button type="submit" class="btn-primary">Send message</button>
-                        </form>
-                    </div>
 
-                    <aside class="apply-panel">
-                        <div class="apply-title">General notes</div>
-                        <p class="section-body" style="font-size:14px;">
-                            DroneCorp. is currently operating on a limited set of concept and prototype efforts. If your
-                            inquiry is clearly aligned with those, we’ll prioritize it. We may not be able to respond to
-                            all general requests, but we read everything that comes in.
-                        </p>
-                    </aside>
+                            <button type="submit" class="btn-primary">Send secure inquiry →</button>
+                        </form>
+                    </section>
                 </div>
             </div>
         </section>
     </main>
 
     <footer class="footer">
-        © 2025 DroneCorp. Conceptual material for discussion; not an offer.
+        © 2025 DroneCorp. Conceptual material for discussion; not all capabilities shown are available or fielded.
     </footer>
 </div>
 </body>
