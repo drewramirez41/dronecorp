@@ -42,7 +42,7 @@
             </div>
         </section>
 
-        <!-- Conceptual “AI copy” section -->
+        <!-- Conceptual overview -->
         <section class="section hero-copy">
             <div class="hero-copy-inner">
                 <div class="hero-copy-label">Conceptual overview</div>
@@ -50,7 +50,7 @@
             </div>
         </section>
 
-        <!-- Quick focus grid -->
+        <!-- Focus grid -->
         <section class="section">
             <div class="section-narrow">
                 <div class="section-title-kicker">Scope</div>
@@ -99,7 +99,7 @@
 </div>
 
 <script>
-/* keep hero video running even on back/forward nav */
+/* keep hero video alive across navigation */
 document.addEventListener('DOMContentLoaded', function () {
     const video = document.querySelector('.hero-video');
     const safePlay = () => {
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('pageshow', safePlay);
 });
 
-/* Type-out tagline and paragraph */
+/* type out ISR tagline + AI copy */
 document.addEventListener('DOMContentLoaded', function () {
     const taglineEl = document.getElementById('hero-tagline');
     const copyEl = document.getElementById('ai-copy');
@@ -125,37 +125,32 @@ document.addEventListener('DOMContentLoaded', function () {
         "Everything on this site is conceptual material meant to describe the direction of the work, not a catalog of production capabilities."
     ];
 
-    let taglineIndex = 0;
-
+    let tIndex = 0;
     function typeTagline() {
         if (!taglineEl) return;
-        if (taglineIndex <= taglineText.length) {
-            taglineEl.textContent = taglineText.slice(0, taglineIndex);
-            taglineIndex++;
+        if (tIndex <= taglineText.length) {
+            taglineEl.textContent = taglineText.slice(0, tIndex);
+            tIndex++;
             setTimeout(typeTagline, 22);
         } else {
             typeCopy();
         }
     }
 
-    let lineIndex = 0;
-    let charIndex = 0;
-    let current = "";
-
+    let line = 0, char = 0, buffer = "";
     function typeCopy() {
-        if (!copyEl || lineIndex >= copyLines.length) return;
-
-        const text = copyLines[lineIndex];
-        if (charIndex < text.length) {
-            current += text.charAt(charIndex);
-            copyEl.textContent = current;
-            charIndex++;
+        if (!copyEl || line >= copyLines.length) return;
+        const text = copyLines[line];
+        if (char < text.length) {
+            buffer += text.charAt(char);
+            copyEl.textContent = buffer;
+            char++;
             setTimeout(typeCopy, 16);
         } else {
-            lineIndex++;
-            charIndex = 0;
-            if (lineIndex < copyLines.length) {
-                current += "\n\n";
+            line++;
+            char = 0;
+            if (line < copyLines.length) {
+                buffer += "\n\n";
                 setTimeout(typeCopy, 900);
             }
         }
