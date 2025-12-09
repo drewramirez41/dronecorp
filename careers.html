@@ -1,276 +1,665 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DroneCorp – Careers</title>
-    <link rel="stylesheet" href="assets/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DroneCorp. – Careers</title>
+
+  <style>
+    :root {
+      --bg-main: #02040a;
+      --bg-panel: rgba(5, 10, 20, 0.96);
+      --border-soft: rgba(120, 170, 255, 0.35);
+      --border-hard: rgba(120, 170, 255, 0.75);
+      --text-main: #f5f7ff;
+      --text-muted: #9aa5c3;
+      --accent: #7fcaff;
+      --accent-strong: #41b3ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: radial-gradient(circle at top, #071021 0%, #02040a 55%, #000 100%);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text-main);
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* NAV (same look as index) */
+
+    .nav-shell {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(20px);
+      background: linear-gradient(
+        to bottom,
+        rgba(2, 4, 10, 0.96),
+        rgba(2, 4, 10, 0.85),
+        transparent
+      );
+      border-bottom: 1px solid rgba(120, 170, 255, 0.25);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 24px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 2px;
+      font-size: 15px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      font-weight: 520;
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+
+    .brand span.dot {
+      letter-spacing: 0;
+      font-size: 15px;
+      transform: translateX(-0.12em);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 22px;
+      margin: 0;
+      padding: 0;
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.18s ease;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      transform: scaleX(0);
+      transform-origin: center;
+      background: linear-gradient(90deg, transparent, var(--accent-strong), transparent);
+      transition: transform 0.18s ease;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    nav a:hover::after,
+    nav a.active::after {
+      transform: scaleX(1);
+    }
+
+    nav a.active {
+      color: var(--accent-strong);
+    }
+
+    /* GRID BACKGROUND */
+
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 70px 70px;
+    }
+
+    /* PAGE LAYOUT */
+
+    main {
+      flex: 1;
+      max-width: 1200px;
+      margin: 32px auto 40px;
+      padding: 0 24px;
+    }
+
+    .page-kicker {
+      font-size: 11px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .page-title {
+      margin: 0 0 6px;
+      font-size: 26px;
+      font-weight: 560;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .page-subtitle {
+      margin: 0 0 28px;
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 780px;
+      line-height: 1.6;
+    }
+
+    .careers-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.25fr);
+      gap: 28px;
+      align-items: flex-start;
+    }
+
+    /* LEFT: OPEN ROLES */
+
+    .panel {
+      border: 1px solid rgba(120,170,255,0.3);
+      background: radial-gradient(circle at top left, rgba(120,170,255,0.18), transparent 65%), var(--bg-panel);
+      box-shadow: 0 22px 40px rgba(0,0,0,0.8);
+      padding: 20px 22px 22px;
+    }
+
+    .panel-title {
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .panel-heading {
+      margin: 0 0 16px;
+      font-size: 15px;
+      font-weight: 540;
+    }
+
+    .role-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .role-card {
+      border-radius: 8px;
+      border: 1px solid rgba(120,170,255,0.38);
+      background: radial-gradient(circle at top left, rgba(120,170,255,0.17), transparent 70%), #050a19;
+      padding: 10px 12px 10px 14px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.18s ease, background 0.18s ease, transform 0.08s ease;
+    }
+
+    .role-card:hover {
+      border-color: var(--border-hard);
+      transform: translateY(-1px);
+    }
+
+    .role-main {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .role-name {
+      font-size: 14px;
+      font-weight: 520;
+    }
+
+    .role-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .tag {
+      border-radius: 999px;
+      border: 1px solid rgba(120,170,255,0.6);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 3px 7px;
+      color: var(--accent);
+      background: radial-gradient(circle at top, rgba(120,170,255,0.22), transparent 70%);
+    }
+
+    .role-chevron {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px;
+      color: var(--text-muted);
+    }
+
+    .role-details {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      display: none;
+    }
+
+    .role-card.expanded .role-details {
+      display: block;
+    }
+
+    .role-card.expanded .role-chevron {
+      transform: translateY(-50%) rotate(90deg);
+    }
+
+    /* RIGHT: APPLY FORM */
+
+    .form-panel {
+      border: 1px solid rgba(120,170,255,0.4);
+      background: radial-gradient(circle at top right, rgba(120,170,255,0.22), transparent 70%), var(--bg-panel);
+      box-shadow: 0 24px 44px rgba(0,0,0,0.9);
+      padding: 20px 22px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between; /* bottom lines up more cleanly with roles panel */
+    }
+
+    .form-kicker {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .form-title {
+      margin: 0 0 10px;
+      font-size: 15px;
+      font-weight: 540;
+    }
+
+    .form-helper {
+      margin: 0 0 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .form-helper a {
+      color: var(--accent-strong);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+      gap: 14px 16px;
+      margin-bottom: 12px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    select,
+    textarea {
+      background: rgba(5,10,22,0.96);
+      border: 1px solid rgba(120,170,255,0.35);
+      color: var(--text-main);
+      padding: 7px 9px;
+      font-size: 13px;
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(154,165,195,0.7);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--border-hard);
+      background: rgba(5,12,34,0.98);
+      box-shadow: 0 0 0 1px rgba(120,170,255,0.45);
+    }
+
+    .btn-primary {
+      margin-top: 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-hard);
+      background: radial-gradient(circle at top, rgba(120,170,255,0.7), rgba(5,15,45,1));
+      color: var(--text-main);
+      padding: 9px 22px;
+      font-size: 12px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.18s ease, transform 0.08s ease, box-shadow 0.18s ease;
+    }
+
+    .btn-primary::after {
+      content: "→";
+      font-size: 13px;
+    }
+
+    .btn-primary:hover {
+      background: radial-gradient(circle at top, rgba(120,170,255,0.9), rgba(5,18,60,1));
+      box-shadow: 0 0 22px rgba(120,170,255,0.55);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 0 10px rgba(120,170,255,0.4);
+    }
+
+    .submit-caption {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    footer {
+      border-top: 1px solid rgba(120,170,255,0.18);
+      font-size: 11px;
+      color: var(--text-muted);
+      padding: 12px 24px 18px;
+      text-align: center;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 900px) {
+      .careers-layout {
+        grid-template-columns: minmax(0,1fr);
+      }
+
+      .panel,
+      .form-panel {
+        padding-inline: 16px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        padding-inline: 16px;
+      }
+
+      nav ul {
+        gap: 14px;
+        font-size: 11px;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="page">
-    <header class="navbar">
-        <div class="navbar-brand">DRONECORP<span class="navbar-dot">.</span></div>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="platforms.html">Platforms</a></li>
-                <li><a href="focus-areas.html">Focus Areas</a></li>
-                <li><a href="programs.html">Programs</a></li>
-                <li><a href="partner.html">Partner</a></li>
-                <li><a href="careers.html" class="active">Careers</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <main class="main">
-        <section class="section">
-            <div class="section-narrow">
-                <div class="section-kicker">Careers</div>
-                <h1 class="section-title">Build DroneCorp. from the zero line</h1>
-                <p class="section-body">
-                    DroneCorp. is an early-stage U.S. unmanned systems effort focused on autonomy-heavy ISR concepts,
-                    small-batch manufacturing, and defense-aligned R&amp;D. We are not a scaled prime—we’re building
-                    toward that with a very small, high-trust team that wants to wire the first racks, write the first
-                    flight code, and sit in the first customer briefings.
-                </p>
+<div class="grid-overlay"></div>
 
-                <div class="careers-layout">
-                    <!-- LEFT: OPEN ROLES -->
-                    <section>
-                        <div class="section-kicker" style="margin-top:26px;">Open roles</div>
-                        <h2 class="section-title" style="font-size:18px; margin-bottom:10px;">
-                            Early-stage hiring priorities
-                        </h2>
+<header class="nav-shell">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <span>DRONECORP</span><span class="dot">.</span>
+    </a>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="platforms.html">Platforms</a></li>
+        <li><a href="focus-areas.html">Focus Areas</a></li>
+        <li><a href="programs.html">Programs</a></li>
+        <li><a href="partner.html">Partner</a></li>
+        <li><a href="careers.html" class="active">Careers</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
 
-                        <div class="panel">
-                            <div class="role-grid">
-                                <!-- Role 1 -->
-                                <article class="role-card" data-role>
-                                    <div class="role-header">
-                                        <div class="role-title-block">
-                                            <div class="role-title">
-                                                Founding defense programs &amp; manufacturing lead
-                                            </div>
-                                            <div class="role-subtitle">
-                                                Define how hardware leaves the shop and enters real programs.
-                                            </div>
-                                            <div class="role-tags">
-                                                <span class="role-tag">Defense / capture</span>
-                                                <span class="role-tag">Hybrid</span>
-                                                <span class="role-tag">U.S.-based</span>
-                                            </div>
-                                        </div>
-                                        <div class="role-chevron">›</div>
-                                    </div>
-                                    <div class="role-body">
-                                        <h4>What you&rsquo;ll own</h4>
-                                        <ul>
-                                            <li>Stand up the first customer-facing programs and agreements.</li>
-                                            <li>Shape how small batches of hardware are packaged, delivered, and supported.</li>
-                                            <li>Translate operator feedback and program constraints into clear next steps.</li>
-                                        </ul>
-                                        <h4>What you bring</h4>
-                                        <ul>
-                                            <li>Experience in defense programs, non-traditional pathways, or dual-use startups.</li>
-                                            <li>Comfort communicating with both engineers and acquisition stakeholders.</li>
-                                            <li>A bias toward honest status, not overselling what&rsquo;s ready.</li>
-                                        </ul>
-                                    </div>
-                                </article>
+<main>
+  <div class="page-kicker">Careers</div>
+  <h1 class="page-title">Build DroneCorp. from the zero line</h1>
+  <p class="page-subtitle">
+    DroneCorp. is an early-stage U.S. unmanned systems effort focused on autonomy-heavy ISR concepts,
+    small-batch manufacturing, and defense-aligned R&amp;D. We’re not a scaled prime—we’re building
+    toward that with a very small, high-trust team that wants to wire the first racks,
+    write the first flight code, and sit in the first customer briefings.
+  </p>
 
-                                <!-- Role 2 -->
-                                <article class="role-card" data-role>
-                                    <div class="role-header">
-                                        <div class="role-title-block">
-                                            <div class="role-title">Senior autonomy &amp; systems engineer</div>
-                                            <div class="role-subtitle">
-                                                Glue between perception, guidance, and the airframe.
-                                            </div>
-                                            <div class="role-tags">
-                                                <span class="role-tag">R&amp;D</span>
-                                                <span class="role-tag">Remote-friendly (US)</span>
-                                            </div>
-                                        </div>
-                                        <div class="role-chevron">›</div>
-                                    </div>
-                                    <div class="role-body">
-                                        <h4>What you&rsquo;ll own</h4>
-                                        <ul>
-                                            <li>Design and implement autonomy primitives and flight behaviors.</li>
-                                            <li>Work across sensors, compute, and flight stack integration.</li>
-                                            <li>Instrument prototypes and ship repeatable experiments.</li>
-                                        </ul>
-                                        <h4>What you bring</h4>
-                                        <ul>
-                                            <li>Hands-on experience with UAS, robotics, or autonomous systems.</li>
-                                            <li>Comfort reading flight logs, debugging in the loop, and refining algorithms.</li>
-                                            <li>Willingness to work in version-0.x environments with incomplete tooling.</li>
-                                        </ul>
-                                    </div>
-                                </article>
+  <section class="careers-layout">
+    <!-- LEFT: OPEN ROLES -->
+    <section class="panel">
+      <div class="panel-title">Open roles</div>
+      <h2 class="panel-heading">Early-stage hiring priorities</h2>
 
-                                <!-- Role 3 -->
-                                <article class="role-card" data-role>
-                                    <div class="role-header">
-                                        <div class="role-title-block">
-                                            <div class="role-title">Prototype operations &amp; flight test lead</div>
-                                            <div class="role-subtitle">
-                                                Own builds, range time, and logs.
-                                            </div>
-                                            <div class="role-tags">
-                                                <span class="role-tag">Hands-on</span>
-                                                <span class="role-tag">On-site leaning</span>
-                                                <span class="role-tag">Arizona / Southwest</span>
-                                            </div>
-                                        </div>
-                                        <div class="role-chevron">›</div>
-                                    </div>
-                                    <div class="role-body">
-                                        <h4>What you&rsquo;ll own</h4>
-                                        <ul>
-                                            <li>Assembly, preflight, and postflight procedures for test vehicles.</li>
-                                            <li>Structured range campaigns with repeatable test cards.</li>
-                                            <li>Clean, tagged logs engineers can interrogate after flights.</li>
-                                        </ul>
-                                        <h4>What you bring</h4>
-                                        <ul>
-                                            <li>Comfort around tools, wiring, solder, checklists, and check rides.</li>
-                                            <li>Experience flying sUAS (Part 107 or equivalent is a plus).</li>
-                                            <li>A steady hand under time pressure and changing weather.</li>
-                                        </ul>
-                                    </div>
-                                </article>
-
-                                <!-- Role 4 -->
-                                <article class="role-card" data-role>
-                                    <div class="role-header">
-                                        <div class="role-title-block">
-                                            <div class="role-title">Studio kitchen &amp; lab experience lead</div>
-                                            <div class="role-subtitle">
-                                                Make the lab feel like a place people want to be at 0200.
-                                            </div>
-                                            <div class="role-tags">
-                                                <span class="role-tag">Culture</span>
-                                                <span class="role-tag">On-site</span>
-                                                <span class="role-tag">Tucson area (future)</span>
-                                            </div>
-                                        </div>
-                                        <div class="role-chevron">›</div>
-                                    </div>
-                                    <div class="role-body">
-                                        <h4>What you&rsquo;ll own</h4>
-                                        <ul>
-                                            <li>Light food, coffee, and snack ops sized for a small engineering studio.</li>
-                                            <li>Keeping the lab, common spaces, and guest areas sharp.</li>
-                                            <li>Logistics for visitors, small events, and long test days.</li>
-                                        </ul>
-                                        <h4>What you bring</h4>
-                                        <ul>
-                                            <li>Operational discipline (hospitality, events, military, or similar).</li>
-                                            <li>An eye for the details that make long days survivable.</li>
-                                            <li>A sense of humor without undercutting the seriousness of the work.</li>
-                                        </ul>
-                                    </div>
-                                </article>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- RIGHT: INTAKE PANEL -->
-                    <aside class="apply-panel">
-                        <div class="section-kicker">Intake</div>
-                        <div class="apply-title">Send a short signal, not a novel</div>
-                        <p class="apply-subtext">
-                            Use this channel for a concise introduction. Links are great—LinkedIn, portfolio, GitHub,
-                            previous work. A brief note on what you&rsquo;ve actually built or shipped matters more to us
-                            than a perfectly formatted résumé.
-                        </p>
-
-                        <form action="thanks.html" method="get">
-                            <div class="apply-field">
-                                <label class="apply-label" for="name">Name</label>
-                                <input class="apply-input" id="name" name="name"
-                                       placeholder="Full name" required>
-                            </div>
-
-                            <div class="apply-field">
-                                <label class="apply-label" for="email">Email</label>
-                                <input type="email" class="apply-input" id="email" name="email"
-                                       placeholder="you@domain.com" required>
-                            </div>
-
-                            <div class="apply-field">
-                                <label class="apply-label" for="role">Role of interest</label>
-                                <select id="role" name="role" class="apply-select">
-                                    <option>Founding Defense Programs & Manufacturing Lead</option>
-                                    <option>Senior Autonomy & Systems Engineer</option>
-                                    <option>Prototype Operations & Flight Test Lead</option>
-                                    <option>Studio Kitchen & Lab Experience Lead</option>
-                                    <option>Something adjacent</option>
-                                </select>
-                            </div>
-
-                            <div class="apply-field">
-                                <label class="apply-label" for="links">Links</label>
-                                <input class="apply-input" id="links" name="links"
-                                       placeholder="LinkedIn, portfolio, GitHub, previous company, etc.">
-                            </div>
-
-                            <div class="apply-field">
-                                <label class="apply-label" for="note">Short note</label>
-                                <textarea class="apply-textarea" id="note" name="note"
-                                          placeholder="In 5–8 sentences, tell us what you’ve actually built or led that’s relevant."></textarea>
-                            </div>
-
-                            <button type="submit" class="btn-primary">Send signal →</button>
-                        </form>
-
-                        <p class="contact-note" style="margin-top:14px;">
-                            <span class="contact-note-strong">Unclassified information only.</span>
-                            Please avoid locations, mission identifiers, export-controlled details, or sensitive
-                            operational data. High-level context and constraints are sufficient.
-                        </p>
-                    </aside>
-                </div>
+      <div class="role-list">
+        <!-- 1. Founding Defense Programs & Manufacturing Lead -->
+        <article class="role-card" data-role="defense-manufacturing">
+          <div class="role-main">
+            <div class="role-name">Founding Defense Programs &amp; Manufacturing Lead</div>
+            <div class="role-tags">
+              <span class="tag">Defense | Capture</span>
+              <span class="tag">Hybrid</span>
+              <span class="tag">U.S.-based</span>
             </div>
-        </section>
-    </main>
+          </div>
+          <div class="role-chevron">›</div>
+          <div class="role-details">
+            <p>
+              Own the path from concept deck to first program-of-record. You’ve previously helped a
+              hardware or defense startup move from prototypes into awarded contracts, and you’re
+              comfortable living in the overlap between
+              capture, manufacturing, and operations.
+            </p>
+            <ul>
+              <li>Stand up small-batch manufacturing and quality workflows suitable for defense work.</li>
+              <li>Shape capture strategy, teaming approaches, and proposal content.</li>
+              <li>Coordinate with engineering on costed BOMs, lead times, and delivery plans.</li>
+              <li>Comfort leading conversations with primes, integrators, and end-users.</li>
+            </ul>
+          </div>
+        </article>
 
-    <footer class="footer">
-        © 2025 DroneCorp. Conceptual material for discussion; not all capabilities are available or fielded.
-    </footer>
-</div>
+        <!-- 2. Senior Autonomy & Systems Engineer -->
+        <article class="role-card" data-role="autonomy-systems">
+          <div class="role-main">
+            <div class="role-name">Senior Autonomy &amp; Systems Engineer</div>
+            <div class="role-tags">
+              <span class="tag">R&amp;D</span>
+              <span class="tag">Remote-friendly (US)</span>
+            </div>
+          </div>
+          <div class="role-chevron">›</div>
+          <div class="role-details">
+            <p>
+              Help design the brains of the stack: onboard autonomy, edge processing, perception
+              and navigation for contested environments. You’re comfortable going from
+              whiteboard to working prototype, and you’re opinionated about architectures.
+            </p>
+            <ul>
+              <li>Own key autonomy or perception modules for interior, low-altitude, or maritime ISR.</li>
+              <li>Work across flight stack, simulation, and integration with C2 systems.</li>
+              <li>Partner with hardware to define compute, sensor, and networking requirements.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- 3. Prototype Operations & Flight Test Lead -->
+        <article class="role-card" data-role="prototype-ops">
+          <div class="role-main">
+            <div class="role-name">Prototype Operations &amp; Flight Test Lead</div>
+            <div class="role-tags">
+              <span class="tag">Hands-on</span>
+              <span class="tag">On-site leaning</span>
+              <span class="tag">Arizona / Southwest</span>
+            </div>
+          </div>
+          <div class="role-chevron">›</div>
+          <div class="role-details">
+            <p>
+              Run the practical side of the house: integration, ground testing, flight test events,
+              and ops checklists. You’re comfortable in the field, you like checklists more
+              than slideware, and you’re willing to help wire, solder, and carry cases.
+            </p>
+            <ul>
+              <li>Own test planning, range coordination, and safety practices.</li>
+              <li>Capture flight data and feedback into design and autonomy teams.</li>
+              <li>Help define how a future small operations team should run.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- 4. Studio Kitchen & Vibe Operations Lead (playful role) -->
+        <article class="role-card" data-role="vibe-ops">
+          <div class="role-main">
+            <div class="role-name">Studio Kitchen &amp; Vibe Operations Lead</div>
+            <div class="role-tags">
+              <span class="tag">Culture</span>
+              <span class="tag">On-site</span>
+              <span class="tag">Tucson Area (future)</span>
+            </div>
+          </div>
+          <div class="role-chevron">›</div>
+          <div class="role-details">
+            <p>
+              Early-stage teams run hot. This role keeps the back-of-house running and the
+              front-of-house sane. You’ve run a kitchen, café, or event space before and
+              understand how to keep snacks stocked, people fed, and the vibe steady.
+            </p>
+            <ul>
+              <li>Own the studio kitchen, snacks, and “we actually have coffee” reality.</li>
+              <li>Coordinate team meals, late-night work sessions, and visiting partner days.</li>
+              <li>Help with light operations tasks: shipping boxes, staging hardware, runs to the store.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- RIGHT: APPLY FORM -->
+    <section class="form-panel">
+      <div>
+        <div class="form-kicker">Apply</div>
+        <h2 class="form-title">Send a short signal, not a novel</h2>
+        <p class="form-helper">
+          Use this form to drop a concise introduction. LinkedIn, portfolio links, and a
+          brief note on what you’ve built or shipped matter more than a perfectly formatted résumé.
+          Most engagements will start as <strong>high-trust, low-bureaucracy conversations</strong>.
+        </p>
+
+        <form action="https://formsubmit.co/admin@dronecorp.us" method="POST">
+          <!-- FormSubmit config -->
+          <input type="hidden" name="_subject" value="DroneCorp. Careers – New Signal" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_next" value="https://dronecorp.us/thanks.html" />
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input id="name" name="Name" type="text" required placeholder="Full name">
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input id="email" name="Email" type="email" required placeholder="you@domain.com">
+            </div>
+
+            <div class="form-group full">
+              <label for="role">Role of interest</label>
+              <select id="role" name="Role" required>
+                <option value="" disabled selected>Select one</option>
+                <option>Founding Defense Programs & Manufacturing Lead</option>
+                <option>Senior Autonomy & Systems Engineer</option>
+                <option>Prototype Operations & Flight Test Lead</option>
+                <option>Studio Kitchen & Vibe Operations Lead</option>
+                <option>Something else adjacent</option>
+              </select>
+            </div>
+
+            <div class="form-group full">
+              <label for="links">Links</label>
+              <input id="links" name="Links" type="text" placeholder="LinkedIn, portfolio, GitHub, previous company, etc.">
+            </div>
+
+            <div class="form-group full">
+              <label for="note">Short note</label>
+              <textarea id="note" name="Note" rows="5" placeholder="In 5–8 sentences, tell us what you’ve actually built or led that’s relevant."></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary">Send signal</button>
+          <p class="submit-caption">
+            Do not include classified, export-controlled, or otherwise sensitive information.
+            High-level, unclassified descriptions of work are sufficient.
+          </p>
+        </form>
+      </div>
+    </section>
+  </section>
+</main>
+
+<footer>
+  © <span id="year"></span> DroneCorp. All rights reserved.
+</footer>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const cards = document.querySelectorAll('.role-card');
-
-    // click-to-expand (only one open at a time)
-    cards.forEach(card => {
-        card.addEventListener('click', () => {
-            const open = card.classList.contains('open');
-            cards.forEach(c => c.classList.remove('open'));
-            if (!open) card.classList.add('open');
-        });
+  // default: collapse all
+  document.querySelectorAll('.role-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const wasExpanded = card.classList.contains('expanded');
+      document.querySelectorAll('.role-card').forEach(c => c.classList.remove('expanded'));
+      if (!wasExpanded) card.classList.add('expanded');
     });
+  });
 
-    // scroll reveal for tactical “whoa” instead of MySpace
-    if ('IntersectionObserver' in window) {
-        const io = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    io.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.18 });
-
-        cards.forEach(card => io.observe(card));
-    } else {
-        cards.forEach(card => card.classList.add('visible'));
-    }
-});
+  document.getElementById('year').textContent = new Date().getFullYear();
 </script>
+
 </body>
 </html>
