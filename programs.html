@@ -1,77 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DroneCorp – Programs</title>
-    <link rel="stylesheet" href="assets/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DroneCorp. – Programs</title>
+
+  <style>
+    :root{
+      --panel:#050a16;
+      --border-soft:rgba(120,170,255,0.35);
+      --text-main:#f5f7ff;
+      --text-muted:#9aa5c3;
+      --accent:#7fcaff;
+      --accent-strong:#41b3ff;
+    }
+    *{box-sizing:border-box;}
+    html,body{
+      margin:0;padding:0;min-height:100%;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#040815 0%,#02040a 55%,#000 100%);
+      color:var(--text-main);
+    }
+    a{color:inherit;text-decoration:none;}
+
+    .nav-shell{position:sticky;top:0;z-index:30;
+      backdrop-filter:blur(18px);
+      background:linear-gradient(to bottom,rgba(2,4,10,0.96),rgba(2,4,10,0.85),transparent);
+      border-bottom:1px solid rgba(120,170,255,0.25);}
+    .nav-inner{max-width:1200px;margin:0 auto;padding:14px 24px 10px;display:flex;align-items:center;justify-content:space-between;}
+    .brand{display:inline-flex;align-items:baseline;gap:2px;font-size:15px;letter-spacing:0.32em;text-transform:uppercase;font-weight:520;color:#f5f7ff;white-space:nowrap;}
+    .brand .dot{letter-spacing:0;transform:translateX(-0.12em);}
+    nav ul{list-style:none;display:flex;gap:22px;margin:0;padding:0;font-size:13px;letter-spacing:0.16em;text-transform:uppercase;}
+    nav a{color:#9aa5c3;position:relative;padding-bottom:4px;transition:color .18s ease;}
+    nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;transform:scaleX(0);transform-origin:center;background:linear-gradient(90deg,transparent,var(--accent-strong),transparent);transition:transform .18s ease;}
+    nav a:hover{color:var(--accent);}
+    nav a:hover::after,nav a.active::after{transform:scaleX(1);}
+    nav a.active{color:var(--accent-strong);}
+
+    .page-shell{max-width:1200px;margin:32px auto 40px;padding:0 24px 40px;}
+    .page-kicker{font-size:11px;letter-spacing:0.26em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;}
+    h1{margin:0 0 6px;font-size:26px;font-weight:560;letter-spacing:0.08em;text-transform:uppercase;}
+    .page-subtitle{margin:0 0 26px;font-size:14px;color:var(--text-muted);max-width:780px;line-height:1.6;}
+
+    .timeline{
+      position:relative;
+      margin-left:10px;
+      padding-left:18px;
+      border-left:1px solid rgba(120,170,255,0.35);
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+    .program-card{
+      position:relative;
+      border:1px solid var(--border-soft);
+      background:radial-gradient(circle at top left,rgba(120,170,255,0.18),transparent 60%),var(--panel);
+      padding:14px 18px 14px;
+      box-shadow:0 20px 34px rgba(0,0,0,0.9);
+    }
+    .program-card::before{
+      content:"";
+      position:absolute;
+      left:-28px;top:16px;
+      width:10px;height:10px;
+      border-radius:999px;
+      background:var(--accent-strong);
+      box-shadow:0 0 0 4px rgba(65,179,255,0.3);
+    }
+    .program-label{
+      font-size:10px;letter-spacing:0.22em;text-transform:uppercase;
+      color:var(--text-muted);margin-bottom:4px;
+    }
+    .program-header{
+      display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:4px;
+    }
+    .program-header h2{margin:0;font-size:15px;}
+    .badge{
+      border-radius:999px;border:1px solid rgba(120,170,255,0.4);
+      padding:3px 9px 3px;font-size:10px;
+      letter-spacing:0.16em;text-transform:uppercase;color:var(--text-muted);
+    }
+    .program-card p{
+      margin:0 0 8px;
+      font-size:13px;color:var(--text-muted);line-height:1.6;
+    }
+    .meta-row{display:flex;flex-wrap:wrap;gap:8px;font-size:11px;color:var(--text-muted);}
+    .meta-row span{opacity:0.9;}
+
+    footer{border-top:1px solid rgba(120,170,255,0.2);font-size:11px;color:var(--text-muted);text-align:center;padding:10px 24px 16px;margin-top:30px;}
+
+    @media(max-width:720px){
+      .page-shell{padding-inline:16px;}
+      .program-header{flex-direction:column;align-items:flex-start;}
+    }
+  </style>
 </head>
 <body>
-<div class="page">
-    <header class="navbar">
-        <div class="navbar-brand">DRONECORP<span class="navbar-dot">.</span></div>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="platforms.html">Platforms</a></li>
-                <li><a href="focus-areas.html">Focus Areas</a></li>
-                <li><a href="programs.html" class="active">Programs</a></li>
-                <li><a href="partner.html">Partner</a></li>
-                <li><a href="careers.html">Careers</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+<header class="nav-shell">
+  <div class="nav-inner">
+    <a href="index.html" class="brand"><span>DRONECORP</span><span class="dot">.</span></a>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="platforms.html">Platforms</a></li>
+        <li><a href="focus-areas.html">Focus Areas</a></li>
+        <li><a href="programs.html" class="active">Programs</a></li>
+        <li><a href="partner.html">Partner</a></li>
+        <li><a href="careers.html">Careers</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
 
-    <main class="main">
-        <section class="section">
-            <div class="section-narrow">
-                <div class="section-title-kicker">Programs</div>
-                <h1 class="section-title">How engagements typically start</h1>
-                <p class="section-body">
-                    DroneCorp. is not a scaled prime. Most work begins as tightly scoped experiments: small sets of air
-                    vehicles, constrained test envelopes, and clear questions we want to answer together.
-                </p>
+<main class="page-shell">
+  <div class="page-kicker">Internal efforts</div>
+  <h1>Programs</h1>
+  <p class="page-subtitle">
+    DroneCorp. is not a prime; current work is organized into focused internal programs that explore specific
+    pieces of the stack. Each effort is structured so it can plug into a larger customer program when the timing
+    and partners are right.
+  </p>
 
-                <div class="card-grid">
-                    <article class="card">
-                        <div class="card-kicker">Phase I</div>
-                        <h2 class="card-title">Concept & problem shaping</h2>
-                        <p class="card-body">
-                            High-level discussions around mission constraints, airspace realities, and what “useful” looks like.
-                            The outcome is a short, unclassified program note—not a 90-page deck.
-                        </p>
-                    </article>
+  <section class="timeline">
+    <article class="program-card">
+      <div class="program-label">Rack zero</div>
+      <div class="program-header">
+        <h2>Carrier-adjacent ISR line</h2>
+        <span class="badge">Concept / lab</span>
+      </div>
+      <p>
+        Early build-space for surface and short-range air platforms that live alongside carrier and pier-side
+        operations. Focus on power, launch/ recovery, and data ingest workflows rather than cosmetics.
+      </p>
+      <div class="meta-row">
+        <span>• Maritime perimeter ISR</span>
+        <span>• Physical + simulated environments</span>
+      </div>
+    </article>
 
-                    <article class="card">
-                        <div class="card-kicker">Phase II</div>
-                        <h2 class="card-title">Prototype exercises</h2>
-                        <p class="card-body">
-                            Build or adapt small batches of hardware for range or lab trials. Expect tight feedback
-                            loops, messy notes, and honest assessments of what actually happened in the air.
-                        </p>
-                    </article>
+    <article class="program-card">
+      <div class="program-label">Interior ISR</div>
+      <div class="program-header">
+        <h2>Confined-space autonomy rig</h2>
+        <span class="badge">Active</span>
+      </div>
+      <p>
+        Hardware-in-the-loop testbed for navigating industrial and sub-terranean environments. Uses configurable
+        obstacles, lighting, and RF conditions to exercise perception, mapping, and comms strategies.
+      </p>
+      <div class="meta-row">
+        <span>• GPS-denied navigation</span>
+        <span>• Digital-twin data products</span>
+      </div>
+    </article>
 
-                    <article class="card">
-                        <div class="card-kicker">Phase III</div>
-                        <h2 class="card-title">Early racks & integration</h2>
-                        <p class="card-body">
-                            Mature promising prototypes into repeatable racks: shared configs, scripted test runs, and
-                            telemetry that your own teams can interrogate without us in the loop.
-                        </p>
-                    </article>
-                </div>
+    <article class="program-card">
+      <div class="program-label">Swarm &amp; teaming</div>
+      <div class="program-header">
+        <h2>Distributed autonomy experiments</h2>
+        <span class="badge">Exploratory</span>
+      </div>
+      <p>
+        Simulation-first work on small, cooperating vehicles that share sensing and routing decisions. Emphasis on
+        open interfaces so frameworks can be swapped or extended without rewriting the entire stack.
+      </p>
+      <div class="meta-row">
+        <span>• Mesh networking</span>
+        <span>• Open-source-friendly interfaces</span>
+      </div>
+    </article>
+  </section>
+</main>
 
-                <p class="muted" style="margin-top:24px;">
-                    Program descriptions are illustrative. Actual work will align with contracting, export, and security constraints.
-                </p>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        © 2025 DroneCorp. Conceptual material for discussion; not all capabilities are available or fielded.
-    </footer>
-</div>
+<footer>
+  © <span id="year"></span> DroneCorp. Conceptual material for discussion; not all capabilities shown are available or fielded.
+</footer>
+<script>document.getElementById("year").textContent=new Date().getFullYear();</script>
 </body>
 </html>
