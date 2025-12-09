@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DroneCorp – U.S. Unmanned Aerial Systems</title>
+    <title>DroneCorp – Platforms</title>
     <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -12,8 +12,8 @@
         <div class="navbar-brand">DRONECORP<span class="navbar-dot">.</span></div>
         <nav>
             <ul class="nav-links">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="platforms.html">Platforms</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="platforms.html" class="active">Platforms</a></li>
                 <li><a href="focus-areas.html">Focus Areas</a></li>
                 <li><a href="programs.html">Programs</a></li>
                 <li><a href="partner.html">Partner</a></li>
@@ -24,145 +24,56 @@
     </header>
 
     <main class="main">
-        <!-- HERO -->
-        <section class="hero">
-            <video class="hero-video" autoplay muted loop playsinline preload="auto">
-                <source src="assets/drone_desert.mp4" type="video/mp4">
-            </video>
-            <div class="hero-overlay"></div>
-            <div class="hero-grid"></div>
-
-            <div class="hero-inner">
-                <div class="hero-kicker">American-made unmanned aerial systems.</div>
-                <h1 class="hero-title">DRONECORP<span class="navbar-dot">.</span></h1>
-                <p class="hero-subtitle">
-                    Small-batch, defense-aligned UAS platforms for teams that need sovereign hardware and tight feedback loops.
-                </p>
-                <p class="hero-tagline" id="hero-tagline"></p>
-            </div>
-        </section>
-
-        <!-- Conceptual “AI copy” section -->
-        <section class="section hero-copy">
-            <div class="hero-copy-inner">
-                <div class="hero-copy-label">Conceptual overview</div>
-                <p id="ai-copy"></p>
-            </div>
-        </section>
-
-        <!-- Quick focus grid -->
         <section class="section">
             <div class="section-narrow">
-                <div class="section-title-kicker">Scope</div>
-                <h2 class="section-title">What DroneCorp. is exploring</h2>
+                <div class="section-title-kicker">Platforms</div>
+                <h1 class="section-title">ISR racks, not show pieces</h1>
                 <p class="section-body">
-                    This site describes where the work is heading, not a catalog of signed programs. The emphasis is on
-                    small, sharp platforms with honest constraints, built for teams that care about control loops more
-                    than PowerPoints.
+                    The intent is to build tight families of ISR platforms that share components, logs, and behaviors.
+                    Names, sizes, and configurations may change; the underlying idea—sovereign, repeatable hardware—does not.
                 </p>
 
                 <div class="card-grid">
                     <article class="card">
-                        <div class="card-kicker">ISR Platforms</div>
-                        <h3 class="card-title">Short-range autonomous ISR</h3>
+                        <div class="card-kicker">SR–01</div>
+                        <h2 class="card-title">Short-range ISR quad</h2>
                         <p class="card-body">
-                            Compact multirotors optimized for dense urban, maritime, and interior runs. Focus on low-friction deployment,
-                            strong telemetry, and recoverable logs instead of fragile one-off demos.
+                            Compact multirotor tuned for line-of-sight and near-beyond-line-of-sight work. Designed
+                            to launch quickly, survive rough recoveries, and hand back useful telemetry instead of
+                            pretty footage alone.
                         </p>
                     </article>
 
                     <article class="card">
-                        <div class="card-kicker">Manufacturing</div>
-                        <h3 class="card-title">Microfoundry mindset</h3>
+                        <div class="card-kicker">IN–01</div>
+                        <h2 class="card-title">Interior & shipboard recon</h2>
                         <p class="card-body">
-                            U.S.-based builds, tight batches, and iterative hardware revisions. The goal is a steady
-                            cadence of testable hardware, not a single “big” production line that never changes.
+                            Prop-guarded, sensor-heavy variants biased toward interior, ship, and industrial spaces.
+                            Trade some endurance for reliability in GPS-denied, RF-hostile environments.
                         </p>
                     </article>
 
                     <article class="card">
-                        <div class="card-kicker">Edge autonomy</div>
-                        <h3 class="card-title">Onboard decision-making</h3>
+                        <div class="card-kicker">SW–RACK</div>
+                        <h2 class="card-title">Swarm & rack concepts</h2>
                         <p class="card-body">
-                            Experimentation with onboard perception, guidance, and simple autonomy stacks that survive
-                            RF-hostile, GPS-denied environments without needing a rack of cloud services to function.
+                            Exploratory work around dense racks of small air vehicles—simple, disposable units that
+                            matter more as a group than as individuals. Focus on launch/recover mechanics and telemetry.
                         </p>
                     </article>
                 </div>
+
+                <p class="muted" style="margin-top:24px;">
+                    All platform descriptions are conceptual and may change. Nothing here should be read as a
+                    production configuration or a commitment to field specific capabilities.
+                </p>
             </div>
         </section>
     </main>
 
     <footer class="footer">
-        © 2025 DroneCorp. Conceptual material for discussion; not an offer or guarantee of capabilities.
+        © 2025 DroneCorp. Conceptual material for discussion; not all capabilities are available or fielded.
     </footer>
 </div>
-
-<script>
-/* keep hero video running even on back/forward nav */
-document.addEventListener('DOMContentLoaded', function () {
-    const video = document.querySelector('.hero-video');
-    const safePlay = () => {
-        if (!video) return;
-        const p = video.play();
-        if (p && typeof p.then === 'function') {
-            p.catch(() => {});
-        }
-    };
-    safePlay();
-    window.addEventListener('pageshow', safePlay);
-});
-
-/* Type-out tagline and paragraph */
-document.addEventListener('DOMContentLoaded', function () {
-    const taglineEl = document.getElementById('hero-tagline');
-    const copyEl = document.getElementById('ai-copy');
-
-    const taglineText = 'EMERGING CONCEPTS IN AUTONOMOUS ISR AND TACTICAL ROBOTICS.';
-    const copyLines = [
-        "DroneCorp. is an early-stage U.S. unmanned systems effort exploring autonomy-heavy ISR concepts, small-batch manufacturing, and defense-aligned R&D.",
-        "The aim is to function as a sovereign UAS microfoundry: close to the hardware, close to operators, and honest about what is and isn’t field-ready.",
-        "Everything on this site is conceptual material meant to describe the direction of the work, not a catalog of production capabilities."
-    ];
-
-    let taglineIndex = 0;
-
-    function typeTagline() {
-        if (!taglineEl) return;
-        if (taglineIndex <= taglineText.length) {
-            taglineEl.textContent = taglineText.slice(0, taglineIndex);
-            taglineIndex++;
-            setTimeout(typeTagline, 22);
-        } else {
-            typeCopy();
-        }
-    }
-
-    let lineIndex = 0;
-    let charIndex = 0;
-    let current = "";
-
-    function typeCopy() {
-        if (!copyEl || lineIndex >= copyLines.length) return;
-
-        const text = copyLines[lineIndex];
-        if (charIndex < text.length) {
-            current += text.charAt(charIndex);
-            copyEl.textContent = current;
-            charIndex++;
-            setTimeout(typeCopy, 16);
-        } else {
-            lineIndex++;
-            charIndex = 0;
-            if (lineIndex < copyLines.length) {
-                current += "\n\n";
-                setTimeout(typeCopy, 900);
-            }
-        }
-    }
-
-    typeTagline();
-});
-</script>
 </body>
 </html>
